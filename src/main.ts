@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.navbar a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       const targetId = (link.getAttribute('href') || '').slice(1);
       if (!targetId) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
