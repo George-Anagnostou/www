@@ -6,9 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.navbar a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      // e.preventDefault();
-      const targetId = (link.getAttribute('href') || '').slice(1);
-      if (!targetId) {
+      const href = link.getAttribute('href') || '/';
+      const currentPath = window.location.pathname;
+
+      // normalize pathname with leading slash
+      const targetPath = href.startsWith('/') ? href : `/${href}`;
+      if (targetPath === currentPath) {
+        e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
