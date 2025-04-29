@@ -76,3 +76,31 @@ p {
   color: #000;
   font-weight: bold;
 }
+
+/* Add to existing styles */
+#post-list {
+  margin-bottom: 20px;
+}
+
+#post-list a {
+  text-decoration: none;
+  color: #555;
+  font-size: 1.1em;
+}
+
+#post-list a:hover {
+  color: #000;
+}
+
+#post-content {
+  line-height: 1.6;
+}
+
+#post-content h1 {
+  font-size: 2em;
+  margin-top: 0;
+}
+
+#post-content p {
+  margin: 10px 0;
+}
