@@ -10,6 +10,7 @@
     "generate-blog": "ts-node generate-blog.ts"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/marked": "^5.0.2",
     "@types/node": "^22.15.3",
     "ts-node": "^10.9.2",
@@ -17,6 +18,8 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
+    "js-yaml": "^4.1.0",
     "marked": "^15.0.7"
   }
 }

@@ -104,3 +104,9 @@ p {
 #post-content p {
   margin: 10px 0;
 }
+
+.post-date {
+  font-size: 0.9em;
+  color: #999;
+  margin: 0;
+}
