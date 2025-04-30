@@ -1,15 +1,44 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { marked } from 'marked';
+import yaml from 'js-yaml';
+import { format, isValid, parseISO, parse } from 'date-fns';
+
+// Interface for frontmatter metadata
+interface FrontMatter {
+  title?: string;
+  date?: string; // ISO date string, e.g., "2025-04-28"
+}
 
 // Define the skeleton template
-const template = (content: string, title: string): string => `
+const template = (content: string, meta: FrontMatter): string => {
+  // Validate and format date
+  let formattedDate = '';
+  if (meta.date) {
+    try {
+      // Try ISO format (YYYY-MM-DD)
+      let parsedDate = parseISO(meta.date);
+      if (!isValid(parsedDate)) {
+        // Fallback to parsing other formats (e.g., "Mon Apr 28 2025")
+        parsedDate = parse(meta.date, 'EEE MMM dd yyyy', new Date());
+      }
+      if (isValid(parsedDate)) {
+        formattedDate = format(parsedDate, 'MMMM dd, yyyy'); // e.g., "April 28, 2025"
+      } else {
+        console.warn(`Invalid date in ${meta.title || 'post'}: ${meta.date}`);
+      }
+    } catch (err) {
+      console.warn(`Failed to parse date in ${meta.title || 'post'}: ${meta.date}`, err);
+    }
+  }
+
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${title} - My Blog</title>
+  <title>${meta.title || 'Untitled'} - My Blog</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -21,6 +50,8 @@ const template = (content: string, title: string): string => `
     </ul>
   </nav>
   <main>
+    <h1>${meta.title || 'Untitled'}</h1>
+    ${formattedDate ? `<p class="post-date">Posted on ${formattedDate}</p>` : ''}
     ${content}
     <p><a href="/blog.html">Back to Blog List</a></p>
   </main>
@@ -28,6 +59,7 @@ const template = (content: string, title: string): string => `
 </body>
 </html>
 `;
+};
 
 const blogIndexTemplate = (postLinks: string[]): string => `
 <!DOCTYPE html>
@@ -67,28 +99,95 @@ export const generateBlogPages = async (): Promise<void> => {
   // Read all Markdown files
   const files: string[] = await fs.readdir(postsDir);
   const mdFiles: string[] = files.filter(file => file.endsWith('.md'));
-  const postLinks: string[] = [];
+  const posts: { file: string; meta: FrontMatter; content: string }[] = [];
 
   for (const file of mdFiles) {
     const filePath: string = path.join(postsDir, file);
-    const content: string = await fs.readFile(filePath, 'utf-8');
-    const htmlContent: string = await marked.parse(content);
-    const titleMatch: RegExpMatchArray | null = content.match(/^#\s+(.+)$/m);
-    const title: string = titleMatch ? titleMatch[1] : 'Untitled';
-    const outputFile: string = path.join(outputDir, file.replace('.md', '.html'));
-    const html: string = template(htmlContent, title);
-    await fs.writeFile(outputFile, html);
+    const rawContent: string = await fs.readFile(filePath, 'utf-8');
+    
+    // Extract frontmatter (between --- delimiters)
+    const frontMatterMatch = rawContent.match(/^---\n([\s\S]+?)\n---\n([\s\S]*)$/);
+    let meta: FrontMatter = {};
+    let content: string = rawContent;
 
-    // Add to blog index
-    const link: string = `<p><a href="/blog/posts/${file.replace('.md', '.html')}">${title}</a></p>`;
+    if (frontMatterMatch) {
+      // Force YAML to parse dates as strings
+      meta = yaml.load(frontMatterMatch[1], { schema: yaml.FAILSAFE_SCHEMA }) as FrontMatter;
+      content = frontMatterMatch[2].trim();
+      console.log(`File: ${file}, Raw date: ${meta.date}`); // Debug raw date
+    }
+    
+    const htmlContent: string = await marked.parse(content);
+    posts.push({ file, meta, content: htmlContent });
+  }
+  
+  // Sort posts by date (newest first)
+  posts.sort((a, b) => {
+    let dateA: Date = new Date(0);
+    let dateB: Date = new Date(0);
+
+    if (a.meta.date) {
+      try {
+        let parsedA = parseISO(a.meta.date);
+        if (!isValid(parsedA)) {
+          parsedA = parse(a.meta.date, 'EEE MMM dd yyyy', new Date());
+        }
+        if (isValid(parsedA)) dateA = parsedA;
+        else console.warn(`Invalid date in ${a.meta.title || 'post'}: ${a.meta.date}`);
+      } catch (err) {
+        console.warn(`Failed to parse date in ${a.meta.title || 'post'}: ${a.meta.date}`, err);
+      }
+    }
+
+    if (b.meta.date) {
+      try {
+        let parsedB = parseISO(b.meta.date);
+        if (!isValid(parsedB)) {
+          parsedB = parse(b.meta.date, 'EEE MMM dd yyyy', new Date());
+        }
+        if (isValid(parsedB)) dateB = parsedB;
+        else console.warn(`Invalid date in ${b.meta.title || 'post'}: ${b.meta.date}`);
+      } catch (err) {
+        console.warn(`Failed to parse date in ${b.meta.title || 'post'}: ${b.meta.date}`, err);
+      }
+    }
+
+    return dateB.getTime() - dateA.getTime(); // Newest first
+  });
+
+  // Generate individual post pages
+  const postLinks: string[] = [];
+  for (const post of posts) {
+    const outputFile: string = path.join(outputDir, post.file.replace('.md', '.html'));
+    const html: string = template(post.content, post.meta);
+    await fs.writeFile(outputFile, html, 'utf-8');
+
+    // Add to blog index with date
+    let formattedDate = '';
+    if (post.meta.date) {
+      try {
+        let parsedDate = parseISO(post.meta.date);
+        if (!isValid(parsedDate)) {
+          parsedDate = parse(post.meta.date, 'EEE MMM dd yyyy', new Date());
+        }
+        if (isValid(parsedDate)) {
+          formattedDate = format(parsedDate, 'MMMM dd, yyyy');
+        } else {
+          console.warn(`Invalid date in ${post.meta.title || 'post'}: ${post.meta.date}`);
+        }
+      } catch (err) {
+        console.warn(`Failed to parse date in ${post.meta.title || 'post'}: ${post.meta.date}`, err);
+      }
+    }
+
+    const link: string = `<p><a href="/blog/posts/${post.file.replace('.md', '.html')}">${post.meta.title || 'Untitled'}</a>${formattedDate ? ` <span class="post-date">(${formattedDate})</span>` : ''}</p>`;
     postLinks.push(link);
   }
-
-  // Generate blog index
+  
+  // Generate blog index page
   const blogIndexHtml: string = blogIndexTemplate(postLinks);
-  await fs.writeFile(path.join(process.cwd(), 'blog.html'), blogIndexHtml);
-
-  console.log('Blog pages and index generated!');
+  await fs.writeFile(path.join(process.cwd(), 'blog.html'), blogIndexHtml, 'utf-8');
+  console.log('Blog pages and index generated successfully!');
 };
 
 generateBlogPages().catch(console.error);
