@@ -107,6 +107,12 @@ p {
 
 .post-date {
   font-size: 0.9em;
+  color: #777;
+  margin: 0;
+}
+
+.last-modified {
+  font-size: 0.9em;
   color: #999;
   margin: 0;
 }
