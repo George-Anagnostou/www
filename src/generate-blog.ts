@@ -89,12 +89,29 @@ const blogIndexTemplate = (postLinks: string[]): string => `
 </html>
 `;
 
-export const generateBlogPages = async (): Promise<void> => {
+const deletePost = async (file: string, outputDir: string): Promise<void> => {
+  const htmlFile = path.join(outputDir, file.replace('.md', '.html'));
+  try {
+    await fs.unlink(htmlFile);
+    console.log(`Deleted post: ${htmlFile}`);
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+      console.error(`Error deleting post: ${htmlFile}`, err);
+    }
+  }
+};
+
+export const generateBlogPages = async (deletedFile?: string): Promise<void> => {
   const postsDir: string = path.join(process.cwd(), 'src', 'posts');
   const outputDir: string = path.join(process.cwd(), 'blog', 'posts');
   
   // Ensure output directory exists
   await fs.mkdir(outputDir, { recursive: true });
+  
+  // Handle deletion
+  if (deletedFile) {
+    await deletePost(deletedFile, outputDir);
+  }
 
   // Read all Markdown files
   const files: string[] = await fs.readdir(postsDir);
@@ -114,7 +131,6 @@ export const generateBlogPages = async (): Promise<void> => {
       // Force YAML to parse dates as strings
       meta = yaml.load(frontMatterMatch[1], { schema: yaml.FAILSAFE_SCHEMA }) as FrontMatter;
       content = frontMatterMatch[2].trim();
-      console.log(`File: ${file}, Raw date: ${meta.date}`); // Debug raw date
     }
     
     const htmlContent: string = await marked.parse(content);
