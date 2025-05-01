@@ -8,6 +8,7 @@ import { format, isValid, parseISO, parse } from 'date-fns';
 interface FrontMatter {
   title?: string;
   date?: string; // ISO date string, e.g., "2025-04-28"
+  lastModified?: string; // Auto-generated, e.g. "2025-05-01"
 }
 
 // Define the skeleton template
@@ -31,6 +32,21 @@ const template = (content: string, meta: FrontMatter): string => {
       console.warn(`Failed to parse date in ${meta.title || 'post'}: ${meta.date}`, err);
     }
   }
+  
+  // Format lastModified
+  let formattedLastModified = '';
+  if (meta.lastModified) {
+    try {
+      const parsedLastModified = parseISO(meta.lastModified);
+      if (isValid(parsedLastModified)) {
+        formattedLastModified = format(parsedLastModified, 'MMM dd, yyyy');
+      } else {
+        console.warn(`Invalid lastModified in ${meta.title || 'post'}: ${meta.lastModified}`);
+      }
+    } catch (err) {
+      console.warn(`Failed to parse lastModified in ${meta.title || 'post'}: ${meta.lastModified}`, err);
+    }
+  }
 
   return `
 <!DOCTYPE html>
@@ -52,6 +68,7 @@ const template = (content: string, meta: FrontMatter): string => {
   <main>
     <h1>${meta.title || 'Untitled'}</h1>
     ${formattedDate ? `<p class="post-date">Posted on ${formattedDate}</p>` : ''}
+    ${formattedLastModified ? `<p class="last-modified">Last modified: ${formattedLastModified}</p>` : ''}
     ${content}
     <p><a href="/blog.html">Back to Blog List</a></p>
   </main>
@@ -122,15 +139,20 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
     const filePath: string = path.join(postsDir, file);
     const rawContent: string = await fs.readFile(filePath, 'utf-8');
     
+    // Get file's last modified date
+    const stats = await fs.stat(filePath);
+    const lastModified = format(stats.mtime, 'yyyy-MM-dd');
+    
     // Extract frontmatter (between --- delimiters)
     const frontMatterMatch = rawContent.match(/^---\n([\s\S]+?)\n---\n([\s\S]*)$/);
-    let meta: FrontMatter = {};
+    let meta: FrontMatter = { lastModified};
     let content: string = rawContent;
 
     if (frontMatterMatch) {
       // Force YAML to parse dates as strings
-      meta = yaml.load(frontMatterMatch[1], { schema: yaml.FAILSAFE_SCHEMA }) as FrontMatter;
+      meta = { ...yaml.load(frontMatterMatch[1], { schema: yaml.FAILSAFE_SCHEMA }) as FrontMatter, lastModified };
       content = frontMatterMatch[2].trim();
+      console.log(`File: ${file}, Raw date: ${meta.date}, Last modified: ${meta.lastModified}`);
     }
     
     const htmlContent: string = await marked.parse(content);
@@ -180,6 +202,7 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
 
     // Add to blog index with date
     let formattedDate = '';
+    let formattedLastModified = '';
     if (post.meta.date) {
       try {
         let parsedDate = parseISO(post.meta.date);
@@ -195,8 +218,20 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
         console.warn(`Failed to parse date in ${post.meta.title || 'post'}: ${post.meta.date}`, err);
       }
     }
+    if (post.meta.lastModified) {
+      try {
+        const parsedLastModified = parseISO(post.meta.lastModified);
+        if (isValid(parsedLastModified)) {
+          formattedLastModified = format(parsedLastModified, 'MMM dd, yyyy');
+        } else {
+          console.warn(`Invalid lastModified in ${post.meta.title || 'post'}: ${post.meta.lastModified}`);
+        }
+      } catch (err) {
+        console.warn(`Failed to parse lastModified in ${post.meta.title || 'post'}: ${post.meta.lastModified}`, err);
+      }
+    }
 
-    const link: string = `<p><a href="/blog/posts/${post.file.replace('.md', '.html')}">${post.meta.title || 'Untitled'}</a>${formattedDate ? ` <span class="post-date">(${formattedDate})</span>` : ''}</p>`;
+    const link: string = `<p><a href="/blog/posts/${post.file.replace('.md', '.html')}">${post.meta.title || 'Untitled'}</a>${formattedDate ? ` <span class="post-date">(${formattedDate})</span>` : ''}${formattedLastModified ? ` <span class="last-modified">(last modified: ${formattedLastModified})</span>` : ''}</p>`;
     postLinks.push(link);
   }
   
