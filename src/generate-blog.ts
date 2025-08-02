@@ -17,14 +17,12 @@ const template = (content: string, meta: FrontMatter): string => {
   let formattedDate = '';
   if (meta.date) {
     try {
-      // Try ISO format (YYYY-MM-DD)
       let parsedDate = parseISO(meta.date);
       if (!isValid(parsedDate)) {
-        // Fallback to parsing other formats (e.g., "Mon Apr 28 2025")
         parsedDate = parse(meta.date, 'EEE MMM dd yyyy', new Date());
       }
       if (isValid(parsedDate)) {
-        formattedDate = format(parsedDate, 'MMMM dd, yyyy'); // e.g., "April 28, 2025"
+        formattedDate = format(parsedDate, 'MMMM dd, yyyy');
       } else {
         console.warn(`Invalid date in ${meta.title || 'post'}: ${meta.date}`);
       }
@@ -32,7 +30,7 @@ const template = (content: string, meta: FrontMatter): string => {
       console.warn(`Failed to parse date in ${meta.title || 'post'}: ${meta.date}`, err);
     }
   }
-  
+
   // Format lastModified
   let formattedLastModified = '';
   if (meta.lastModified) {
@@ -106,6 +104,7 @@ const blogIndexTemplate = (postLinks: string[]): string => `
 </html>
 `;
 
+// Delete a post's HTML file
 const deletePost = async (file: string, outputDir: string): Promise<void> => {
   const htmlFile = path.join(outputDir, file.replace('.md', '.html'));
   try {
@@ -113,7 +112,7 @@ const deletePost = async (file: string, outputDir: string): Promise<void> => {
     console.log(`Deleted post: ${htmlFile}`);
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.error(`Error deleting post: ${htmlFile}`, err);
+      console.error(`Failed to delete ${htmlFile}:`, err);
     }
   }
 };
@@ -124,7 +123,7 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
   
   // Ensure output directory exists
   await fs.mkdir(outputDir, { recursive: true });
-  
+
   // Handle deletion
   if (deletedFile) {
     await deletePost(deletedFile, outputDir);
@@ -142,14 +141,13 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
     // Get file's last modified date
     const stats = await fs.stat(filePath);
     const lastModified = format(stats.mtime, 'yyyy-MM-dd');
-    
+
     // Extract frontmatter (between --- delimiters)
     const frontMatterMatch = rawContent.match(/^---\n([\s\S]+?)\n---\n([\s\S]*)$/);
-    let meta: FrontMatter = { lastModified};
+    let meta: FrontMatter = { lastModified };
     let content: string = rawContent;
 
     if (frontMatterMatch) {
-      // Force YAML to parse dates as strings
       meta = { ...yaml.load(frontMatterMatch[1], { schema: yaml.FAILSAFE_SCHEMA }) as FrontMatter, lastModified };
       content = frontMatterMatch[2].trim();
       console.log(`File: ${file}, Raw date: ${meta.date}, Last modified: ${meta.lastModified}`);
@@ -200,7 +198,7 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
     const html: string = template(post.content, post.meta);
     await fs.writeFile(outputFile, html, 'utf-8');
 
-    // Add to blog index with date
+    // Add to blog index with date and lastModified
     let formattedDate = '';
     let formattedLastModified = '';
     if (post.meta.date) {
@@ -231,7 +229,14 @@ export const generateBlogPages = async (deletedFile?: string): Promise<void> => 
       }
     }
 
-    const link: string = `<p><a href="/blog/posts/${post.file.replace('.md', '.html')}">${post.meta.title || 'Untitled'}</a>${formattedDate ? ` <span class="post-date">(${formattedDate})</span>` : ''}${formattedLastModified ? ` <span class="last-modified">(last modified: ${formattedLastModified})</span>` : ''}</p>`;
+    const link: string = `
+      <p class="post-link">
+        <span class="post-title"><a href="/blog/posts/${post.file.replace('.md', '.html')}">${post.meta.title || 'Untitled'}</a></span>
+        <span class="post-meta">
+          ${formattedDate ? `<span class="post-date">${formattedDate}</span>` : ''}
+          ${formattedLastModified ? `<span class="last-modified">last modified: ${formattedLastModified}</span>` : ''}
+        </span>
+      </p>`;
     postLinks.push(link);
   }
   
