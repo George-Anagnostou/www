@@ -112,7 +112,48 @@ p {
 }
 
 .last-modified {
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: #999;
+  font-style: italic;
   margin: 0;
+}
+
+/* .post-link:hover .last-modified {
+  display: inline;
+} */
+  
+#post-list {
+  margin: 1em 0;
+}
+
+.post-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.post-title {
+  flex: 1;
+  font-weight: bold;
+}
+
+.post-title a {
+  text-decoration: none;
+  color: #333;
+}
+
+.post-title a:hover {
+  text-decoration: underline;
+}
+
+.post-meta {
+  text-align: right;
+  min-width: 200px /* Ensure consistent column width */;
+}
+
+.post-meta .post-date,
+.post-meta .last-modified {
+  display: block; /* Stack dates vertically */
 }
