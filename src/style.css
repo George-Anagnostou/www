@@ -35,9 +35,11 @@ p {
 
 .hero-image {
   max-width: 100%;
-  height: auto;
+  width: 50%;
   margin-top: 20px;
   border: 1px solid #ddd;
+  float: right;
+  border-radius: 50%;
 }
 
 .navbar {
