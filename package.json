@@ -1,27 +1,5 @@
 {
-  "name": "www",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "generate-blog": "ts-node generate-blog.ts"
-  },
   "devDependencies": {
-    "@types/chokidar": "^1.7.5",
-    "@types/js-yaml": "^4.0.9",
-    "@types/marked": "^5.0.2",
-    "@types/node": "^22.15.3",
-    "chokidar": "^4.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0"
-  },
-  "dependencies": {
-    "date-fns": "^4.1.0",
-    "js-yaml": "^4.1.0",
-    "marked": "^15.0.7"
+    "@types/node": "^24.8.1"
   }
 }
