@@ -10,12 +10,15 @@ async function cleanDist() {
   await fs.promises.mkdir(DIST_DIR, { recursive: true });
 }
 
+let lastBuildTime = 0;
+
 async function runBuild(): Promise<void> {
   console.log("Running build script...");
   return new Promise((resolve, reject) => {
     const proc = Bun.spawn(["bun", "run", "scripts/build.ts"], {
       onExit: () => {
         console.log("Build finished.");
+        lastBuildTime = Date.now();
         resolve();
       },
       env: { ...process.env, NODE_ENV: "development" },
@@ -29,6 +32,9 @@ function watchFiles() {
   fs.watch(SRC_DIR, { recursive: true }, (event, filename) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
+      if (Date.now() - lastBuildTime < 500) {
+        return;
+      }
       console.log(`Change detected in ${filename}.`);
       runBuild();
     }, 100);
@@ -43,12 +49,13 @@ function startServer() {
       const url = new URL(req.url);
       let filePath = url.pathname;
       if (filePath === "/") filePath = "/index.html";
-      const fullPath = path.join(DIST_DIR, filePath);
+      const fullPath = path.join(DIST_DIR, filePath.substring(1)); // eliminate leading "/"
       const file = Bun.file(fullPath);
       const fileExists = await file.exists();
       if (!fileExists) {
         return new Response("404 Not Found", { status: 404 });
       }
+      console.log(`[Server] Serving file: ${file.name}`);
       return new Response(file);
     },
   });
