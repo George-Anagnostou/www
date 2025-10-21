@@ -1,8 +1,11 @@
 import path from "path";
 import fs from "fs";
+import chokidar from "chokidar";
 
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
+
+const clients = new Set<any>();
 
 async function cleanDist() {
   console.log("Cleaning dist directory...");
@@ -10,15 +13,15 @@ async function cleanDist() {
   await fs.promises.mkdir(DIST_DIR, { recursive: true });
 }
 
-let lastBuildTime = 0;
-
 async function runBuild(): Promise<void> {
   console.log("Running build script...");
   return new Promise((resolve, reject) => {
     const proc = Bun.spawn(["bun", "run", "scripts/build.ts"], {
       onExit: () => {
-        console.log("Build finished.");
-        lastBuildTime = Date.now();
+        console.log("Build finished. Sending reload signal...");
+        for (const client of clients) {
+          client.send("reload");
+        }
         resolve();
       },
       env: { ...process.env, NODE_ENV: "development" },
@@ -28,14 +31,18 @@ async function runBuild(): Promise<void> {
 
 function watchFiles() {
   console.log("Watching for changes in src/...");
-  let timeout: NodeJS.Timeout | null = null;
-  fs.watch(SRC_DIR, { recursive: true }, (event, filename) => {
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      if (Date.now() - lastBuildTime < 500) {
-        return;
-      }
-      console.log(`Change detected in ${filename}.`);
+  let debounceTimeout: NodeJS.Timeout | null = null;
+  const watcher = chokidar.watch(SRC_DIR, {
+    ignoreInitial: true,
+    ignored: ["**/*.bck"],
+  });
+
+  watcher.on("all", (event, path) => {
+    console.log(`[Watcher] Event: '${event}' on path: '${path}'`);
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+      console.log("Change detected, running build...");
       runBuild();
     }, 100);
   });
@@ -45,7 +52,10 @@ function startServer() {
   console.log("Starting dev server...");
   Bun.serve({
     port: 3000,
-    async fetch(req) {
+    async fetch(req, server) {
+      if (server.upgrade(req)) {
+        return;
+      }
       const url = new URL(req.url);
       let filePath = url.pathname;
       if (filePath === "/") filePath = "/index.html";
@@ -57,6 +67,16 @@ function startServer() {
       }
       console.log(`[Server] Serving file: ${file.name}`);
       return new Response(file);
+    },
+    websocket: {
+      open(ws) {
+        console.log("[WebSocket] Client connected.");
+        clients.add(ws);
+      },
+      close(ws) {
+        console.log("[WebSocket] Client disconnected.");
+        clients.delete(ws);
+      },
     },
   });
   console.log("Server running at http://localhost:3000");
