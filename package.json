@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@types/node": "^24.8.1"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "marked": "^16.4.1"
   }
 }
