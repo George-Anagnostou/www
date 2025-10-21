@@ -1,5 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
+import { marked } from "marked";
+import yaml from "js-yaml";
 
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
@@ -33,12 +35,40 @@ async function main() {
 
     // build and copy md files
     console.log("Building HTML files from md files");
-    const blogMdPath = path.join(SRC_DIR, "blog");
-    const blogMdFiles = await fs.readdir(blogMdPath);
-    for (const file of blogMdFiles) {
+    const blogSrcDir = path.join(SRC_DIR, "blog");
+    const blogDestDir = path.join(DIST_DIR, "blog");
+    await fs.mkdir(blogDestDir, { recursive: true });
+    const blogPostFiles = await fs.readdir(blogSrcDir);
+    for (const file of blogPostFiles) {
       if (file.endsWith(".md")) {
         // process md
-        console.log(`- processed ${file}`);
+        const srcPath = path.join(blogSrcDir, file);
+        const rawContent = await fs.readFile(srcPath, "utf-8");
+
+        const frontmatterMatch = rawContent.match(
+          /^---\n([\s\S]+?)\n---\n([\s\S]*)$/,
+        );
+        if (!frontmatterMatch) {
+          console.warn(`- Skipping ${file}: no frontmatter found.`);
+          continue;
+        }
+
+        const frontmatter = yaml.load(frontmatterMatch[1]) as {
+          title: string;
+          date: string;
+        };
+        const markdownContent = frontmatterMatch[2];
+        const htmlContent = await marked.parse(markdownContent);
+        const finalHtml = blogPostLayout({
+          title: frontmatter.title,
+          date: frontmatter.date,
+          content: htmlContent,
+        });
+
+        const destFile = file.replace(".md", ".html");
+        const destPath = path.join(blogDestDir, destFile);
+        await fs.writeFile(destPath, finalHtml);
+        console.log(`- Processed and wrote ${destFile}`);
       }
     }
 
@@ -48,5 +78,29 @@ async function main() {
     process.exit(1);
   }
 }
+
+const blogPostLayout = (post: {
+  title: string;
+  date: string;
+  content: string;
+}): string => `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${post.title}</title>
+      <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+      <main>
+        <h1>${post.title}</h1>
+        <p><em>Published on ${post.date}</em></p>
+        <hr>
+        ${post.content}
+      </main>
+    </body>
+  </html>
+`;
 
 main();
