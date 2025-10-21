@@ -11,9 +11,11 @@ async function main() {
     console.log("Starting build...");
 
     // clean dist directory
-    console.log("Cleaning up dist directory...");
-    await fs.rm(DIST_DIR, { recursive: true, force: true });
-    await fs.mkdir(DIST_DIR, { recursive: true });
+    if (process.env.NODE_ENV !== "development") {
+      console.log("Cleaning up dist directory...");
+      await fs.rm(DIST_DIR, { recursive: true, force: true });
+      await fs.mkdir(DIST_DIR, { recursive: true });
+    }
 
     // copy static assets
     const staticSrc = path.join(SRC_DIR, "static");
