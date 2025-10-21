@@ -1,0 +1,16 @@
+body {
+  font-family: serif;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.hero-image {
+  max-width: 100%;
+  width: 50%;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  float: right;
+  border-radius: 50%;
+}
