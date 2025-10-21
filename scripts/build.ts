@@ -41,6 +41,7 @@ async function main() {
     const blogDestDir = path.join(DIST_DIR, "blog");
     await fs.mkdir(blogDestDir, { recursive: true });
     const blogPostFiles = await fs.readdir(blogSrcDir);
+    const posts = [];
     for (const file of blogPostFiles) {
       if (file.endsWith(".md")) {
         // process md
@@ -59,6 +60,7 @@ async function main() {
           title: string;
           date: string;
         };
+
         const markdownContent = frontmatterMatch[2];
         const htmlContent = await marked.parse(markdownContent);
         const finalHtml = blogPostLayout({
@@ -70,6 +72,31 @@ async function main() {
         const destFile = file.replace(".md", ".html");
         const destPath = path.join(blogDestDir, destFile);
         await fs.writeFile(destPath, finalHtml);
+
+        posts.push({
+          title: frontmatter.title,
+          dateString: frontmatter.date,
+          dateObject: new Date(frontmatter.date),
+          url: `/blog/${destFile}`,
+        });
+        posts.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime());
+
+        const postListHtml = posts
+          .map((post) => {
+            return `
+              <li>
+                <a href=${post.url}>${post.title}</a>
+                <small>${post.dateString}</small>
+              </li>
+            `;
+          })
+          .join("");
+
+        const blogIndexHtml = blogIndexLayout(postListHtml);
+
+        await fs.writeFile(path.join(DIST_DIR, "blog.html"), blogIndexHtml);
+        console.log("- Generated blog.html");
+
         console.log(`- Processed and wrote ${destFile}`);
       }
     }
@@ -100,6 +127,26 @@ const blogPostLayout = (post: {
         <p><em>Published on ${post.date}</em></p>
         <hr>
         ${post.content}
+      </main>
+    </body>
+  </html>
+`;
+
+const blogIndexLayout = (postHtml: string): string => `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Blog Posts</title>
+      <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+      <main>
+        <h1>Blog Posts</h1>
+        <ul>
+          ${postHtml}
+        </ul>
       </main>
     </body>
   </html>

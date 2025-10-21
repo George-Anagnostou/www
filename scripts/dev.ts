@@ -1,13 +1,13 @@
 import path from "path";
-import fs from "fs/promises";
+import fs from "fs";
 
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
 
 async function cleanDist() {
   console.log("Cleaning dist directory...");
-  await fs.rm(DIST_DIR, { recursive: true, force: true });
-  await fs.mkdir(DIST_DIR, { recursive: true });
+  await fs.promises.rm(DIST_DIR, { recursive: true, force: true });
+  await fs.promises.mkdir(DIST_DIR, { recursive: true });
 }
 
 async function runBuild(): Promise<void> {
@@ -25,7 +25,7 @@ async function runBuild(): Promise<void> {
 
 function watchFiles() {
   console.log("Watching for changes in src/...");
-  let timeout: Timer | null = null;
+  let timeout: NodeJS.Timeout | null = null;
   fs.watch(SRC_DIR, { recursive: true }, (event, filename) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
