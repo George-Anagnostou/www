@@ -8,7 +8,9 @@
     "dev": "bun run scripts/dev.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/chokidar": "^2.1.7",
+    "chokidar": "^4.0.3"
   },
   "peerDependencies": {
     "typescript": "^5"
