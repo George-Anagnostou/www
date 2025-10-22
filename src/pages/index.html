@@ -11,8 +11,8 @@
     <nav class="navbar">
       <ul>
         <li><a href="/" class="active">Home</a></li>
-        <li><a href="/blog.html">Blog</a></li>
-        <li><a href="/portfolio.html">Portfolio</a></li>
+        <li><a href="/content/blog.html">Blog</a></li>
+        <li><a href="/pages/portfolio.html">Portfolio</a></li>
       </ul>
     </nav>
     <main>
@@ -28,7 +28,7 @@
   <script>
     const ws = new WebSocket(`ws://${location.hostname}:3000`);
     ws.onmessage = (event) => {
-      if (event.data) === "reload") {
+      if (event.data === "reload") {
         console.log("Reloading page due to file changes...");
         location.reload();
       }

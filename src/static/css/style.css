@@ -6,6 +6,61 @@ body {
   color: #333;
 }
 
+main {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.intro {
+  font-size: 1.2em;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+.intro.visible {
+  opacity: 1;
+}
+
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #555;
+  transition: color 0.3s ease;
+  font-size: 1.1em;
+}
+
+.navbar a:hover {
+  color: #000;
+}
+
+.navbar a.active {
+  color: #000;
+  font-weight: bold;
+}
+
 .hero-image {
   max-width: 100%;
   width: 50%;
