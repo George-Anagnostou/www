@@ -16,7 +16,7 @@ async function cleanDist() {
 async function runBuild(): Promise<void> {
   console.log("Running build script...");
   return new Promise((resolve, reject) => {
-    const proc = Bun.spawn(["bun", "run", "scripts/build.ts"], {
+    const proc = Bun.spawn(["bun", "run", "build"], {
       onExit: () => {
         console.log("Build finished. Sending reload signal...");
         for (const client of clients) {
@@ -57,6 +57,7 @@ function startServer() {
         return;
       }
       const url = new URL(req.url);
+      console.log(`URL: ${url}`);
       let filePath = url.pathname;
       if (filePath === "/") filePath = "/index.html";
       const fullPath = path.join(DIST_DIR, filePath.substring(1)); // eliminate leading "/"
