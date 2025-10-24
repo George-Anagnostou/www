@@ -1,40 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>George Anagnostou</title>
-    <link rel="stylesheet" href="/static/css/style.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <ul>
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="/content/blog.html">Blog</a></li>
-        <li><a href="/pages/portfolio.html">Portfolio</a></li>
-      </ul>
-    </nav>
-    <main>
-      <h1>Hello, I'm George Anagnostou</h1>
-      <p class="intro">There's no place like ~/</p>
-      <img
-        src="/static/images/headshot.jpeg"
-        alt="Headshot photo of George Anagnostou"
-        class="hero-image"
-      />
-    </main>
-  </body>
-  <script>
-    const ws = new WebSocket(`ws://${location.hostname}:3000`);
-    ws.onmessage = (event) => {
-      if (event.data === "reload") {
-        console.log("Reloading page due to file changes...");
-        location.reload();
-      }
-    };
-    ws.onopen = () => {
-      console.log("Live-reload connection established.");
-    };
-  </script>
-</html>
+<h1>Hello, I'm George Anagnostou</h1>
+<p class="intro">There's no place like ~/</p>
+<img
+  src="/static/images/headshot.jpeg"
+  alt="Headshot photo of George Anagnostou"
+  class="hero-image"
+/>
