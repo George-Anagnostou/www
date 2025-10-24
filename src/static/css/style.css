@@ -20,12 +20,6 @@ h1 {
 .intro {
   font-size: 1.2em;
   line-height: 1.5;
-  opacity: 0;
-  transition: opacity 1s ease-in;
-}
-
-.intro.visible {
-  opacity: 1;
 }
 
 .navbar {
@@ -52,11 +46,13 @@ h1 {
   font-size: 1.1em;
 }
 
-.navbar a:hover {
-  color: #000;
+.navbar ul > li:not(:last-child)::after {
+  content: "|";
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-.navbar a.active {
+.navbar a:hover {
   color: #000;
   font-weight: bold;
 }
