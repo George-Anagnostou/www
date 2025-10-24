@@ -59,7 +59,7 @@ function startServer() {
       const url = new URL(req.url);
       console.log(`URL: ${url}`);
       let filePath = url.pathname;
-      if (filePath === "/") filePath = "/index.html";
+      if (filePath === "/") filePath = "/pages/index.html";
       const fullPath = path.join(DIST_DIR, filePath.substring(1)); // eliminate leading "/"
       const file = Bun.file(fullPath);
       const fileExists = await file.exists();
