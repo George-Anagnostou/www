@@ -56,6 +56,9 @@ async function main() {
     const navbarHtml = await Bun.file(
       path.join(partialsDir, "navbar.html"),
     ).text();
+    const footerHtml = await Bun.file(
+      path.join(partialsDir, "footer.html"),
+    ).text();
     const liveReload = await Bun.file(
       path.join(partialsDir, "live-reload.html"),
     ).text();
@@ -79,6 +82,7 @@ async function main() {
           title: pageTitle,
           content: pageContent,
           navbar: navbarHtml,
+          footer: footerHtml,
           liveReload: liveReload,
         });
         const destPath = path.join(pagesDistDir, file);
@@ -131,6 +135,7 @@ async function main() {
           title: frontmatter.title,
           content: renderedPostContent,
           navbar: navbarHtml,
+          footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
 
@@ -167,6 +172,7 @@ async function main() {
           title: "George's Blog",
           content: blogIndexContent,
           navbar: navbarHtml,
+          footer: footerHtml,
           liveReload: liveReload,
         });
 
