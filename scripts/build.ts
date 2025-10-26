@@ -156,9 +156,9 @@ async function main() {
         const postListHtml = posts
           .map((post) => {
             return `
-              <li>
-                <a href=${post.url}>${post.title}</a>
-                <small>${post.dateString}</small>
+              <li class="post-item">
+                <span class="post-title"><a href=${post.url}>${post.title}</a></span>
+                <span class="post-date"><small>${post.dateString}</small></span>
               </li>
             `;
           })
