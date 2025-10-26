@@ -108,17 +108,24 @@ async function main() {
 
         const frontmatter = yaml.load(frontmatterMatch[1]) as {
           title: string;
-          date: string;
+          date: Date;
         };
 
         const markdownContent = frontmatterMatch[2];
         const htmlContent = await marked.parse(markdownContent);
 
+        let dateOptions: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
         const renderedPostContent = renderLayout(postLayout, {
           title: frontmatter.title,
-          dateString: frontmatter.date,
+          date: frontmatter.date,
+          dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
           content: htmlContent,
         });
+        console.log(renderedPostContent);
 
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: frontmatter.title,
@@ -134,11 +141,11 @@ async function main() {
 
         posts.push({
           title: frontmatter.title,
-          dateString: frontmatter.date,
-          dateObject: new Date(frontmatter.date),
+          date: frontmatter.date,
+          dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
           url: `/content/blog/${destFile}`,
         });
-        posts.sort((a, b) => b.dateObject.getTime() - a.dateObject.getTime());
+        posts.sort((a, b) => b.date.getTime() - a.date.getTime());
 
         console.log("Generating blog index page...");
         const postListHtml = posts
