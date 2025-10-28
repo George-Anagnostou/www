@@ -1,0 +1,12 @@
+<script>
+  const ws = new WebSocket(`ws://${location.hostname}:3000`);
+  ws.onmessage = (event) => {
+    if (event.data === "reload") {
+      console.log("Reloading page due to file changes...");
+      location.reload();
+    }
+  };
+  ws.onopen = () => {
+    console.log("Live-reload connection established.");
+  };
+</script>

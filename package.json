@@ -1,27 +1,23 @@
 {
   "name": "www",
-  "private": true,
-  "version": "0.0.0",
+  "module": "index.ts",
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "generate-blog": "ts-node generate-blog.ts"
+    "build": "bun run scripts/build.ts",
+    "build:prod": "NODE_ENV=production bun run scripts/build.ts",
+    "dev": "bun run scripts/dev.ts"
   },
   "devDependencies": {
-    "@types/chokidar": "^1.7.5",
-    "@types/js-yaml": "^4.0.9",
-    "@types/marked": "^5.0.2",
-    "@types/node": "^22.15.3",
-    "chokidar": "^4.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0"
+    "@types/bun": "latest",
+    "@types/chokidar": "^2.1.7",
+    "chokidar": "^4.0.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   },
   "dependencies": {
-    "date-fns": "^4.1.0",
     "js-yaml": "^4.1.0",
-    "marked": "^15.0.7"
+    "marked": "^16.4.1"
   }
 }
