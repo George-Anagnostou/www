@@ -6,7 +6,7 @@
   "scripts": {
     "build": "bun run scripts/build.ts",
     "build:prod": "NODE_ENV=production bun run scripts/build.ts",
-    "dev": "bun run scripts/dev.ts"
+    "dev-local": "bun run scripts/dev.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
