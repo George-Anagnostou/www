@@ -16,19 +16,32 @@ main {
   flex-grow: 1;
 }
 
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: rebeccapurple;
+}
+
 .site-header {
   font-family: serif;
   padding: 20px;
+}
+
+.site-header a:hover {
+  text-decoration: none;
 }
 
 .site-header h1,
 .site-header a,
 .site-header p {
   color: #333;
-}
-
-.site-header > a {
-  text-decoration: none;
 }
 
 .about-section {
