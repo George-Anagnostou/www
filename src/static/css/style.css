@@ -11,9 +11,24 @@ body {
 
 main {
   max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   flex-grow: 1;
+}
+
+.site-header {
+  font-family: serif;
+  padding: 20px;
+}
+
+.site-header h1,
+.site-header a,
+.site-header p {
+  color: #333;
+}
+
+.site-header > a {
+  text-decoration: none;
 }
 
 .about-section {
@@ -25,42 +40,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-.navbar {
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.navbar a {
-  text-decoration: none;
-  color: #555;
-  transition: color 0.3s ease;
-  font-size: 1.1em;
-}
-
-.navbar ul > li:not(:last-child)::after {
-  content: "|";
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.navbar a:hover {
-  color: #000;
-  font-weight: bold;
-}
-
 .hero-image {
   max-width: 100%;
   width: 50%;
@@ -70,10 +49,6 @@ h1 {
   border-radius: 50%;
   margin-left: 20px;
   margin-bottom: 10px;
-}
-
-.blog-post-title {
-  font-size: 3em;
 }
 
 .footer {

@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "bun run scripts/build.ts",
+    "build:prod": "NODE_ENV=production bun run scripts/build.ts",
     "dev": "bun run scripts/dev.ts"
   },
   "devDependencies": {

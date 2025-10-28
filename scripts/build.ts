@@ -53,8 +53,8 @@ async function main() {
     ).text();
 
     const partialsDir = path.join(SRC_DIR, "partials");
-    const navbarHtml = await Bun.file(
-      path.join(partialsDir, "navbar.html"),
+    const headerHtml = await Bun.file(
+      path.join(partialsDir, "header.html"),
     ).text();
     const footerHtml = await Bun.file(
       path.join(partialsDir, "footer.html"),
@@ -81,9 +81,9 @@ async function main() {
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
           content: pageContent,
-          navbar: navbarHtml,
+          header: headerHtml,
           footer: footerHtml,
-          liveReload: liveReload,
+          liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
         const destPath = path.join(pagesDistDir, file);
         await Bun.write(destPath, finalPageHtml);
@@ -134,7 +134,7 @@ async function main() {
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: frontmatter.title,
           content: renderedPostContent,
-          navbar: navbarHtml,
+          header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
@@ -171,9 +171,9 @@ async function main() {
         const finalBlogIndexHtml = renderLayout(baseLayout, {
           title: "George's Blog",
           content: blogIndexContent,
-          navbar: navbarHtml,
+          header: headerHtml,
           footer: footerHtml,
-          liveReload: liveReload,
+          liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
 
         await fs.writeFile(
