@@ -129,7 +129,6 @@ async function main() {
           dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
           content: htmlContent,
         });
-        console.log(renderedPostContent);
 
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: frontmatter.title,
