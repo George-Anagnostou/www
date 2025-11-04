@@ -100,6 +100,7 @@ h1 {
   align-items: baseline;
   margin-bottom: 2px;
   padding-bottom: 2px;
+}
 
 .post-item .post-title {
   flex-grow: 1;
@@ -109,4 +110,71 @@ h1 {
   flex-shrink: 0;
   margin-left: 20px;
   color: #666;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.project-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden; /* ensures images corners are rounded */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-card__image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-card__title {
+  margin-top: 0;
+}
+
+.project-card__content {
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.project-card__tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.project-card__tags li {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px; /* "pill" shape */
+  font-size: 0.875rem;
+}
+
+.project-card__links {
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 1rem;
+  background-color: #f9fafb;
+}
+
+.project-card__links a {
+  font-weight: 500;
+  text-decoration: none;
 }
