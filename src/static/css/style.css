@@ -1,9 +1,24 @@
+:root {
+  --serif: "Vollkorn", Georgia, serif;
+  --sans-serif: "Segoe UI", Arial, sans-serif;
+  --monospace: "Consolas", "Monaco", "Courier New", monospace;
+
+  --color-background: #f5f5f5;
+  --color-text: #333;
+  --color-link: #0066cc;
+  --color-link-hover: #0052a3;
+  --color-link-visited: #663399;
+  --color-text-muted: #666;
+  --color-border: #ddd;
+  --color-border-light: #e5e7eb;
+}
+
 body {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
-  color: #333;
+  background: var(--color-background);
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -22,26 +37,26 @@ main {
 
 a {
   text-decoration: none;
-  color: #0066cc;
+  color: var(--color-link);
   transition: color 0.2s ease;
 }
 
 a:hover {
   text-decoration: underline;
-  color: #0052a3;
+  color: var(--color-link-hover);
 }
 
 a:visited {
-  color: #663399;
+  color: var(--color-link-visited);
 }
 
 a:focus {
-  outline: 2px solid #0066cc;
+  outline: 2px solid var(--color-link);
   outline-offset: 2px;
 }
 
 .site-header {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
@@ -56,7 +71,7 @@ a:focus {
 .site-header h1,
 .site-header a,
 .site-header p {
-  color: #333;
+  color: var(--color-text);
 }
 
 .site-header h1 {
@@ -82,7 +97,7 @@ h1 {
 .hero-image {
   width: 200px;
   height: 200px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--color-border);
   border-radius: 50%;
   float: right;
   margin: 0 0 0 1.5rem;
@@ -95,7 +110,7 @@ h1 {
   text-align: center;
   padding: 20px;
   margin-top: 40px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border);
 }
 
 .footer .social-links {
@@ -140,7 +155,7 @@ h1 {
 }
 
 .post-item .post-date {
-  color: #666;
+  color: var(--color-text-muted);
   font-size: 0.9em;
 }
 
@@ -180,13 +195,15 @@ h1 {
 
 .project-card {
   background-color: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border-light);
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transition:
+    box-shadow 0.2s ease-in-out,
+    transform 0.2s ease-in-out;
 }
 
 .project-card:hover {
@@ -232,12 +249,12 @@ h1 {
   padding: 0.35rem 0.85rem;
   border-radius: 9999px;
   font-size: 0.85rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-family: var(--sans-serif);
 }
 
 .project-card__links {
   padding: 1rem 1.25rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--color-border-light);
   display: flex;
   gap: 0.75rem;
   background-color: #f9fafb;
@@ -295,7 +312,7 @@ article code {
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-size: 0.9em;
-  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-family: var(--monospace);
 }
 
 article pre {
