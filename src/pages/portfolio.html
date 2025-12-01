@@ -1,12 +1,27 @@
 <p>See below for a list of my portfolio projects.</p>
 <section class="project-grid">
   <article class="project-card">
-    <figure class="project-card__image-container">
-      <img
-        src="/static/images/countries_screenshot.png"
-        alt="A screenshot of the Countries guessing game."
-      />
-    </figure>
+    <div class="project-card__content">
+      <header>
+        <h3 class="project-card__title">
+          <a href="/static/files/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+        </h3>
+      </header>
+      <p class="project-card__description">My Resume.</p>
+      <ul class="project-card__tags">
+        <li>Typst</li>
+      </ul>
+    </div>
+    <footer class="project-card__links">
+      <a
+        href="https://github.com/George-Anagnostou/resume"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Source Code</a
+      >
+    </footer>
+  </article>
+  <article class="project-card">
     <div class="project-card__content">
       <header>
         <h3 class="project-card__title">
@@ -17,6 +32,12 @@
         A fun trivia game to test your knowledge of flags, countries, and
         capitals!
       </p>
+      <figure class="project-card__image-container">
+        <img
+          src="/static/images/countries_screenshot.png"
+          alt="A screenshot of the Countries guessing game."
+        />
+      </figure>
       <ul class="project-card__tags">
         <li>Go</li>
         <li>HTML</li>
