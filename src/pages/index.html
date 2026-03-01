@@ -1,21 +1,171 @@
-<div class="about-section">
-  <figure>
-    <img
-      src="/static/images/headshot.jpeg"
-      alt="Headshot photo of George Anagnostou"
-      class="hero-image"
-    />
-    <figcaption>
-      There's no place like <code style="color: var(--color-accent)">~/</code>
-    </figcaption>
-  </figure>
-  <p>
-    I am a wealth management professional with a passion for software
-    development and small, simple solutions.
-  </p>
-  <p>
-    Checkout my <a href="/content/blog.html">blog</a> page for some of my
-    writings, and my <a href="/pages/portfolio.html">portfolio</a> page for some
-    of my projects.
-  </p>
-</div>
+<!-- description: George Anagnostou — finance background, builder's mind. Wealth management professional and software engineer based in the San Francisco Bay Area. -->
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero__content">
+    <p class="hero__eyebrow">San Francisco Bay Area</p>
+    <h1 class="hero__headline">
+      Finance background.<br />
+      Builder's mind.<br />
+      Both at once.
+    </h1>
+    <p class="hero__sub">
+      I'm George — wealth management professional and software engineer.
+      I build at the intersection of capital and code.
+    </p>
+    <div class="hero__actions">
+      <a href="/work" class="btn btn--primary">See my work</a>
+      <a href="/writing" class="btn btn--ghost">Read my writing</a>
+    </div>
+  </div>
+</section>
+
+<!-- IDENTITY BAR -->
+<section class="identity-bar">
+  <div class="container">
+    <dl class="identity-bar__grid">
+      <div class="identity-stat">
+        <dt class="identity-stat__number">4+</dt>
+        <dd class="identity-stat__label">Years in Finance</dd>
+      </div>
+      <div class="identity-stat">
+        <dt class="identity-stat__number">5</dt>
+        <dd class="identity-stat__label">Projects Shipped</dd>
+      </div>
+      <div class="identity-stat">
+        <dt class="identity-stat__number">4</dt>
+        <dd class="identity-stat__label">Languages in Production</dd>
+      </div>
+      <div class="identity-stat">
+        <dt class="identity-stat__number">VC</dt>
+        <dd class="identity-stat__label">Client Focus</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- WHAT I DO -->
+<section class="what-i-do">
+  <div class="container">
+    <span class="section-label">What I Do</span>
+    <div class="what-i-do__grid">
+      <div class="what-i-do__col">
+        <h2>Finance</h2>
+        <p>
+          Four years at J.P. Morgan working with venture capital funds,
+          portfolio companies, founders, and investors. I specialize in
+          distributions in kind and complex asset transfers.
+        </p>
+        <ul>
+          <li>Wealth &amp; asset management</li>
+          <li>VC fund &amp; portfolio company clients</li>
+          <li>Distributions in kind</li>
+          <li>Portfolio construction</li>
+          <li>Financial modeling</li>
+          <li>Client relationship management</li>
+        </ul>
+      </div>
+      <div class="what-i-do__col">
+        <h2>Engineering</h2>
+        <p>
+          I build software the same way I think about finance — with
+          precision, an eye for simplicity, and a bias toward shipping.
+          Small tools that do one thing well.
+        </p>
+        <ul>
+          <li>Go &amp; TypeScript</li>
+          <li>Rust</li>
+          <li>Python</li>
+          <li>SQL</li>
+          <li>Systems &amp; web tooling</li>
+          <li>Custom static site generation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECT -->
+<section class="featured-project">
+  <div class="container">
+    <span class="section-label">Featured Project</span>
+    <article class="featured-project__card">
+      <div class="featured-project__image">
+        <img
+          src="/static/images/countries_screenshot.png"
+          alt="Screenshot of the Countries trivia game"
+          loading="lazy"
+          width="640"
+          height="400"
+        />
+      </div>
+      <div class="featured-project__body">
+        <h3><a href="https://countries.georgeanagnostou.com" target="_blank" rel="noopener noreferrer">Countries</a></h3>
+        <p class="featured-project__desc">
+          A trivia game that tests your knowledge of world flags, countries,
+          and capitals. Built end-to-end in Go — from the HTTP server to the
+          game logic — and deployed on a VPS behind Nginx.
+        </p>
+        <ul class="featured-project__tags">
+          <li>Go</li>
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>Nginx</li>
+        </ul>
+        <div class="featured-project__links">
+          <a
+            href="https://countries.georgeanagnostou.com"
+            class="btn btn--primary"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Live Demo</a
+          >
+          <a
+            href="https://github.com/George-Anagnostou/countries"
+            class="btn btn--ghost"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Source Code</a
+          >
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- RECENT WRITING -->
+<section class="recent-writing">
+  <div class="container">
+    <span class="section-label">Recent Writing</span>
+    <ul class="recent-writing__list">
+      <li class="recent-writing__item">
+        <span class="recent-writing__title">
+          <a href="/content/blog/001.html">Genesis</a>
+        </span>
+        <span class="recent-writing__date">October 27, 2025</span>
+      </li>
+    </ul>
+    <a href="/writing" class="recent-writing__cta">All posts →</a>
+  </div>
+</section>
+
+<!-- CURRENTLY -->
+<section class="currently">
+  <div class="container">
+    <span class="section-label">Currently</span>
+    <div class="currently__grid">
+      <div class="currently__item">
+        <span class="currently__label">Building</span>
+        <p>Rebuilding this site from the ground up — new design, new pages, new content.</p>
+      </div>
+      <div class="currently__item">
+        <span class="currently__label">Reading</span>
+        <p><!-- Placeholder: add current book --></p>
+      </div>
+      <div class="currently__item">
+        <span class="currently__label">Thinking about</span>
+        <p><!-- Placeholder: add current thought --></p>
+      </div>
+    </div>
+  </div>
+</section>
