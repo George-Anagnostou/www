@@ -1,0 +1,202 @@
+<!-- description: George Anagnostou's projects — software built across Go, TypeScript, Rust, and Python. From a live trivia game to internal tools deployed at J.P. Morgan. -->
+
+<div class="container">
+  <div class="page-hero">
+    <span class="section-label">Projects</span>
+    <h1>Things I've built.</h1>
+    <p class="lead">
+      A mix of tools, games, and explorations. Some are live in production.
+      Some are puzzles. All of them got shipped.
+    </p>
+  </div>
+
+  <!-- FEATURED: COUNTRIES -->
+  <span class="section-label">Featured</span>
+  <article class="featured-project__card" style="margin-bottom: var(--space-12);">
+    <div class="featured-project__image">
+      <img
+        src="/static/images/countries_screenshot.png"
+        alt="Screenshot of the Countries trivia game"
+        loading="lazy"
+        width="640"
+        height="400"
+      />
+    </div>
+    <div class="featured-project__body">
+      <h3>
+        <a
+          href="https://countries.georgeanagnostou.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Countries</a
+        >
+      </h3>
+      <p class="featured-project__desc">
+        A trivia game that tests your knowledge of world flags, countries, and
+        capitals. I built it end-to-end in Go — HTTP server, game logic, data
+        layer, and all. Deployed on a Linux VPS behind Nginx.
+      </p>
+      <p class="featured-project__desc">
+        The goal was to build something real and self-contained in Go, from
+        scratch, and get it in front of people. It's live, it works, and it's
+        genuinely fun to play.
+      </p>
+      <ul class="featured-project__tags">
+        <li>Go</li>
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>Nginx</li>
+      </ul>
+      <div class="featured-project__links">
+        <a
+          href="https://countries.georgeanagnostou.com"
+          class="btn btn--primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Live Demo</a
+        >
+        <a
+          href="https://github.com/George-Anagnostou/countries"
+          class="btn btn--ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source Code</a
+        >
+      </div>
+    </div>
+  </article>
+
+  <!-- ALL PROJECTS GRID -->
+  <span class="section-label">All Projects</span>
+  <div class="projects-grid">
+
+    <article class="project-card">
+      <div class="project-card__content">
+        <h3 class="project-card__title">
+          <a
+            href="https://github.com/George-Anagnostou/www"
+            target="_blank"
+            rel="noopener noreferrer"
+            >This Website</a
+          >
+        </h3>
+        <p class="project-card__description">
+          A custom static site generator built from scratch in TypeScript and
+          run with Bun. No framework — just a build script, a template system,
+          and a dev server with live reload.
+        </p>
+        <ul class="project-card__tags">
+          <li>TypeScript</li>
+          <li>Bun</li>
+          <li>HTML</li>
+          <li>CSS</li>
+        </ul>
+      </div>
+      <footer class="project-card__links">
+        <a
+          href="https://github.com/George-Anagnostou/www"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source Code</a
+        >
+      </footer>
+    </article>
+
+    <article class="project-card">
+      <div class="project-card__content">
+        <h3 class="project-card__title">
+          <a
+            href="/static/files/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Resume</a
+          >
+        </h3>
+        <p class="project-card__description">
+          My resume, typeset in Typst — a modern alternative to LaTeX. The
+          source is version-controlled on GitHub.
+        </p>
+        <ul class="project-card__tags">
+          <li>Typst</li>
+        </ul>
+      </div>
+      <footer class="project-card__links">
+        <a
+          href="/static/files/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          >View PDF</a
+        >
+        <a
+          href="https://github.com/George-Anagnostou/resume"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source Code</a
+        >
+      </footer>
+    </article>
+
+    <article class="project-card">
+      <div class="project-card__content">
+        <h3 class="project-card__title">
+          <a
+            href="https://github.com/George-Anagnostou/AoC2024"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Advent of Code 2024</a
+          >
+        </h3>
+        <p class="project-card__description">
+          Solutions to the 2024 Advent of Code puzzles, written in Go.
+          Good practice for systems thinking and algorithmic problem solving.
+        </p>
+        <ul class="project-card__tags">
+          <li>Go</li>
+        </ul>
+      </div>
+      <footer class="project-card__links">
+        <a
+          href="https://github.com/George-Anagnostou/AoC2024"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source Code</a
+        >
+      </footer>
+    </article>
+
+    <article class="project-card">
+      <div class="project-card__content">
+        <h3 class="project-card__title">
+          <a
+            href="https://github.com/George-Anagnostou/AoC2023"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Advent of Code 2023</a
+          >
+        </h3>
+        <p class="project-card__description">
+          Solutions to the 2023 Advent of Code puzzles, written in Rust.
+          My first serious Rust project — ownership, lifetimes, and all.
+        </p>
+        <ul class="project-card__tags">
+          <li>Rust</li>
+        </ul>
+      </div>
+      <footer class="project-card__links">
+        <a
+          href="https://github.com/George-Anagnostou/AoC2023"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source Code</a
+        >
+      </footer>
+    </article>
+
+  </div>
+
+  <!-- BUILDING NOW CALLOUT -->
+  <div class="building-now">
+    <p>Always working on something new. See what's current.</p>
+    <a href="/now" class="btn btn--ghost">What I'm doing now →</a>
+  </div>
+</div>
