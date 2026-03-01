@@ -1,8 +1,31 @@
 <header class="site-header">
-  <a href="/">
-    <div class="site-header__content">
-      <h1>George Anagnostou's Website</h1>
-      <em><small>If you want to be interesting, be interested.</small></em>
-    </div>
-  </a>
+  <div class="site-header__inner container">
+    <a href="/" class="site-header__logo">George Anagnostou</a>
+
+    <!-- Desktop nav -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <ul class="site-nav__list">
+        <li><a href="/about">About</a></li>
+        <li><a href="/work">Work</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/writing">Writing</a></li>
+        <li><a href="/now">Now</a></li>
+      </ul>
+    </nav>
+
+    <a href="/contact" class="btn btn--primary site-header__cta">Contact →</a>
+
+    <!-- Mobile nav via <details>/<summary> — no JS -->
+    <details class="site-nav__mobile">
+      <summary class="site-nav__toggle">Menu</summary>
+      <ul class="site-nav__mobile-list">
+        <li><a href="/about">About</a></li>
+        <li><a href="/work">Work</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/writing">Writing</a></li>
+        <li><a href="/now">Now</a></li>
+        <li><a href="/contact" class="btn btn--primary">Contact →</a></li>
+      </ul>
+    </details>
+  </div>
 </header>

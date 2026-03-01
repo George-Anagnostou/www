@@ -56,9 +56,13 @@ async function main() {
     const headerHtml = await Bun.file(
       path.join(partialsDir, "header.html"),
     ).text();
-    const footerHtml = await Bun.file(
+    const rawFooterHtml = await Bun.file(
       path.join(partialsDir, "footer.html"),
     ).text();
+    // Pre-render footer with the current year for the copyright notice
+    const footerHtml = renderLayout(rawFooterHtml, {
+      year: new Date().getFullYear().toString(),
+    });
     const liveReload = await Bun.file(
       path.join(partialsDir, "live-reload.html"),
     ).text();
@@ -78,9 +82,17 @@ async function main() {
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" "); // title from filename
+        // Extract description from HTML comment: <!-- description: ... -->
+        const descriptionMatch = pageContent.match(
+          /<!--\s*description:\s*(.+?)\s*-->/,
+        );
+        const description = descriptionMatch
+          ? descriptionMatch[1]
+          : "George Anagnostou — finance background, builder's mind.";
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
           content: pageContent,
+          description,
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
@@ -113,10 +125,11 @@ async function main() {
         const frontmatter = yaml.load(frontmatterMatch[1]) as {
           title: string;
           date: Date;
+          description?: string;
         };
 
-        const markdownContent = frontmatterMatch[2];
-        const htmlContent = await marked.parse(markdownContent);
+        const markdownContent = frontmatterMatch[2] ?? "";
+        const htmlContent = marked.parse(markdownContent) as string;
 
         let dateOptions: Intl.DateTimeFormatOptions = {
           year: "numeric",
@@ -130,9 +143,13 @@ async function main() {
           content: htmlContent,
         });
 
+        const postDescription =
+          frontmatter.description ??
+          `${frontmatter.title} — by George Anagnostou`;
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: frontmatter.title,
           content: renderedPostContent,
+          description: postDescription,
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
@@ -168,8 +185,9 @@ async function main() {
         });
 
         const finalBlogIndexHtml = renderLayout(baseLayout, {
-          title: "George's Blog",
+          title: "Writing — George Anagnostou",
           content: blogIndexContent,
+          description: "Essays and notes on finance, engineering, and Silicon Valley.",
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",

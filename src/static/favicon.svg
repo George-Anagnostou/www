@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
+  <text
+    x="50%"
+    y="50%"
+    dominant-baseline="central"
+    text-anchor="middle"
+    font-family="Inter, -apple-system, sans-serif"
+    font-size="13"
+    font-weight="800"
+    fill="#F59E0B"
+    letter-spacing="-0.5"
+  >GA</text>
+</svg>
