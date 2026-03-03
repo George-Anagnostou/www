@@ -6,6 +6,14 @@ import yaml from "js-yaml";
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
 
+// Convert a category slug to a display label: "silicon-valley" → "Silicon Valley"
+function formatCategory(slug: string): string {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 function renderLayout(layout: string, data: Record<string, any>): string {
   let output = layout;
   for (const key in data) {
@@ -185,8 +193,19 @@ async function main() {
           })
           .join("");
 
+        // Build filter buttons from whatever categories exist in posts — fully free-form
+        const uniqueCategories = [...new Set(posts.map((p) => p.category))].sort();
+        const filterButtonsHtml = [
+          '<button class="filter-btn is-active" data-filter="all">All</button>',
+          ...uniqueCategories.map(
+            (cat) =>
+              `<button class="filter-btn" data-filter="${cat}">${formatCategory(cat)}</button>`,
+          ),
+        ].join("\n    ");
+
         const blogIndexContent = renderLayout(blogIndexLayoutContent, {
-          postListHtml: postListHtml,
+          postListHtml,
+          filterButtonsHtml,
         });
 
         const finalBlogIndexHtml = renderLayout(baseLayout, {
