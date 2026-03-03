@@ -18,14 +18,14 @@
 </div>
 
 <script>
-  var buttons = document.querySelectorAll('.filter-btn');
-  var items = document.querySelectorAll('.post-item');
-  buttons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var filter = btn.dataset.filter;
-      buttons.forEach(function(b) { b.classList.remove('is-active'); });
+  const buttons = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.post-item');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => b.classList.remove('is-active'));
       btn.classList.add('is-active');
-      items.forEach(function(item) {
+      items.forEach((item) => {
         item.style.display =
           filter === 'all' || item.dataset.category === filter ? '' : 'none';
       });

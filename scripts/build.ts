@@ -84,12 +84,17 @@ async function main() {
       if (file.endsWith(".html")) {
         const srcPath = path.join(pagesSrcDir, file);
         const pageContent = await Bun.file(srcPath).text();
-        const pageTitle = path
+        const pageName = path
           .parse(file)
           .name.replace(/-/g, " ")
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" "); // title from filename
+          .join(" ");
+        // Homepage gets just the name; all other pages get "Page — George Anagnostou"
+        const pageTitle =
+          pageName === "Index"
+            ? "George Anagnostou"
+            : `${pageName} — George Anagnostou`;
         // Extract description from HTML comment: <!-- description: ... -->
         const descriptionMatch = pageContent.match(
           /<!--\s*description:\s*(.+?)\s*-->/,
@@ -158,7 +163,7 @@ async function main() {
           frontmatter.description ??
           `${frontmatter.title} — by George Anagnostou`;
         const finalBlogPageHtml = renderLayout(baseLayout, {
-          title: frontmatter.title,
+          title: `${frontmatter.title} — George Anagnostou`,
           content: renderedPostContent,
           description: postDescription,
           header: headerHtml,
