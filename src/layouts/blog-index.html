@@ -1,3 +1,38 @@
-<ul class="post-list">
-  {{ postListHtml }}
-</ul>
+<div class="container">
+  <div class="page-hero">
+    <span class="section-label">Writing</span>
+    <h1>Essays, notes, and observations.</h1>
+    <p class="lead">
+      On finance, engineering, Silicon Valley, and whatever else is worth
+      writing down.
+    </p>
+  </div>
+
+  <div class="blog-filters" id="blog-filters">
+    <button class="filter-btn is-active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="finance">Finance</button>
+    <button class="filter-btn" data-filter="engineering">Engineering</button>
+    <button class="filter-btn" data-filter="personal">Personal</button>
+    <button class="filter-btn" data-filter="silicon-valley">Silicon Valley</button>
+  </div>
+
+  <ul class="post-list" id="post-list">
+    {{ postListHtml }}
+  </ul>
+</div>
+
+<script>
+  var buttons = document.querySelectorAll('.filter-btn');
+  var items = document.querySelectorAll('.post-item');
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var filter = btn.dataset.filter;
+      buttons.forEach(function(b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      items.forEach(function(item) {
+        item.style.display =
+          filter === 'all' || item.dataset.category === filter ? '' : 'none';
+      });
+    });
+  });
+</script>

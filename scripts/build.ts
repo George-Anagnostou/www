@@ -125,8 +125,10 @@ async function main() {
         const frontmatter = yaml.load(frontmatterMatch[1]) as {
           title: string;
           date: Date;
+          category?: string;
           description?: string;
         };
+        const category = frontmatter.category ?? "general";
 
         const markdownContent = frontmatterMatch[2] ?? "";
         const htmlContent = marked.parse(markdownContent) as string;
@@ -140,6 +142,7 @@ async function main() {
           title: frontmatter.title,
           date: frontmatter.date,
           dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
+          category,
           content: htmlContent,
         });
 
@@ -165,6 +168,7 @@ async function main() {
           date: frontmatter.date,
           dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
           url: `/content/blog/${destFile}`,
+          category,
         });
         posts.sort((a, b) => b.date.getTime() - a.date.getTime());
 
@@ -172,9 +176,10 @@ async function main() {
         const postListHtml = posts
           .map((post) => {
             return `
-              <li class="post-item">
-                <span class="post-title"><a href=${post.url}>${post.title}</a></span>
-                <span class="post-date"><small>${post.dateString}</small></span>
+              <li class="post-item" data-category="${post.category}">
+                <span class="post-category">${post.category}</span>
+                <span class="post-title"><a href="${post.url}">${post.title}</a></span>
+                <span class="post-date">${post.dateString}</span>
               </li>
             `;
           })
@@ -194,10 +199,10 @@ async function main() {
         });
 
         await fs.writeFile(
-          path.join(DIST_DIR, "content/blog.html"),
+          path.join(DIST_DIR, "pages/writing.html"),
           finalBlogIndexHtml,
         );
-        console.log("- Generated blog.html");
+        console.log("- Generated writing.html");
       }
     }
 
