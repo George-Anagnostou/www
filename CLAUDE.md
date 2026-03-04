@@ -64,7 +64,7 @@ every change a clear, reviewable unit.
 | `post/` | New blog posts | `post/sv-reflection`, `post/countries-writeup` |
 | `chore/` | Maintenance with no user-visible change | `chore/update-dependencies`, `chore/clean-dist` |
 | `docs/` | Changes to CLAUDE.md, README, specs | `docs/update-architecture-notes` |
-| `refactor/` | Code restructuring without behaviour change | `refactor/split-build-script` |
+| `refactor/` | Code restructuring without behavior change | `refactor/split-build-script` |
 
 ### Standard workflow (content or code)
 
@@ -103,3 +103,21 @@ Keep the subject line under 72 characters. Use the imperative mood ("add x", not
 | New blog post | `post/` | Branch → merge (publish when ready) |
 | CLAUDE.md / docs | `docs/` | Branch → merge |
 | One-word typo fix | direct commit to `main` | — |
+
+## Spell Checking
+
+[cspell](https://cspell.org/) is configured in `.cspell.json` and checks `src/**/*.md`, `src/**/*.html`, `CLAUDE.md`, and `CONTENT_TODO.md`.
+
+```bash
+bun run spell           # manual run across all configured files
+bun run spell <file>    # check a specific file
+```
+
+A pre-commit hook in `hooks/pre-commit` runs cspell automatically on staged `.md` and `.html` files.
+
+**One-time setup** (run once per clone):
+```bash
+git config core.hooksPath hooks
+```
+
+To add a word to the allowlist, edit the `words` array in `.cspell.json`.

@@ -1,0 +1,14 @@
+{
+  "version": "0.2",
+  "language": "en-US",
+  "files": ["src/**/*.md", "src/**/*.html", "CLAUDE.md", "CONTENT_TODO.md"],
+  "ignorePaths": ["dist/**", "node_modules/**", "*.lock"],
+  "words": [
+    "Anagnostou",
+    "anagnostou",
+    "frontmatter",
+    "fintech",
+    "Sivers",
+    "Typst"
+  ]
+}
