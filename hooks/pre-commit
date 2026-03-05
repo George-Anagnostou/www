@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Spell-check staged .md and .html files before committing.
+# One-time setup: git config core.hooksPath hooks
+
+set -e
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|html)$' || true)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+echo "Running cspell on staged files..."
+bunx cspell --no-progress --no-summary $STAGED
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "Spell check failed. Fix the errors above or add words to .cspell.json."
+  exit 1
+fi
