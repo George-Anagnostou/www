@@ -12,19 +12,19 @@
   <div class="uses-section">
     <h2>Hardware</h2>
     <ul class="uses-list">
-      <li><strong>Computer</strong> <em style="color: var(--color-text-muted);">—</em></li>
-      <li><strong>Monitor</strong> <em style="color: var(--color-text-muted);">—</em></li>
-      <li><strong>Keyboard</strong> <em style="color: var(--color-text-muted);">—</em></li>
-      <li><strong>Mouse</strong> <em style="color: var(--color-text-muted);">—</em></li>
+      <li><strong>Computer</strong> {{ uses_computer }}</li>
+      <li><strong>Monitor</strong> {{ uses_monitor }}</li>
+      <li><strong>Keyboard</strong> {{ uses_keyboard }}</li>
+      <li><strong>Mouse</strong> {{ uses_mouse }}</li>
     </ul>
   </div>
 
   <div class="uses-section">
     <h2>Development</h2>
     <ul class="uses-list">
-      <li><strong>Editor</strong> <em style="color: var(--color-text-muted);">—</em></li>
-      <li><strong>Terminal</strong> <em style="color: var(--color-text-muted);">—</em></li>
-      <li><strong>Shell</strong> <em style="color: var(--color-text-muted);">—</em></li>
+      <li><strong>Editor</strong> {{ uses_editor }}</li>
+      <li><strong>Terminal</strong> {{ uses_terminal }}</li>
+      <li><strong>Shell</strong> {{ uses_shell }}</li>
       <li><strong>Version Control</strong> Git</li>
       <li><strong>Runtime</strong> <a href="https://bun.sh" target="_blank" rel="noopener noreferrer">Bun</a> — for this site's build tooling</li>
     </ul>
@@ -50,7 +50,7 @@
   <div class="uses-section">
     <h2>Apps</h2>
     <ul class="uses-list">
-      <li><em style="color: var(--color-text-muted);">Coming soon.</em></li>
+      {{ uses_apps }}
     </ul>
   </div>
 </div>

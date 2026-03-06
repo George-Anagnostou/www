@@ -1,0 +1,25 @@
+{
+  "currently": {
+    "building": "Rebuilding this website from scratch — new visual identity, new pages, and real content that actually represents who I am and what I do.",
+    "reading": null,
+    "learning": null,
+    "thinking": null,
+    "listening": null
+  },
+  "about": {
+    "outside_work": []
+  },
+  "work": {
+    "jpm_start_date": null
+  },
+  "uses": {
+    "computer": null,
+    "monitor": null,
+    "keyboard": null,
+    "mouse": null,
+    "editor": null,
+    "terminal": null,
+    "shell": null,
+    "apps": []
+  }
+}
