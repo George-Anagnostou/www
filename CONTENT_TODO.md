@@ -1,36 +1,37 @@
 # Content Todo
 
-All pending content lives in one place: **`src/data/site.json`**
-
-Edit that file directly. `null` = not yet filled (renders as "Coming soon." on the site).
-Arrays (`[]`) work the same way — add strings as list items.
+Edit the HTML files directly. Each item below lists the exact file and what to look for.
+Fields shared across pages are noted — update both when you change them.
 
 ---
 
-## Checklist
+## Still needed
 
-- [ ] `currently.building` — what you're actively working on (shown on homepage + now page)
-- [ ] `currently.reading` — book or article (shown on homepage + now page)
-- [ ] `currently.thinking` — an open question or idea (shown on homepage + now page)
-- [ ] `currently.learning` — technical or otherwise (now page only)
-- [ ] `currently.listening` — music, podcast, anything (now page only, optional)
-- [ ] `about.outside_work` — 3–5 specific personal interests (about page)
-- [ ] `work.jpm_start_date` — e.g. `"June 2022"` (work page)
-- [ ] `uses.computer` — machine model, chip, RAM
-- [ ] `uses.monitor` — model or size/type
-- [ ] `uses.keyboard`
-- [ ] `uses.mouse`
-- [ ] `uses.editor` — what you write code in
-- [ ] `uses.terminal` — terminal emulator
-- [ ] `uses.shell` — zsh, fish, bash, etc.
-- [ ] `uses.apps` — key productivity/utility apps (array of strings)
+- [ ] **Reading** — `src/pages/index.html` line ~163, `src/pages/now.html` line ~30
+      *(same content, update both)*
+- [ ] **Thinking About** — `src/pages/index.html` line ~168, `src/pages/now.html` line ~40
+      *(same content, update both)*
+- [ ] **Outside Work** — `src/pages/about.html`, the `<ul>` under "Outside Work"
+      *(3–5 specific interests — be concrete, not generic)*
+- [ ] **Second photo** — drop file in `src/static/images/`, replace the placeholder
+      `<figure>` in `src/pages/about.html`
+- [ ] **Monitor** — `src/pages/uses.html`, Hardware section
+- [ ] **Keyboard** — `src/pages/uses.html`, Hardware section
+- [ ] **Mouse** — `src/pages/uses.html`, Hardware section
+- [ ] **Apps** — `src/pages/uses.html`, Apps section
 
 ---
 
-## About: Second Photo
+## Done
 
-A candid photo for the about page. Drop the file in `src/static/images/` and add
-an `<img>` tag in `src/pages/about.html` (replacing the placeholder figure).
+- [x] Building — `src/pages/index.html`, `src/pages/now.html`
+- [x] Learning — `src/pages/now.html`
+- [x] Listening To — `src/pages/now.html`
+- [x] JPM start date — `src/pages/work.html`
+- [x] Computer — `src/pages/uses.html`
+- [x] Editor — `src/pages/uses.html`
+- [x] Terminal — `src/pages/uses.html`
+- [x] Shell — `src/pages/uses.html`
 
 ---
 
@@ -41,5 +42,5 @@ One post exists: `src/content/blog/001.md`
 
 Suggested angles:
 1. **Finance x Tech** — what each side misunderstands about the other
-2. **Project writeup** — why you built Countries, what you hit, what you'd change
+2. **Project writeup** — why you built Countries, what you ran into, what you'd change
 3. **Silicon Valley** — what growing up there gave you, what you think of it now

@@ -40,48 +40,12 @@ async function copyStatic() {
   await fs.cp(staticSrc, staticDest, { recursive: true });
 }
 
-const PLACEHOLDER = '<em style="color: var(--color-text-muted);">Coming soon.</em>';
-
-function siteVal(v: string | null): string {
-  return v ?? PLACEHOLDER;
-}
-
-function siteList(items: string[]): string {
-  return items.length
-    ? items.map((i) => `<li>${i}</li>`).join("\n      ")
-    : PLACEHOLDER;
-}
-
-async function loadSiteVars(): Promise<Record<string, string>> {
-  const raw = await Bun.file(path.join(SRC_DIR, "data/site.json")).text();
-  const d = JSON.parse(raw);
-  return {
-    currently_building: siteVal(d.currently.building),
-    currently_reading: siteVal(d.currently.reading),
-    currently_learning: siteVal(d.currently.learning),
-    currently_thinking: siteVal(d.currently.thinking),
-    currently_listening: siteVal(d.currently.listening),
-    about_outside_work: siteList(d.about.outside_work),
-    work_jpm_start_date: siteVal(d.work.jpm_start_date),
-    uses_computer: siteVal(d.uses.computer),
-    uses_monitor: siteVal(d.uses.monitor),
-    uses_keyboard: siteVal(d.uses.keyboard),
-    uses_mouse: siteVal(d.uses.mouse),
-    uses_editor: siteVal(d.uses.editor),
-    uses_terminal: siteVal(d.uses.terminal),
-    uses_shell: siteVal(d.uses.shell),
-    uses_apps: siteList(d.uses.apps),
-  };
-}
-
 async function main() {
   console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
   try {
     console.log("Starting build...");
     await cleanDistDir();
     await copyStatic();
-
-    const siteVars = await loadSiteVars();
 
     // load layouts
     const layoutsDir = path.join(SRC_DIR, "layouts");
@@ -137,10 +101,9 @@ async function main() {
         const description = descriptionMatch
           ? descriptionMatch[1]
           : "George Anagnostou — finance background, builder's mind.";
-        const renderedPageContent = renderLayout(pageContent, siteVars);
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
-          content: renderedPageContent,
+          content: pageContent,
           description,
           header: headerHtml,
           footer: footerHtml,
