@@ -1,142 +1,57 @@
-<!-- description: George Anagnostou — finance background, builder's mind. Wealth management professional and software engineer based in the San Francisco Bay Area. -->
+<!-- description: George Anagnostou — wealth management, software, Bay Area. -->
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container hero__content">
-    <p class="hero__eyebrow">San Francisco Bay Area</p>
-    <h1 class="hero__headline">
-      Finance background.<br />
-      Builder's mind.<br />
-      Both at once.
-    </h1>
-    <p class="hero__sub">
-      I'm George — wealth management professional and software engineer.
-      I build at the intersection of capital and code.
+<div class="container">
+  <section class="home-intro">
+    <figure class="home-intro__photo">
+      <img
+        src="/static/images/headshot.jpeg"
+        alt="George Anagnostou"
+        width="200"
+        height="200"
+      />
+      <figcaption>
+        There's no place like <code>~/</code>
+      </figcaption>
+    </figure>
+    <h1>George Anagnostou</h1>
+    <p>
+      I'm a wealth management professional in the Bay Area. I also write
+      software — small tools, side projects, this site.
     </p>
-    <div class="hero__actions">
-      <a href="/work" class="btn btn--primary">See my work</a>
-      <a href="/writing" class="btn btn--ghost">Read my writing</a>
-    </div>
-  </div>
-</section>
+    <p>
+      More in <a href="/about">about</a> and <a href="/work">work</a>.
+      Things I've built are on <a href="/projects">projects</a>.
+      I keep a <a href="/now">now</a> page and write on the
+      <a href="/writing">blog</a>.
+    </p>
+  </section>
 
-<!-- IDENTITY BAR -->
-<section class="identity-bar">
-  <div class="container">
-    <dl class="identity-bar__grid">
-      <div class="identity-stat">
-        <dt class="identity-stat__number">4+</dt>
-        <dd class="identity-stat__label">Years in Finance</dd>
+  <!-- Note: Reading and Thinking also appear in src/pages/now.html — update both together. -->
+  <section class="currently">
+    <h2>Currently</h2>
+    <div class="currently__grid">
+      <div class="currently__item">
+        <span class="currently__label">Building</span>
+        <p>Rebuilding this site — simpler layout, real content, fewer placeholders.</p>
       </div>
-      <div class="identity-stat">
-        <dt class="identity-stat__number">5</dt>
-        <dd class="identity-stat__label">Projects Shipped</dd>
+      <div class="currently__item">
+        <span class="currently__label">Reading</span>
+        <p><em style="color: var(--color-text-muted);">Coming soon.</em></p>
       </div>
-      <div class="identity-stat">
-        <dt class="identity-stat__number">4</dt>
-        <dd class="identity-stat__label">Languages in Production</dd>
-      </div>
-      <div class="identity-stat">
-        <dt class="identity-stat__number">VC</dt>
-        <dd class="identity-stat__label">Client Focus</dd>
-      </div>
-    </dl>
-  </div>
-</section>
-
-<!-- WHAT I DO -->
-<section class="what-i-do">
-  <div class="container">
-    <span class="section-label">What I Do</span>
-    <div class="what-i-do__grid">
-      <div class="what-i-do__col">
-        <h2>Finance</h2>
+      <div class="currently__item">
+        <span class="currently__label">Thinking about</span>
         <p>
-          Four years at J.P. Morgan working with venture capital funds,
-          portfolio companies, founders, and investors. I specialize in
-          distributions in kind and complex asset transfers.
+          <em style="color: var(--color-text-muted);"
+            >How I get my PaperclipAI bot to work without burning through all my
+            API credits.</em
+          >
         </p>
-        <ul>
-          <li>Wealth &amp; asset management</li>
-          <li>VC fund &amp; portfolio company clients</li>
-          <li>Distributions in kind</li>
-          <li>Portfolio construction</li>
-          <li>Financial modeling</li>
-          <li>Client relationship management</li>
-        </ul>
-      </div>
-      <div class="what-i-do__col">
-        <h2>Engineering</h2>
-        <p>
-          I build software the same way I think about finance — with
-          precision, an eye for simplicity, and a bias toward shipping.
-          Small tools that do one thing well.
-        </p>
-        <ul>
-          <li>Go &amp; TypeScript</li>
-          <li>Rust</li>
-          <li>Python</li>
-          <li>SQL</li>
-          <li>Systems &amp; web tooling</li>
-          <li>Custom static site generation</li>
-        </ul>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FEATURED PROJECT -->
-<section class="featured-project">
-  <div class="container">
-    <span class="section-label">Featured Project</span>
-    <article class="featured-project__card">
-      <div class="featured-project__image">
-        <img
-          src="/static/images/countries_screenshot.png"
-          alt="Screenshot of the Countries trivia game"
-          loading="lazy"
-          width="640"
-          height="400"
-        />
-      </div>
-      <div class="featured-project__body">
-        <h3><a href="https://countries.georgeanagnostou.com" target="_blank" rel="noopener noreferrer">Countries</a></h3>
-        <p class="featured-project__desc">
-          A trivia game that tests your knowledge of world flags, countries,
-          and capitals. Built end-to-end in Go — from the HTTP server to the
-          game logic — and deployed on a VPS behind Nginx.
-        </p>
-        <ul class="featured-project__tags">
-          <li>Go</li>
-          <li>HTML</li>
-          <li>CSS</li>
-          <li>Nginx</li>
-        </ul>
-        <div class="featured-project__links">
-          <a
-            href="https://countries.georgeanagnostou.com"
-            class="btn btn--primary"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Live Demo</a
-          >
-          <a
-            href="https://github.com/George-Anagnostou/countries"
-            class="btn btn--ghost"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Source Code</a
-          >
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- RECENT WRITING -->
-<section class="recent-writing">
-  <div class="container">
-    <span class="section-label">Recent Writing</span>
+  <section class="recent-writing">
+    <h2>Writing</h2>
     <ul class="recent-writing__list">
       <li class="recent-writing__item">
         <span class="recent-writing__title">
@@ -145,30 +60,6 @@
         <span class="recent-writing__date">October 27, 2025</span>
       </li>
     </ul>
-    <a href="/writing" class="recent-writing__cta">All posts →</a>
-  </div>
-</section>
-
-<!-- CURRENTLY -->
-<!-- Note: Reading and Thinking also appear in src/pages/now.html — update both together. -->
-<section class="currently">
-  <div class="container">
-    <span class="section-label">Currently</span>
-    <div class="currently__grid">
-      <div class="currently__item">
-        <span class="currently__label">Building</span>
-        <p>Rebuilding this site from the ground up — new design, new pages, new content.</p>
-      </div>
-      <div class="currently__item">
-        <span class="currently__label">Reading</span>
-        <!-- TODO: what are you reading? e.g. <p><em>Title</em> by Author</p> -->
-        <p><em style="color: var(--color-text-muted);">Coming soon.</em></p>
-      </div>
-      <div class="currently__item">
-        <span class="currently__label">Thinking about</span>
-        <!-- TODO: one sentence — an open question or idea you're sitting with -->
-	<p><em style="color: var(--color-text-muted);">How I get my <s>OpenClaw</s> <s>NemoClaw</s> PaperclipAI bot to work and stop burning through all my API credits.</em></p>
-      </div>
-    </div>
-  </div>
-</section>
+    <p><a href="/writing">All posts</a></p>
+  </section>
+</div>

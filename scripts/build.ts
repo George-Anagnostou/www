@@ -100,7 +100,7 @@ async function main() {
         );
         const description = descriptionMatch
           ? descriptionMatch[1]
-          : "George Anagnostou — finance background, builder's mind.";
+          : "George Anagnostou — wealth management, software, Bay Area.";
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
           content: pageContent,
@@ -215,7 +215,7 @@ async function main() {
         const finalBlogIndexHtml = renderLayout(baseLayout, {
           title: "Writing — George Anagnostou",
           content: blogIndexContent,
-          description: "Essays and notes on finance, engineering, and Silicon Valley.",
+          description: "Writing by George Anagnostou.",
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",

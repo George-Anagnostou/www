@@ -7,11 +7,11 @@ Fields shared across pages are noted — update both when you change them.
 
 ## Still needed
 
-- [ ] **Reading** — `src/pages/index.html` line ~163, `src/pages/now.html` line ~30
+- [ ] **Reading** — `src/pages/index.html`, `src/pages/now.html`
       *(same content, update both)*
-- [ ] **Thinking About** — `src/pages/index.html` line ~168, `src/pages/now.html` line ~40
+- [ ] **Thinking about** — `src/pages/index.html`, `src/pages/now.html`
       *(same content, update both)*
-- [ ] **Outside Work** — `src/pages/about.html`, the `<ul>` under "Outside Work"
+- [ ] **Outside work** — `src/pages/about.html`, the `<ul>` under "Outside work"
       *(3–5 specific interests — be concrete, not generic)*
 - [ ] **Second photo** — drop file in `src/static/images/`, replace the placeholder
       `<figure>` in `src/pages/about.html`
