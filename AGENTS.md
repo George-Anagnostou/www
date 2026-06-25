@@ -41,12 +41,53 @@ This is a custom static site generator written in TypeScript, built and run enti
   ---
   title: Post Title
   date: YYYY-MM-DD
-  category: finance   # free-form; creates a filter button automatically
+  category: personal   # optional; reserved for future filtering
   description: Optional meta description for SEO and social sharing.
   ---
   ```
 - **Static assets**: place in `src/static/` and reference as `/static/...` in HTML
 - **Content placeholders**: see `CONTENT_TODO.md` for pending fill-ins
+
+## Images
+
+**Storage:** `src/static/images/` — commit web-ready files only (not full-resolution originals).
+
+**Before committing:** resize for the web. Targets:
+- Portraits: 480px max on the longest edge (JPEG)
+- Screenshots: 720px max width (PNG or JPEG)
+
+On macOS: `sips -Z 480 src/static/images/photo.jpeg`
+
+**HTML pattern** — always set `width` and `height` to the file's pixel dimensions (prevents layout shift). Use `decoding="async"`; add `loading="lazy"` below the fold.
+
+```html
+<figure class="media media--portrait">
+  <img src="/static/images/headshot.jpeg" alt="…" width="453" height="480" decoding="async" />
+  <figcaption>Optional caption</figcaption>
+</figure>
+```
+
+**Modifiers** (see `src/static/css/components/media.css`):
+- `media--portrait` — headshots, narrow max-width
+- `media--screenshot` — project demos
+- `media--placeholder` — empty slot until an image exists
+
+Blog post images: wrap in `<figure class="media">` in Markdown HTML or use standard `![]()` and style via `article img` if needed later.
+
+## CSS
+
+Styles are modular under `src/static/css/`. `style.css` is the entry point — it `@import`s everything else. Do not add rules directly to `style.css`.
+
+```
+src/static/css/
+  style.css              # import hub only
+  tokens.css             # design tokens (:root variables)
+  base.css               # reset, typography, layout utilities
+  components/            # reusable UI (header, footer, media, cards, blog, buttons)
+  pages/                 # page-specific (home, work, about, now-uses, contact)
+```
+
+When adding a new component, create `components/name.css` and add an `@import` to `style.css`.
 
 ## Git Workflow
 

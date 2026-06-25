@@ -6,27 +6,7 @@
     </p>
   </div>
 
-  <div class="blog-filters" id="blog-filters">
-    {{ filterButtonsHtml }}
-  </div>
-
   <ul class="post-list" id="post-list">
     {{ postListHtml }}
   </ul>
 </div>
-
-<script>
-  const buttons = document.querySelectorAll('.filter-btn');
-  const items = document.querySelectorAll('.post-item');
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      buttons.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      items.forEach((item) => {
-        item.style.display =
-          filter === 'all' || item.dataset.category === filter ? '' : 'none';
-      });
-    });
-  });
-</script>

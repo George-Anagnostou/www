@@ -1,0 +1,121 @@
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.site-header__logo {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
+}
+
+.site-header__logo:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.site-header__logo:visited {
+  color: var(--color-text);
+}
+
+.site-header__logo:visited:hover {
+  color: var(--color-accent);
+}
+
+.site-nav {
+  margin-left: auto;
+}
+
+.site-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-6);
+}
+
+.site-nav__list a {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  transition: color var(--transition-fast);
+}
+
+.site-nav__list a:hover {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-nav__list a:visited {
+  color: var(--color-text-secondary);
+}
+
+.site-nav__mobile {
+  display: none;
+}
+
+.site-nav__toggle {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  user-select: none;
+}
+
+.site-nav__toggle:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.site-nav__toggle::-webkit-details-marker { display: none; }
+.site-nav__toggle::marker { display: none; }
+
+.site-nav__mobile-list {
+  list-style: none;
+  padding: var(--space-4) var(--space-6);
+  margin: 0;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-bg);
+}
+
+.site-nav__mobile-list a {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  display: block;
+}
+
+.site-nav__mobile-list a:hover {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .site-nav {
+    display: none;
+  }
+
+  .site-nav__mobile {
+    display: block;
+    margin-left: auto;
+  }
+}

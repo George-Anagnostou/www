@@ -1,0 +1,56 @@
+:root {
+  /* Colors — base */
+  --color-bg:             #f5f5f5;
+  --color-surface:        #ffffff;
+  --color-surface-raised: #fafafa;
+  --color-border:         #dddddd;
+  --color-border-subtle:  #eeeeee;
+
+  /* Colors — text */
+  --color-text:           #333333;
+  --color-text-secondary: #666666;
+  --color-text-muted:     #999999;
+
+  /* Colors — accent */
+  --color-accent:         #0066cc;
+  --color-accent-hover:   #004d99;
+  --color-accent-dim:     rgba(0, 102, 204, 0.06);
+
+  /* Colors — semantic */
+  --color-link:           #0066cc;
+  --color-link-hover:     #004d99;
+
+  /* Typography */
+  --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-serif: "Vollkorn", Georgia, serif;
+  --font-mono:  "Consolas", "Monaco", "Courier New", monospace;
+
+  /* Spacing */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Layout */
+  --max-width:      720px;
+  --max-width-text: 680px;
+
+  /* Media */
+  --media-portrait-max: 12.5rem;
+  --media-radius: 4px;
+
+  /* Code */
+  --color-code-bg:     #f0f0f0;
+  --color-code-text:   #333333;
+  --color-pre-bg:      #1e1e1e;
+  --color-pre-text:    #e8e8e8;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+}

@@ -6,14 +6,6 @@ import yaml from "js-yaml";
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
 
-// Convert a category slug to a display label: "silicon-valley" → "Silicon Valley"
-function formatCategory(slug: string): string {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 function renderLayout(layout: string, data: Record<string, any>): string {
   let output = layout;
   for (const key in data) {
@@ -197,8 +189,7 @@ async function main() {
       const postListHtml = posts
         .map((post) => {
           return `
-              <li class="post-item" data-category="${post.category}">
-                <span class="post-category">${post.category}</span>
+              <li class="post-item">
                 <span class="post-title"><a href="${post.url}">${post.title}</a></span>
                 <span class="post-date">${post.dateString}</span>
               </li>
@@ -206,19 +197,9 @@ async function main() {
         })
         .join("");
 
-      const uniqueCategories = [...new Set(posts.map((p) => p.category))].sort();
-      const filterButtonsHtml = [
-        '<button class="filter-btn is-active" data-filter="all">All</button>',
-        ...uniqueCategories.map(
-          (cat) =>
-            `<button class="filter-btn" data-filter="${cat}">${formatCategory(cat)}</button>`,
-        ),
-      ].join("\n    ");
-
       const blogIndexContent = renderLayout(blogIndexLayoutContent, {
-        postListHtml,
-        filterButtonsHtml,
-      });
+          postListHtml,
+        });
 
       const finalBlogIndexHtml = renderLayout(baseLayout, {
         title: "Writing — George Anagnostou",

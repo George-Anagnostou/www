@@ -2,7 +2,7 @@
   "version": "0.2",
   "language": "en-US",
   "files": ["src/**/*.md", "src/**/*.html", "AGENTS.md", "CONTENT_TODO.md"],
-  "ignorePaths": ["dist/**", "node_modules/**", "*.lock", "REWRITE_SPEC.md"],
+  "ignorePaths": ["dist/**", "node_modules/**", "*.lock"],
   "words": [
     "Anagnostou",
     "anagnostou",
@@ -17,6 +17,8 @@
     "Ghostty",
     "Nemo",
     "Minne",
-    "nownownow"
+    "nownownow",
+    "headshot",
+    "headshots"
   ]
 }
