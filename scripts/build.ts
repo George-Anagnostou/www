@@ -82,7 +82,12 @@ async function main() {
     for (const file of pageFiles) {
       if (file.endsWith(".html")) {
         const srcPath = path.join(pagesSrcDir, file);
-        const pageContent = await Bun.file(srcPath).text();
+        const rawPageContent = await Bun.file(srcPath).text();
+        // Strip meta description comment from rendered page body
+        const pageContent = rawPageContent.replace(
+          /<!--\s*description:\s*.+?\s*-->\s*/,
+          "",
+        );
         const pageName = path
           .parse(file)
           .name.replace(/-/g, " ")
@@ -95,7 +100,7 @@ async function main() {
             ? "George Anagnostou"
             : `${pageName} — George Anagnostou`;
         // Extract description from HTML comment: <!-- description: ... -->
-        const descriptionMatch = pageContent.match(
+        const descriptionMatch = rawPageContent.match(
           /<!--\s*description:\s*(.+?)\s*-->/,
         );
         const description = descriptionMatch
@@ -115,7 +120,7 @@ async function main() {
       }
     }
 
-    console.log("Processing blog post sfrom src/content/blog...");
+    console.log("Processing blog posts from src/content/blog...");
     const blogSrcDir = path.join(SRC_DIR, "content/blog");
     const blogDestDir = path.join(DIST_DIR, "content/blog");
     await fs.mkdir(blogDestDir, { recursive: true });
@@ -182,51 +187,53 @@ async function main() {
           url: `/content/blog/${destFile}`,
           category,
         });
-        posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+      }
+    }
 
-        console.log("Generating blog index page...");
-        const postListHtml = posts
-          .map((post) => {
-            return `
+    if (posts.length > 0) {
+      posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+      console.log("Generating blog index page...");
+      const postListHtml = posts
+        .map((post) => {
+          return `
               <li class="post-item" data-category="${post.category}">
                 <span class="post-category">${post.category}</span>
                 <span class="post-title"><a href="${post.url}">${post.title}</a></span>
                 <span class="post-date">${post.dateString}</span>
               </li>
             `;
-          })
-          .join("");
+        })
+        .join("");
 
-        // Build filter buttons from whatever categories exist in posts — fully free-form
-        const uniqueCategories = [...new Set(posts.map((p) => p.category))].sort();
-        const filterButtonsHtml = [
-          '<button class="filter-btn is-active" data-filter="all">All</button>',
-          ...uniqueCategories.map(
-            (cat) =>
-              `<button class="filter-btn" data-filter="${cat}">${formatCategory(cat)}</button>`,
-          ),
-        ].join("\n    ");
+      const uniqueCategories = [...new Set(posts.map((p) => p.category))].sort();
+      const filterButtonsHtml = [
+        '<button class="filter-btn is-active" data-filter="all">All</button>',
+        ...uniqueCategories.map(
+          (cat) =>
+            `<button class="filter-btn" data-filter="${cat}">${formatCategory(cat)}</button>`,
+        ),
+      ].join("\n    ");
 
-        const blogIndexContent = renderLayout(blogIndexLayoutContent, {
-          postListHtml,
-          filterButtonsHtml,
-        });
+      const blogIndexContent = renderLayout(blogIndexLayoutContent, {
+        postListHtml,
+        filterButtonsHtml,
+      });
 
-        const finalBlogIndexHtml = renderLayout(baseLayout, {
-          title: "Writing — George Anagnostou",
-          content: blogIndexContent,
-          description: "Writing by George Anagnostou.",
-          header: headerHtml,
-          footer: footerHtml,
-          liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
-        });
+      const finalBlogIndexHtml = renderLayout(baseLayout, {
+        title: "Writing — George Anagnostou",
+        content: blogIndexContent,
+        description: "Writing by George Anagnostou.",
+        header: headerHtml,
+        footer: footerHtml,
+        liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
+      });
 
-        await fs.writeFile(
-          path.join(DIST_DIR, "pages/writing.html"),
-          finalBlogIndexHtml,
-        );
-        console.log("- Generated writing.html");
-      }
+      await fs.writeFile(
+        path.join(DIST_DIR, "pages/writing.html"),
+        finalBlogIndexHtml,
+      );
+      console.log("- Generated writing.html");
     }
 
     console.log("Build completed successfully!");
