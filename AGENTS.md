@@ -33,7 +33,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is the site index — structured for cold visitors (recruiters, search, LLMs). Inner pages have no nav bar; only a `<code>~/</code>` home link in the header and footer sitemap. Non-home pages get a `page-trail` partial appended at build time.
+**Navigation**: The homepage (`index.html`) is the site index — one list of sections, recruiter-relevant entries first. Inner pages have no nav bar; the header links home by name (`George Anagnostou`). Non-home pages get a `page-trail` partial (`← George Anagnostou`) appended at build time. Footer has a text sitemap.
 
 ## Adding Content
 

@@ -8,36 +8,29 @@
 }
 
 .site-home {
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  color: var(--color-text-secondary);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
-.site-home code {
-  font-family: inherit;
-  color: inherit;
-  background: none;
-  border: none;
-  padding: 0;
+.site-home__name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.site-home:hover .site-home__name {
+  color: var(--color-accent);
 }
 
 .site-home:hover {
-  color: var(--color-accent);
   text-decoration: none;
 }
 
-.site-home:hover code {
-  color: inherit;
-}
-
-/* On the homepage, ~/ marks "you are here" */
 .page--index .site-home {
-  color: var(--color-text);
   pointer-events: none;
 }
 
-.page--index .site-home code {
-  color: var(--color-accent);
+.page--index .site-home__name {
+  color: var(--color-text);
 }

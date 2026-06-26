@@ -46,10 +46,7 @@
     </p>
   </header>
 
-  <!-- Layer 1: recruiter / search / LLM index -->
-  <section class="index-recruiter" aria-labelledby="index-recruiter-label">
-    <p id="index-recruiter-label" class="index-label"><code>index</code></p>
-
+  <div class="index-entries">
     <article class="index-entry" id="work">
       <h2><a href="/work">Work</a></h2>
       <p>
@@ -61,9 +58,9 @@
         Built internal tools in Python now in production division-wide —
         distributions automation and a form prefill system.
       </p>
-      <p class="index-entry__paths">
-        <a href="/work"><code>/work</code></a>
-        <a href="/static/files/resume.pdf"><code>resume.pdf</code></a>
+      <p class="index-entry__more">
+        <a href="/work">More on work →</a>
+        <a href="/static/files/resume.pdf">Resume (PDF) →</a>
       </p>
     </article>
 
@@ -77,8 +74,8 @@
         <strong><a href="https://github.com/George-Anagnostou/www">This site</a></strong>
         — custom static site generator in TypeScript and Bun.
       </p>
-      <p class="index-entry__paths">
-        <a href="/projects"><code>/projects</code></a>
+      <p class="index-entry__more">
+        <a href="/projects">All projects →</a>
       </p>
     </article>
 
@@ -102,56 +99,59 @@
           >anagnostougeorgejohn@gmail.com</a
         >
       </p>
-      <p class="index-entry__paths">
-        <a href="/contact"><code>/contact</code></a>
+      <p class="index-entry__more">
+        <a href="/contact">Contact page →</a>
         <a
           href="https://www.linkedin.com/in/george-anagnostou-2478ba341/"
           target="_blank"
           rel="noopener noreferrer"
-          ><code>linkedin</code></a
+          >LinkedIn →</a
         >
       </p>
     </article>
-  </section>
 
-  <hr class="index-divider" />
-
-  <!-- Layer 2: readers — dig if you like -->
-  <section class="index-readers" aria-labelledby="index-readers-label">
-    <p id="index-readers-label" class="index-label index-label--soft">
-      <code>/* if you have time */</code>
-    </p>
-
-    <article class="index-teaser">
+    <article class="index-entry" id="about">
       <h2><a href="/about">About</a></h2>
       <p>
-        Grew up in Silicon Valley. The longer story — how finance and software
+        Grew up in Silicon Valley. The longer story of how finance and software
         ended up in the same person.
+      </p>
+      <p class="index-entry__more">
+        <a href="/about">Read more →</a>
       </p>
     </article>
 
-    <article class="index-teaser">
+    <article class="index-entry" id="now">
       <h2><a href="/now">Now</a></h2>
       <p>
         Rebuilding this site. Learning what agentic workflows actually cost.
         <!-- sync with src/pages/now.html -->
       </p>
+      <p class="index-entry__more">
+        <a href="/now">What I'm up to →</a>
+      </p>
     </article>
 
-    <article class="index-teaser">
+    <article class="index-entry" id="writing">
       <h2><a href="/writing">Writing</a></h2>
       <p>
-        Occasional essays. Latest:
+        Occasional essays and notes. Latest:
         <a href="/content/blog/001.html">Genesis</a> (October 2025).
+      </p>
+      <p class="index-entry__more">
+        <a href="/writing">All posts →</a>
       </p>
     </article>
 
-    <article class="index-teaser">
+    <article class="index-entry" id="uses">
       <h2><a href="/uses">Uses</a></h2>
       <p>
-        Neovim, Ghostty, Bun, a ThinkPad running Artix — if you care about that
-        sort of thing.
+        Neovim, Ghostty, Bun, a ThinkPad running Artix — the hardware and
+        software I use day to day.
+      </p>
+      <p class="index-entry__more">
+        <a href="/uses">Full list →</a>
       </p>
     </article>
-  </section>
+  </div>
 </div>

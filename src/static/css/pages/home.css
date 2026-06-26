@@ -1,5 +1,3 @@
-/* Homepage — two layers: recruiter index + reader teasers */
-
 .index-intro {
   padding: var(--space-8) 0 var(--space-6);
   display: flow-root;
@@ -20,30 +18,8 @@
   max-width: 36rem;
 }
 
-/* Layer 1 — structured index */
-.index-recruiter {
+.index-entries {
   padding-bottom: var(--space-8);
-}
-
-.index-label {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-6);
-}
-
-.index-label code {
-  font-family: inherit;
-  color: var(--color-accent);
-  background: var(--color-accent-dim);
-  padding: 0.1em 0.45em;
-  border-radius: 3px;
-}
-
-.index-label--soft code {
-  color: var(--color-text-muted);
-  background: transparent;
-  padding: 0;
 }
 
 .index-entry {
@@ -83,66 +59,16 @@
   font-weight: 600;
 }
 
-.index-entry__paths {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
+.index-entry__more {
+  font-size: 0.9rem;
   margin-bottom: 0 !important;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
+  gap: var(--space-4) var(--space-6);
 }
 
-.index-entry__paths a {
-  text-decoration: none;
-}
-
-.index-entry__paths code {
-  font-family: inherit;
+.index-entry__more a {
   color: var(--color-accent);
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-.index-entry__paths a:hover code {
-  text-decoration: underline;
-}
-
-.index-divider {
-  border: none;
-  border-top: 1px dashed var(--color-border);
-  margin: var(--space-12) 0;
-}
-
-/* Layer 2 — teasers */
-.index-readers {
-  padding-bottom: var(--space-8);
-}
-
-.index-teaser {
-  margin-bottom: var(--space-6);
-}
-
-.index-teaser h2 {
-  font-size: 1.1rem;
-  margin-bottom: var(--space-2);
-}
-
-.index-teaser h2 a {
-  color: var(--color-text);
-  font-weight: 500;
-}
-
-.index-teaser h2 a:hover {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-.index-teaser p {
-  color: var(--color-text-muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 0;
 }
 
 @media (max-width: 480px) {
