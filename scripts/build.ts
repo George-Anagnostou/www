@@ -15,6 +15,13 @@ function renderLayout(layout: string, data: Record<string, any>): string {
   return output;
 }
 
+function renderHeader(headerTemplate: string, pageSegment: string | null): string {
+  const crumbTail = pageSegment
+    ? `<span class="site-crumb__page">${pageSegment}</span>`
+    : "";
+  return renderLayout(headerTemplate, { crumbTail });
+}
+
 async function cleanDistDir() {
   // clean dist directory
   if (process.env.NODE_ENV !== "development") {
@@ -52,7 +59,7 @@ async function main() {
     ).text();
 
     const partialsDir = path.join(SRC_DIR, "partials");
-    const headerHtml = await Bun.file(
+    const headerTemplate = await Bun.file(
       path.join(partialsDir, "header.html"),
     ).text();
     const rawFooterHtml = await Bun.file(
@@ -108,6 +115,10 @@ async function main() {
         const finalContent = isHomepage
           ? pageContent
           : `${pageContent}\n${pageTrailHtml}`;
+        const headerHtml = renderHeader(
+          headerTemplate,
+          pageSlug === "index" ? null : pageSlug,
+        );
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
           content: finalContent,
@@ -169,12 +180,16 @@ async function main() {
         const postDescription =
           frontmatter.description ??
           `${frontmatter.title} — by George Anagnostou`;
+        const postCrumb = frontmatter.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: `${frontmatter.title} — George Anagnostou`,
           content: `${renderedPostContent}\n${pageTrailHtml}`,
           description: postDescription,
           bodyClass: "page--post",
-          header: headerHtml,
+          header: renderHeader(headerTemplate, postCrumb || "post"),
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
@@ -218,7 +233,7 @@ async function main() {
         content: `${blogIndexContent}\n${pageTrailHtml}`,
         description: "Writing by George Anagnostou.",
         bodyClass: "page--writing",
-        header: headerHtml,
+        header: renderHeader(headerTemplate, "writing"),
         footer: footerHtml,
         liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
       });

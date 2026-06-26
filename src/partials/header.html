@@ -1,7 +1,8 @@
 <header class="site-header">
   <div class="site-header__inner container">
-    <a href="/" class="site-home" aria-label="Home">
-      <span class="site-home__name">George Anagnostou</span>
-    </a>
+    <nav class="site-crumb" aria-label="Breadcrumb">
+      <a href="/" class="site-crumb__home">George Anagnostou</a>
+      <span class="site-crumb__tilde" aria-hidden="true"><code>~/</code></span>{{ crumbTail }}
+    </nav>
   </div>
 </header>
