@@ -29,11 +29,11 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Dev server** (`scripts/dev.ts`): Bun HTTP server on port 3000. Extension-free paths resolve to `/pages/{path}.html` (mirrors Vercel rewrites). Uses chokidar to watch `src/` and trigger rebuilds; sends live-reload signals via WebSocket (injected only in dev builds via `src/partials/live-reload.html`).
 
-**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html`, `src/partials/live-reload.html`.
+**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/live-reload.html`.
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a short overview — intro, work and project highlights, resume link, and a `~/` explore nav to inner pages. Now and Uses are linked from `/about`, not the homepage. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Footer has a text sitemap.
+**Navigation**: The homepage (`index.html`) is a short overview — intro, work and project highlights, the five most recent posts (injected at build time via `{{ indexWritingHtml }}`), resume link, and a `~/` explore nav. Now, Uses, and Skills live under `/about`. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
 
@@ -86,8 +86,8 @@ src/static/css/
   style.css              # import hub only
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
-  components/            # reusable UI (header, footer, media, cards, blog)
-  pages/                 # page-specific (home, work, skills, about, now-uses, contact)
+  components/            # reusable UI (header, media, cards, blog)
+  pages/                 # page-specific (home, work, about, now-uses, contact)
 ```
 
 When adding a new component, create `components/name.css` and add an `@import` to `style.css`.
