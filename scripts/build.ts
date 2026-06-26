@@ -15,11 +15,38 @@ function renderLayout(layout: string, data: Record<string, any>): string {
   return output;
 }
 
-function renderHeader(headerTemplate: string, pageSegment: string | null): string {
-  const crumbTail = pageSegment
-    ? `<span class="site-crumb__page">${pageSegment}</span>`
-    : "";
-  return renderLayout(headerTemplate, { crumbTail });
+const PAGE_URLS: Record<string, string> = {
+  about: "/about",
+  work: "/work",
+  skills: "/skills",
+  projects: "/projects",
+  writing: "/writing",
+  now: "/now",
+  uses: "/uses",
+  contact: "/contact",
+};
+
+function renderCrumbRest(segments: string[]): string {
+  if (segments.length === 0) return "";
+  return segments
+    .map((seg, i) => {
+      const isLast = i === segments.length - 1;
+      const prefix = i > 0 ? "/" : "";
+      if (isLast) {
+        return `${prefix}<span class="site-crumb__page">${seg}</span>`;
+      }
+      const url = PAGE_URLS[seg] ?? `/${seg}`;
+      return `${prefix}<a href="${url}" class="site-crumb__link">${seg}</a>`;
+    })
+    .join("");
+}
+
+function renderHeader(
+  headerTemplate: string,
+  pathSegments: string[],
+): string {
+  const crumbRest = renderCrumbRest(pathSegments);
+  return renderLayout(headerTemplate, { crumbRest });
 }
 
 async function cleanDistDir() {
@@ -117,7 +144,7 @@ async function main() {
           : `${pageContent}\n${pageTrailHtml}`;
         const headerHtml = renderHeader(
           headerTemplate,
-          pageSlug === "index" ? null : pageSlug,
+          pageSlug === "index" ? [] : [pageSlug],
         );
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
@@ -189,7 +216,10 @@ async function main() {
           content: `${renderedPostContent}\n${pageTrailHtml}`,
           description: postDescription,
           bodyClass: "page--post",
-          header: renderHeader(headerTemplate, postCrumb || "post"),
+          header: renderHeader(headerTemplate, [
+            "writing",
+            postCrumb || "post",
+          ]),
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
         });
@@ -233,7 +263,7 @@ async function main() {
         content: `${blogIndexContent}\n${pageTrailHtml}`,
         description: "Writing by George Anagnostou.",
         bodyClass: "page--writing",
-        header: renderHeader(headerTemplate, "writing"),
+        header: renderHeader(headerTemplate, ["writing"]),
         footer: footerHtml,
         liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
       });

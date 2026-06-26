@@ -33,7 +33,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/` on home, `George Anagnostou ~/ work` on inner pages (rendered per page in `scripts/build.ts`). Footer has a text sitemap.
+**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs with no spaces in the path: `George Anagnostou~/work`, `George Anagnostou~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Footer has a text sitemap.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
 
