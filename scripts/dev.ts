@@ -43,10 +43,10 @@ function watchFiles() {
   let debounceTimeout: NodeJS.Timeout | null = null;
   const watcher = chokidar.watch(SRC_DIR, { ignoreInitial: true });
 
-  watcher.on("all", (event, changedPath) => {
-    console.log(`[Watcher] ${event}: ${changedPath}`);
+  watcher.on("all", () => {
     if (debounceTimeout) clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
+      console.log("Source changed — rebuilding...");
       runBuild().catch((err) => console.error(err.message));
     }, 100);
   });

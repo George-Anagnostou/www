@@ -1,7 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
 import { marked } from "marked";
-import yaml from "js-yaml";
 
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
@@ -25,6 +24,32 @@ const PAGE_URLS: Record<string, string> = {
   uses: "/uses",
   contact: "/contact",
 };
+
+function parseFrontmatterValue(raw: string): string {
+  const value = raw.trim();
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    return value.slice(1, -1);
+  }
+  return value;
+}
+
+function parseFrontmatter(frontmatterYaml: string): {
+  title: string;
+  description?: string;
+} {
+  const titleMatch = frontmatterYaml.match(/^title:\s*(.+)$/m);
+  if (!titleMatch) throw new Error("missing title");
+  const descriptionMatch = frontmatterYaml.match(/^description:\s*(.+)$/m);
+  return {
+    title: parseFrontmatterValue(titleMatch[1]),
+    description: descriptionMatch
+      ? parseFrontmatterValue(descriptionMatch[1])
+      : undefined,
+  };
+}
 
 function parsePostDateISO(frontmatterYaml: string): string | null {
   const match = frontmatterYaml.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m);
@@ -94,7 +119,6 @@ async function copyStatic() {
 }
 
 async function main() {
-  console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
   try {
     console.log("Starting build...");
     await cleanDistDir();
@@ -202,10 +226,13 @@ async function main() {
       }
 
       const frontmatterYaml = frontmatterMatch[1];
-      const frontmatter = yaml.load(frontmatterYaml) as {
-        title: string;
-        description?: string;
-      };
+      let frontmatter: { title: string; description?: string };
+      try {
+        frontmatter = parseFrontmatter(frontmatterYaml);
+      } catch {
+        console.warn(`- Skipping ${file}: missing title in frontmatter.`);
+        continue;
+      }
       const dateISO = parsePostDateISO(frontmatterYaml);
       if (!dateISO) {
         console.warn(`- Skipping ${file}: missing or invalid date.`);

@@ -7,9 +7,9 @@ Instructions for AI coding agents working in this repository.
 All commands use `bun` as the runtime (not npm/node).
 
 ```bash
-bun run dev-local      # Development server at http://localhost:3000 with live reload
-bun run build          # Build for development (incremental, doesn't clean dist)
-bun run build:prod     # Production build (cleans dist first)
+bun run dev            # Dev server at http://localhost:3000 with live reload
+bun run build          # Incremental build (used by dev watcher; doesn't clean dist)
+bun run build:prod     # Production build (cleans dist first) — what Vercel runs
 bun run spell          # Spell-check configured content files
 ```
 
@@ -22,7 +22,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 **Build pipeline** (`scripts/build.ts`):
 1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`)
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
-3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `category` and `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`
+3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`
 4. Generates `dist/pages/writing.html` as the blog index, sorted by date (newest first)
 
 **Templating** is a simple `{{ variable }}` replacement — no loops, no conditionals in templates. Logic lives in the build script.
@@ -45,7 +45,6 @@ This is a custom static site generator written in TypeScript, built and run enti
   ---
   title: Post Title
   date: YYYY-MM-DD
-  category: personal   # optional metadata (not used for filtering)
   description: Optional meta description for SEO and social sharing.
   ---
   ```
