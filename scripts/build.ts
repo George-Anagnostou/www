@@ -124,9 +124,6 @@ async function main() {
     const liveReload = await Bun.file(
       path.join(partialsDir, "live-reload.html"),
     ).text();
-    const pageTrailHtml = await Bun.file(
-      path.join(partialsDir, "page-trail.html"),
-    ).text();
 
     console.log("Processing custom pages from src/pages...");
     const pagesSrcDir = path.join(SRC_DIR, "pages");
@@ -160,17 +157,13 @@ async function main() {
         const pageSlug = path.parse(file).name;
         const bodyClass =
           pageSlug === "index" ? "page--index" : `page--${pageSlug}`;
-        const isHomepage = pageSlug === "index";
-        const finalContent = isHomepage
-          ? pageContent
-          : `${pageContent}\n${pageTrailHtml}`;
         const headerHtml = renderHeader(
           headerTemplate,
           pageSlug === "index" ? [] : [pageSlug],
         );
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
-          content: finalContent,
+          content: pageContent,
           description,
           bodyClass,
           header: headerHtml,
@@ -237,7 +230,7 @@ async function main() {
         .replace(/^-|-$/g, "");
       const finalBlogPageHtml = renderLayout(baseLayout, {
         title: `${frontmatter.title} — George Anagnostou`,
-        content: `${renderedPostContent}\n${pageTrailHtml}`,
+        content: renderedPostContent,
         description: postDescription,
         bodyClass: "page--post",
         header: renderHeader(headerTemplate, [
@@ -279,7 +272,7 @@ async function main() {
     });
     const finalBlogIndexHtml = renderLayout(baseLayout, {
       title: "Writing — George Anagnostou",
-      content: `${blogIndexContent}\n${pageTrailHtml}`,
+      content: blogIndexContent,
       description: "Writing by George Anagnostou.",
       bodyClass: "page--writing",
       header: renderHeader(headerTemplate, ["writing"]),

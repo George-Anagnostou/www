@@ -121,18 +121,3 @@ main {
   text-decoration: none;
 }
 
-.page-trail {
-  margin-top: var(--space-12);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--color-border-subtle);
-  font-size: 0.95rem;
-}
-
-.page-trail a {
-  color: var(--color-text-muted);
-  text-decoration: none;
-}
-
-.page-trail a:hover {
-  color: var(--color-accent);
-}

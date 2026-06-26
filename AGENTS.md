@@ -29,11 +29,11 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Dev server** (`scripts/dev.ts`): Bun HTTP server on port 3000. Extension-free paths resolve to `/pages/{path}.html` (mirrors Vercel rewrites). Uses chokidar to watch `src/` and trigger rebuilds; sends live-reload signals via WebSocket (injected only in dev builds via `src/partials/live-reload.html`).
 
-**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html`, `src/partials/page-trail.html`, `src/partials/live-reload.html`.
+**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html`, `src/partials/live-reload.html`.
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Non-home pages append a `page-trail` partial (`← George Anagnostou`). Footer has a text sitemap.
+**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Footer has a text sitemap.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
 
