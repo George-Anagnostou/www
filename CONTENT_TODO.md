@@ -7,8 +7,7 @@ Fields shared across pages are noted — update both when you change them.
 
 ## Still needed
 
-- [ ] **Now teaser** — `src/pages/index.html` `#now` index-entry, `src/pages/now.html`
-      *(keep in sync)*
+- [ ] **Now page** — `src/pages/now.html` *(linked from `/about`, not the homepage)*
 - [ ] **Reading** — `src/pages/now.html`
 - [ ] **Thinking about** — `src/pages/now.html`
 - [ ] **Outside work** — `src/pages/about.html`, the `<ul>` under "Outside work"

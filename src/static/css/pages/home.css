@@ -71,6 +71,40 @@
   color: var(--color-accent);
 }
 
+.index-explore {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.index-explore__label {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.index-explore__links {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-3) !important;
+}
+
+.index-explore__links a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.index-explore__links a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.index-explore__note {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0 !important;
+}
+
 @media (max-width: 480px) {
   .index-intro__photo {
     float: none;
