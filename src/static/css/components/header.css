@@ -26,7 +26,6 @@
 
 .site-crumb__home:hover {
   color: var(--color-accent);
-  text-decoration: none;
 }
 
 .site-crumb__path {

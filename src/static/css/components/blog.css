@@ -29,7 +29,6 @@
 
 .post-title a:hover {
   color: var(--color-accent);
-  text-decoration: none;
 }
 
 .post-date {
@@ -159,8 +158,6 @@ article hr {
 
 article a {
   color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 article a:hover {

@@ -154,6 +154,7 @@ async function processBlogPosts(
   baseLayout: string,
   postLayout: string,
   headerTemplate: string,
+  footerHtml: string,
   liveReload: string,
 ): Promise<BlogPost[]> {
   console.log("Processing blog posts from src/content/blog...");
@@ -211,6 +212,7 @@ async function processBlogPosts(
       description: postDescription,
       bodyClass: "page--post",
       header: renderHeader(headerTemplate, ["writing", postCrumb || "post"]),
+      footer: footerHtml,
       liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
     });
 
@@ -254,11 +256,15 @@ async function main() {
     const liveReload = await Bun.file(
       path.join(partialsDir, "live-reload.html"),
     ).text();
+    const footerHtml = await Bun.file(
+      path.join(partialsDir, "footer.html"),
+    ).text();
 
     const posts = await processBlogPosts(
       baseLayout,
       postLayout,
       headerTemplate,
+      footerHtml,
       liveReload,
     );
 
@@ -272,6 +278,7 @@ async function main() {
       description: "Writing by George Anagnostou.",
       bodyClass: "page--writing",
       header: renderHeader(headerTemplate, ["writing"]),
+      footer: footerHtml,
       liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
     });
     await Bun.write(path.join(DIST_DIR, "pages/writing.html"), finalBlogIndexHtml);
@@ -327,6 +334,7 @@ async function main() {
         description,
         bodyClass,
         header: headerHtml,
+        footer: footerHtml,
         liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
       });
       const destPath = path.join(pagesDistDir, file);

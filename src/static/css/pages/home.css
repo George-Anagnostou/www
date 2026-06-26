@@ -45,7 +45,6 @@
 
 .index-entry h2 a:hover {
   color: var(--color-accent);
-  text-decoration: none;
 }
 
 .index-entry p {
@@ -77,38 +76,39 @@
   font-family: var(--font-sans);
 }
 
-.index-explore {
+.index-ls {
   padding-top: var(--space-6);
   border-top: 1px solid var(--color-border-subtle);
-}
-
-.index-explore__label {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--color-accent);
-  margin-bottom: var(--space-3);
-}
-
-.index-explore__links {
   font-family: var(--font-mono);
   font-size: 0.95rem;
-  margin-bottom: var(--space-3) !important;
 }
 
-.index-explore__links a {
+.index-ls__prompt {
   color: var(--color-text-secondary);
-  text-decoration: none;
+  margin-bottom: var(--space-4) !important;
 }
 
-.index-explore__links a:hover {
+.index-ls__sigil {
   color: var(--color-accent);
-  text-decoration: underline;
 }
 
-.index-explore__note {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin-bottom: 0 !important;
+.index-ls__grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-6);
+}
+
+.index-ls__grid a {
+  color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+  .index-ls__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
