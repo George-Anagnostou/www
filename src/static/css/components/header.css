@@ -13,6 +13,10 @@
   word-break: break-word;
 }
 
+.site-crumb__home + .site-crumb__path {
+  margin-left: 0.25em;
+}
+
 .site-crumb__home {
   font-family: var(--font-serif);
   font-weight: 600;

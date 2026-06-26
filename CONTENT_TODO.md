@@ -7,7 +7,7 @@ Fields shared across pages are noted — update both when you change them.
 
 ## Still needed
 
-- [ ] **Now teaser** — `src/pages/index.html` index-readers section, `src/pages/now.html`
+- [ ] **Now teaser** — `src/pages/index.html` `#now` index-entry, `src/pages/now.html`
       *(keep in sync)*
 - [ ] **Reading** — `src/pages/now.html`
 - [ ] **Thinking about** — `src/pages/now.html`

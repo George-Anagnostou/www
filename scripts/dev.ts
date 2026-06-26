@@ -6,6 +6,7 @@ const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
 
 const clients = new Set<any>();
+let buildInProgress = false;
 
 async function cleanDist() {
   console.log("Cleaning dist directory...");
@@ -14,10 +15,18 @@ async function cleanDist() {
 }
 
 async function runBuild(): Promise<void> {
+  if (buildInProgress) return;
+  buildInProgress = true;
   console.log("Running build script...");
   return new Promise((resolve, reject) => {
     const proc = Bun.spawn(["bun", "run", "build"], {
-      onExit: () => {
+      onExit(_proc, exitCode, signalCode) {
+        buildInProgress = false;
+        if (exitCode !== 0) {
+          console.error(`Build failed (exit ${exitCode ?? signalCode}).`);
+          reject(new Error(`Build failed with exit code ${exitCode}`));
+          return;
+        }
         console.log("Build finished. Sending reload signal...");
         for (const client of clients) {
           client.send("reload");
@@ -32,18 +41,13 @@ async function runBuild(): Promise<void> {
 function watchFiles() {
   console.log("Watching for changes in src/...");
   let debounceTimeout: NodeJS.Timeout | null = null;
-  const watcher = chokidar.watch(SRC_DIR, {
-    ignoreInitial: true,
-    ignored: ["**/*.bck"],
-  });
+  const watcher = chokidar.watch(SRC_DIR, { ignoreInitial: true });
 
-  watcher.on("all", (event, path) => {
-    console.log(`[Watcher] Event: '${event}' on path: '${path}'`);
+  watcher.on("all", (event, changedPath) => {
+    console.log(`[Watcher] ${event}: ${changedPath}`);
     if (debounceTimeout) clearTimeout(debounceTimeout);
-
     debounceTimeout = setTimeout(() => {
-      console.log("Change detected, running build...");
-      runBuild();
+      runBuild().catch((err) => console.error(err.message));
     }, 100);
   });
 }
@@ -57,30 +61,24 @@ function startServer() {
         return;
       }
       const url = new URL(req.url);
-      console.log(`URL: ${url}`);
       let filePath = url.pathname;
       if (filePath === "/") {
         filePath = "/pages/index.html";
       } else if (!filePath.includes(".")) {
-        // Clean URL → pages file: /about → /pages/about.html, /writing → /pages/writing.html
         filePath = `/pages${filePath}.html`;
       }
-      const fullPath = path.join(DIST_DIR, filePath.substring(1)); // eliminate leading "/"
+      const fullPath = path.join(DIST_DIR, filePath.substring(1));
       const file = Bun.file(fullPath);
-      const fileExists = await file.exists();
-      if (!fileExists) {
+      if (!(await file.exists())) {
         return new Response("404 Not Found", { status: 404 });
       }
-      console.log(`[Server] Serving file: ${file.name}`);
       return new Response(file);
     },
     websocket: {
       open(ws) {
-        console.log("[WebSocket] Client connected.");
         clients.add(ws);
       },
       close(ws) {
-        console.log("[WebSocket] Client disconnected.");
         clients.delete(ws);
       },
     },

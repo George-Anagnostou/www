@@ -20,24 +20,22 @@ There are no tests or linting configured.
 This is a custom static site generator written in TypeScript, built and run entirely with Bun. There is no framework.
 
 **Build pipeline** (`scripts/build.ts`):
-1. Copies `src/static/` → `dist/static/` verbatim
+1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`)
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
 3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `category` and `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`
-4. Generates `dist/pages/writing.html` as the blog index, sorted by date. Filter buttons are derived dynamically from the categories present in posts — no hardcoded list.
+4. Generates `dist/pages/writing.html` as the blog index, sorted by date (newest first)
 
 **Templating** is a simple `{{ variable }}` replacement — no loops, no conditionals in templates. Logic lives in the build script.
 
 **Dev server** (`scripts/dev.ts`): Bun HTTP server on port 3000. Extension-free paths resolve to `/pages/{path}.html` (mirrors Vercel rewrites). Uses chokidar to watch `src/` and trigger rebuilds; sends live-reload signals via WebSocket (injected only in dev builds via `src/partials/live-reload.html`).
 
-**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html`, `src/partials/live-reload.html`.
+**Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html`, `src/partials/page-trail.html`, `src/partials/live-reload.html`.
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs with no spaces in the path: `George Anagnostou~/work`, `George Anagnostou~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Footer has a text sitemap.
+**Navigation**: The homepage (`index.html`) is the site index. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`. Non-home pages append a `page-trail` partial (`← George Anagnostou`). Footer has a text sitemap.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
-
-Add JSON-LD note to AGENTS.md under adding content or new section
 
 ## Adding Content
 
@@ -47,7 +45,7 @@ Add JSON-LD note to AGENTS.md under adding content or new section
   ---
   title: Post Title
   date: YYYY-MM-DD
-  category: personal   # optional; reserved for future filtering
+  category: personal   # optional metadata (not used for filtering)
   description: Optional meta description for SEO and social sharing.
   ---
   ```
@@ -89,8 +87,8 @@ src/static/css/
   style.css              # import hub only
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
-  components/            # reusable UI (header, footer, media, cards, blog, buttons)
-  pages/                 # page-specific (home, work, about, now-uses, contact)
+  components/            # reusable UI (header, footer, media, cards, blog)
+  pages/                 # page-specific (home, work, skills, about, now-uses, contact)
 ```
 
 When adding a new component, create `components/name.css` and add an `@import` to `style.css`.

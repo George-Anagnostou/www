@@ -1,4 +1,6 @@
 {
+  "buildCommand": "bun run build:prod",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/",         "destination": "/pages/index.html" },
     { "source": "/about",    "destination": "/pages/about.html" },

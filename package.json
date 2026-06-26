@@ -1,6 +1,5 @@
 {
   "name": "www",
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
@@ -11,7 +10,6 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/chokidar": "^2.1.7",
     "chokidar": "^4.0.3",
     "cspell": "^9.7.0"
   },

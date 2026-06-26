@@ -26,6 +26,21 @@ const PAGE_URLS: Record<string, string> = {
   contact: "/contact",
 };
 
+function parsePostDateISO(frontmatterYaml: string): string | null {
+  const match = frontmatterYaml.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m);
+  return match?.[1] ?? null;
+}
+
+function formatPostDate(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 function renderCrumbRest(segments: string[]): string {
   if (segments.length === 0) return "";
   return segments
@@ -50,7 +65,6 @@ function renderHeader(
 }
 
 async function cleanDistDir() {
-  // clean dist directory
   if (process.env.NODE_ENV !== "development") {
     console.log("Cleaning up dist directory...");
     await fs.rm(DIST_DIR, { recursive: true, force: true });
@@ -58,12 +72,25 @@ async function cleanDistDir() {
   }
 }
 
+async function copyStaticRecursive(src: string, dest: string) {
+  await fs.mkdir(dest, { recursive: true });
+  for (const entry of await fs.readdir(src, { withFileTypes: true })) {
+    if (entry.name === ".DS_Store") continue;
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      await copyStaticRecursive(srcPath, destPath);
+    } else {
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
+}
+
 async function copyStatic() {
-  // copy static assets
   const staticSrc = path.join(SRC_DIR, "static");
   const staticDest = path.join(DIST_DIR, "static");
   console.log("Copying static assets...");
-  await fs.cp(staticSrc, staticDest, { recursive: true });
+  await copyStaticRecursive(staticSrc, staticDest);
 }
 
 async function main() {
@@ -73,7 +100,6 @@ async function main() {
     await cleanDistDir();
     await copyStatic();
 
-    // load layouts
     const layoutsDir = path.join(SRC_DIR, "layouts");
     const baseLayout = await Bun.file(
       path.join(layoutsDir, "base.html"),
@@ -92,7 +118,6 @@ async function main() {
     const rawFooterHtml = await Bun.file(
       path.join(partialsDir, "footer.html"),
     ).text();
-    // Pre-render footer with the current year for the copyright notice
     const footerHtml = renderLayout(rawFooterHtml, {
       year: new Date().getFullYear().toString(),
     });
@@ -112,7 +137,6 @@ async function main() {
       if (file.endsWith(".html")) {
         const srcPath = path.join(pagesSrcDir, file);
         const rawPageContent = await Bun.file(srcPath).text();
-        // Strip meta description comment from rendered page body
         const pageContent = rawPageContent.replace(
           /<!--\s*description:\s*.+?\s*-->\s*/,
           "",
@@ -123,12 +147,10 @@ async function main() {
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" ");
-        // Homepage gets just the name; all other pages get "Page — George Anagnostou"
         const pageTitle =
           pageName === "Index"
             ? "George Anagnostou"
             : `${pageName} — George Anagnostou`;
-        // Extract description from HTML comment: <!-- description: ... -->
         const descriptionMatch = rawPageContent.match(
           /<!--\s*description:\s*(.+?)\s*-->/,
         );
@@ -166,114 +188,106 @@ async function main() {
     const blogDestDir = path.join(DIST_DIR, "content/blog");
     await fs.mkdir(blogDestDir, { recursive: true });
     const blogPostFiles = await fs.readdir(blogSrcDir);
-    const posts = [];
+    const posts: {
+      title: string;
+      dateISO: string;
+      dateString: string;
+      url: string;
+    }[] = [];
+
     for (const file of blogPostFiles) {
-      if (file.endsWith(".md")) {
-        const srcPath = path.join(blogSrcDir, file);
-        const rawContent = await Bun.file(srcPath).text();
+      if (!file.endsWith(".md")) continue;
 
-        const frontmatterMatch = rawContent.match(
-          /^---\n([\s\S]+?)\n---\n([\s\S]*)$/,
-        );
-        if (!frontmatterMatch) {
-          console.warn(`- Skipping ${file}: no frontmatter found.`);
-          continue;
-        }
-
-        const frontmatter = yaml.load(frontmatterMatch[1]) as {
-          title: string;
-          date: Date;
-          category?: string;
-          description?: string;
-        };
-        const category = frontmatter.category ?? "general";
-
-        const markdownContent = frontmatterMatch[2] ?? "";
-        const htmlContent = marked.parse(markdownContent) as string;
-
-        let dateOptions: Intl.DateTimeFormatOptions = {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        };
-        const renderedPostContent = renderLayout(postLayout, {
-          title: frontmatter.title,
-          date: frontmatter.date,
-          dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
-          category,
-          content: htmlContent,
-        });
-
-        const postDescription =
-          frontmatter.description ??
-          `${frontmatter.title} — by George Anagnostou`;
-        const postCrumb = frontmatter.title
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-|-$/g, "");
-        const finalBlogPageHtml = renderLayout(baseLayout, {
-          title: `${frontmatter.title} — George Anagnostou`,
-          content: `${renderedPostContent}\n${pageTrailHtml}`,
-          description: postDescription,
-          bodyClass: "page--post",
-          header: renderHeader(headerTemplate, [
-            "writing",
-            postCrumb || "post",
-          ]),
-          footer: footerHtml,
-          liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
-        });
-
-        const destFile = file.replace(".md", ".html");
-        const destPath = path.join(blogDestDir, destFile);
-        await fs.writeFile(destPath, finalBlogPageHtml);
-        console.log(`- Processed blog post: ${destFile}`);
-
-        posts.push({
-          title: frontmatter.title,
-          date: frontmatter.date,
-          dateString: frontmatter.date.toLocaleString("en-US", dateOptions),
-          url: `/content/blog/${destFile}`,
-          category,
-        });
+      const srcPath = path.join(blogSrcDir, file);
+      const rawContent = await Bun.file(srcPath).text();
+      const frontmatterMatch = rawContent.match(
+        /^---\n([\s\S]+?)\n---\n([\s\S]*)$/,
+      );
+      if (!frontmatterMatch) {
+        console.warn(`- Skipping ${file}: no frontmatter found.`);
+        continue;
       }
-    }
 
-    if (posts.length > 0) {
-      posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+      const frontmatterYaml = frontmatterMatch[1];
+      const frontmatter = yaml.load(frontmatterYaml) as {
+        title: string;
+        description?: string;
+      };
+      const dateISO = parsePostDateISO(frontmatterYaml);
+      if (!dateISO) {
+        console.warn(`- Skipping ${file}: missing or invalid date.`);
+        continue;
+      }
+      const dateString = formatPostDate(dateISO);
 
-      console.log("Generating blog index page...");
-      const postListHtml = posts
-        .map((post) => {
-          return `
-              <li class="post-item">
-                <span class="post-title"><a href="${post.url}">${post.title}</a></span>
-                <span class="post-date">${post.dateString}</span>
-              </li>
-            `;
-        })
-        .join("");
+      const markdownContent = frontmatterMatch[2] ?? "";
+      const htmlContent = marked.parse(markdownContent) as string;
+      const renderedPostContent = renderLayout(postLayout, {
+        title: frontmatter.title,
+        dateString,
+        content: htmlContent,
+      });
 
-      const blogIndexContent = renderLayout(blogIndexLayoutContent, {
-          postListHtml,
-        });
-
-      const finalBlogIndexHtml = renderLayout(baseLayout, {
-        title: "Writing — George Anagnostou",
-        content: `${blogIndexContent}\n${pageTrailHtml}`,
-        description: "Writing by George Anagnostou.",
-        bodyClass: "page--writing",
-        header: renderHeader(headerTemplate, ["writing"]),
+      const postDescription =
+        frontmatter.description ??
+        `${frontmatter.title} — by George Anagnostou`;
+      const postCrumb = frontmatter.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+      const finalBlogPageHtml = renderLayout(baseLayout, {
+        title: `${frontmatter.title} — George Anagnostou`,
+        content: `${renderedPostContent}\n${pageTrailHtml}`,
+        description: postDescription,
+        bodyClass: "page--post",
+        header: renderHeader(headerTemplate, [
+          "writing",
+          postCrumb || "post",
+        ]),
         footer: footerHtml,
         liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
       });
 
-      await fs.writeFile(
-        path.join(DIST_DIR, "pages/writing.html"),
-        finalBlogIndexHtml,
-      );
-      console.log("- Generated writing.html");
+      const destFile = file.replace(".md", ".html");
+      await Bun.write(path.join(blogDestDir, destFile), finalBlogPageHtml);
+      console.log(`- Processed blog post: ${destFile}`);
+
+      posts.push({
+        title: frontmatter.title,
+        dateISO,
+        dateString,
+        url: `/content/blog/${destFile}`,
+      });
     }
+
+    posts.sort((a, b) => b.dateISO.localeCompare(a.dateISO));
+
+    console.log("Generating blog index page...");
+    const postListHtml = posts
+      .map(
+        (post) => `
+              <li class="post-item">
+                <span class="post-title"><a href="${post.url}">${post.title}</a></span>
+                <span class="post-date">${post.dateString}</span>
+              </li>
+            `,
+      )
+      .join("");
+
+    const blogIndexContent = renderLayout(blogIndexLayoutContent, {
+      postListHtml,
+    });
+    const finalBlogIndexHtml = renderLayout(baseLayout, {
+      title: "Writing — George Anagnostou",
+      content: `${blogIndexContent}\n${pageTrailHtml}`,
+      description: "Writing by George Anagnostou.",
+      bodyClass: "page--writing",
+      header: renderHeader(headerTemplate, ["writing"]),
+      footer: footerHtml,
+      liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
+    });
+    await Bun.write(path.join(DIST_DIR, "pages/writing.html"), finalBlogIndexHtml);
+    console.log("- Generated writing.html");
 
     console.log("Build completed successfully!");
   } catch (error) {
