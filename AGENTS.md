@@ -33,6 +33,8 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
+**Navigation**: The homepage (`index.html`) is the site index — structured for cold visitors (recruiters, search, LLMs). Inner pages have no nav bar; only a `<code>~/</code>` home link in the header and footer sitemap. Non-home pages get a `page-trail` partial appended at build time.
+
 ## Adding Content
 
 - **New page**: add an HTML file to `src/pages/` — the filename becomes the page title. Add a corresponding rewrite rule to `vercel.json`; the generic route resolver in `scripts/dev.ts` handles it locally.

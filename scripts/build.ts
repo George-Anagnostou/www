@@ -65,6 +65,9 @@ async function main() {
     const liveReload = await Bun.file(
       path.join(partialsDir, "live-reload.html"),
     ).text();
+    const pageTrailHtml = await Bun.file(
+      path.join(partialsDir, "page-trail.html"),
+    ).text();
 
     console.log("Processing custom pages from src/pages...");
     const pagesSrcDir = path.join(SRC_DIR, "pages");
@@ -98,10 +101,18 @@ async function main() {
         const description = descriptionMatch
           ? descriptionMatch[1]
           : "George Anagnostou — wealth management, software, Bay Area.";
+        const pageSlug = path.parse(file).name;
+        const bodyClass =
+          pageSlug === "index" ? "page--index" : `page--${pageSlug}`;
+        const isHomepage = pageSlug === "index";
+        const finalContent = isHomepage
+          ? pageContent
+          : `${pageContent}\n${pageTrailHtml}`;
         const finalPageHtml = renderLayout(baseLayout, {
           title: pageTitle,
-          content: pageContent,
+          content: finalContent,
           description,
+          bodyClass,
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
@@ -160,8 +171,9 @@ async function main() {
           `${frontmatter.title} — by George Anagnostou`;
         const finalBlogPageHtml = renderLayout(baseLayout, {
           title: `${frontmatter.title} — George Anagnostou`,
-          content: renderedPostContent,
+          content: `${renderedPostContent}\n${pageTrailHtml}`,
           description: postDescription,
+          bodyClass: "page--post",
           header: headerHtml,
           footer: footerHtml,
           liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
@@ -203,8 +215,9 @@ async function main() {
 
       const finalBlogIndexHtml = renderLayout(baseLayout, {
         title: "Writing — George Anagnostou",
-        content: blogIndexContent,
+        content: `${blogIndexContent}\n${pageTrailHtml}`,
         description: "Writing by George Anagnostou.",
+        bodyClass: "page--writing",
         header: headerHtml,
         footer: footerHtml,
         liveReload: process.env.NODE_ENV === "development" ? liveReload : "",

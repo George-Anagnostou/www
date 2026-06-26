@@ -7,10 +7,10 @@ Fields shared across pages are noted — update both when you change them.
 
 ## Still needed
 
-- [ ] **Reading** — `src/pages/index.html`, `src/pages/now.html`
-      *(same content, update both)*
-- [ ] **Thinking about** — `src/pages/index.html`, `src/pages/now.html`
-      *(same content, update both)*
+- [ ] **Now teaser** — `src/pages/index.html` index-readers section, `src/pages/now.html`
+      *(keep in sync)*
+- [ ] **Reading** — `src/pages/now.html`
+- [ ] **Thinking about** — `src/pages/now.html`
 - [ ] **Outside work** — `src/pages/about.html`, the `<ul>` under "Outside work"
       *(3–5 specific interests — be concrete, not generic)*
 - [ ] **Second photo** — drop file in `src/static/images/`, replace the placeholder

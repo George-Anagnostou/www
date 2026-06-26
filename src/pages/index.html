@@ -1,8 +1,35 @@
-<!-- description: George Anagnostou — wealth management, software, Bay Area. -->
+<!-- description: George Anagnostou — wealth management professional and software engineer in the San Francisco Bay Area. J.P. Morgan, venture capital clients, Go, TypeScript, Python. -->
 
-<div class="container">
-  <section class="home-intro">
-    <figure class="media media--portrait home-intro__photo">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "George Anagnostou",
+  "url": "https://georgeanagnostou.com",
+  "email": "anagnostougeorgejohn@gmail.com",
+  "jobTitle": "Wealth Management — VC Client Specialist",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "J.P. Morgan"
+  },
+  "knowsAbout": [
+    "Wealth Management",
+    "Venture Capital",
+    "Software Engineering",
+    "Go",
+    "TypeScript",
+    "Python"
+  ],
+  "sameAs": [
+    "https://github.com/George-Anagnostou",
+    "https://www.linkedin.com/in/george-anagnostou-2478ba341/"
+  ]
+}
+</script>
+
+<div class="container index">
+  <header class="index-intro">
+    <figure class="media media--portrait index-intro__photo">
       <img
         src="/static/images/headshot.jpeg"
         alt="George Anagnostou"
@@ -10,57 +37,121 @@
         height="480"
         decoding="async"
       />
-      <figcaption>
-        There's no place like <code>~/</code>
-      </figcaption>
+      <figcaption>There's no place like <code>~/</code></figcaption>
     </figure>
     <h1>George Anagnostou</h1>
-    <p>
-      I'm a wealth management professional in the Bay Area. I also write
-      software — small tools, side projects, this site.
+    <p class="index-intro__lede">
+      Wealth management professional and software engineer. San Francisco Bay
+      Area. I work at the intersection of finance and code.
     </p>
-    <p>
-      More in <a href="/about">about</a> and <a href="/work">work</a>.
-      Things I've built are on <a href="/projects">projects</a>.
-      I keep a <a href="/now">now</a> page and write on the
-      <a href="/writing">blog</a>.
-    </p>
+  </header>
+
+  <!-- Layer 1: recruiter / search / LLM index -->
+  <section class="index-recruiter" aria-labelledby="index-recruiter-label">
+    <p id="index-recruiter-label" class="index-label"><code>index</code></p>
+
+    <article class="index-entry" id="work">
+      <h2><a href="/work">Work</a></h2>
+      <p>
+        <strong>J.P. Morgan</strong> — Wealth Management, VC Client Specialist.
+        June 2022–present. Venture capital funds, portfolio companies, founders,
+        and investors. Specialize in distributions in kind.
+      </p>
+      <p>
+        Built internal tools in Python now in production division-wide —
+        distributions automation and a form prefill system.
+      </p>
+      <p class="index-entry__paths">
+        <a href="/work"><code>/work</code></a>
+        <a href="/static/files/resume.pdf"><code>resume.pdf</code></a>
+      </p>
+    </article>
+
+    <article class="index-entry" id="projects">
+      <h2><a href="/projects">Projects</a></h2>
+      <p>
+        <strong><a href="https://countries.georgeanagnostou.com">Countries</a></strong>
+        — trivia game for flags, countries, and capitals. Go, live on a VPS.
+      </p>
+      <p>
+        <strong><a href="https://github.com/George-Anagnostou/www">This site</a></strong>
+        — custom static site generator in TypeScript and Bun.
+      </p>
+      <p class="index-entry__paths">
+        <a href="/projects"><code>/projects</code></a>
+      </p>
+    </article>
+
+    <article class="index-entry" id="skills">
+      <h2>Skills</h2>
+      <p>
+        <strong>Finance:</strong> wealth management, distributions in kind, VC
+        fund operations, portfolio construction, Bloomberg.
+      </p>
+      <p>
+        <strong>Engineering:</strong> Go, TypeScript, Python, Rust, SQL.
+        Systems and web tooling, static site generation.
+      </p>
+    </article>
+
+    <article class="index-entry" id="contact">
+      <h2><a href="/contact">Contact</a></h2>
+      <p>
+        Open to roles where finance and engineering overlap.
+        <a href="mailto:anagnostougeorgejohn@gmail.com"
+          >anagnostougeorgejohn@gmail.com</a
+        >
+      </p>
+      <p class="index-entry__paths">
+        <a href="/contact"><code>/contact</code></a>
+        <a
+          href="https://www.linkedin.com/in/george-anagnostou-2478ba341/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><code>linkedin</code></a
+        >
+      </p>
+    </article>
   </section>
 
-  <!-- Note: Reading and Thinking also appear in src/pages/now.html — update both together. -->
-  <section class="currently">
-    <h2>Currently</h2>
-    <div class="currently__grid">
-      <div class="currently__item">
-        <span class="currently__label">Building</span>
-        <p>Rebuilding this site — simpler layout, real content, fewer placeholders.</p>
-      </div>
-      <div class="currently__item">
-        <span class="currently__label">Reading</span>
-        <p><em style="color: var(--color-text-muted);">Coming soon.</em></p>
-      </div>
-      <div class="currently__item">
-        <span class="currently__label">Thinking about</span>
-        <p>
-          <em style="color: var(--color-text-muted);"
-            >How I get my PaperclipAI bot to work without burning through all my
-            API credits.</em
-          >
-        </p>
-      </div>
-    </div>
-  </section>
+  <hr class="index-divider" />
 
-  <section class="recent-writing">
-    <h2>Writing</h2>
-    <ul class="recent-writing__list">
-      <li class="recent-writing__item">
-        <span class="recent-writing__title">
-          <a href="/content/blog/001.html">Genesis</a>
-        </span>
-        <span class="recent-writing__date">October 27, 2025</span>
-      </li>
-    </ul>
-    <p><a href="/writing">All posts</a></p>
+  <!-- Layer 2: readers — dig if you like -->
+  <section class="index-readers" aria-labelledby="index-readers-label">
+    <p id="index-readers-label" class="index-label index-label--soft">
+      <code>/* if you have time */</code>
+    </p>
+
+    <article class="index-teaser">
+      <h2><a href="/about">About</a></h2>
+      <p>
+        Grew up in Silicon Valley. The longer story — how finance and software
+        ended up in the same person.
+      </p>
+    </article>
+
+    <article class="index-teaser">
+      <h2><a href="/now">Now</a></h2>
+      <p>
+        Rebuilding this site. Learning what agentic workflows actually cost.
+        <!-- sync with src/pages/now.html -->
+      </p>
+    </article>
+
+    <article class="index-teaser">
+      <h2><a href="/writing">Writing</a></h2>
+      <p>
+        Occasional essays. Latest:
+        <a href="/content/blog/001.html">Genesis</a> (October 2025).
+      </p>
+    </article>
+
+    <article class="index-teaser">
+      <h2><a href="/uses">Uses</a></h2>
+      <p>
+        Neovim, Ghostty, Bun, a ThinkPad running Artix — if you care about that
+        sort of thing.
+      </p>
+    </article>
   </section>
 </div>
