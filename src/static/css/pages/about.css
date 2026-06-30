@@ -1,3 +1,8 @@
+.about-photo {
+  margin: 0 0 var(--space-8);
+  max-width: var(--media-portrait-max);
+}
+
 .about-body {
   max-width: var(--max-width-text);
 }

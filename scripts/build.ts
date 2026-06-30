@@ -104,34 +104,32 @@ function renderPostDateHtml(
   return `${published}<span class="blog-post-meta__sep" aria-hidden="true">·</span><time class="blog-post-date blog-post-date--updated" datetime="${updatedISO}">Updated ${updatedISO}</time>`;
 }
 
-function renderIndexWritingHtml(posts: BlogPost[], limit = 5): string {
-  const recent = posts.slice(0, limit);
-  if (recent.length === 0) {
-    return '<p><em class="text-muted">No posts yet.</em></p>';
+function renderWritingListItem(post: BlogPost): string {
+  return `        <li class="writing-list__item">
+          <time class="writing-list__date" datetime="${post.dateISO}">${post.dateISO}</time>
+          <span class="writing-list__desc">${post.description}</span>
+          <a class="writing-list__title" href="${post.url}">${post.title}</a>
+        </li>`;
+}
+
+function renderWritingListHtml(
+  posts: BlogPost[],
+  options: { limit?: number; emptyMessage?: string } = {},
+): string {
+  const { limit, emptyMessage = "No posts yet." } = options;
+  const items = limit ? posts.slice(0, limit) : posts;
+  if (items.length === 0) {
+    return `<p><em class="text-muted">${emptyMessage}</em></p>`;
   }
-  return `<ul class="index-writing">\n${recent
-    .map(
-      (post) =>
-        `        <li class="index-writing__item">
-          <time class="index-writing__date" datetime="${post.dateISO}">${post.dateISO}</time>
-          <span class="index-writing__desc">${post.description}</span>
-          <a class="index-writing__title" href="${post.url}">${post.title}</a>
-        </li>`,
-    )
-    .join("\n")}\n      </ul>`;
+  return `<ul class="writing-list">\n${items.map(renderWritingListItem).join("\n")}\n      </ul>`;
+}
+
+function renderIndexWritingHtml(posts: BlogPost[], limit = 5): string {
+  return renderWritingListHtml(posts, { limit });
 }
 
 function renderPostListHtml(posts: BlogPost[]): string {
-  return posts
-    .map(
-      (post) => `
-              <li class="post-item">
-                <span class="post-title"><a href="${post.url}">${post.title}</a></span>
-                <time class="post-date" datetime="${post.dateISO}">${post.dateISO}</time>
-              </li>
-            `,
-    )
-    .join("");
+  return renderWritingListHtml(posts);
 }
 
 async function cleanDistDir() {
