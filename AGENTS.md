@@ -22,8 +22,8 @@ This is a custom static site generator written in TypeScript, built and run enti
 **Build pipeline** (`scripts/build.ts`):
 1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`)
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
-3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`
-4. Generates `dist/pages/writing.html` as the blog index, sorted by date (newest first)
+3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
+4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, description, title.
 
 **Templating** is a simple `{{ variable }}` replacement — no loops, no conditionals in templates. Logic lives in the build script.
 
@@ -33,7 +33,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a short overview — intro, work and project highlights, the five most recent posts (injected at build time via `{{ indexWritingHtml }}`), resume link, and a terminal-style `$ ls` grid linking to inner pages. Now, Uses, and Skills live under `/about`. The header shows filesystem-style breadcrumbs: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Rendered per page in `scripts/build.ts`.
+**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Now, Uses, and Skills live under `/about`. Breadcrumbs are rendered per page in `scripts/build.ts`.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
 
@@ -45,9 +45,11 @@ This is a custom static site generator written in TypeScript, built and run enti
   ---
   title: Post Title
   date: YYYY-MM-DD
-  description: Optional meta description for SEO and social sharing.
+  updated: YYYY-MM-DD   # optional; shown on post page only when after date
+  description: One-line teaser for lists, SEO, and social sharing.
   ---
   ```
+  Dates display as `yyyy-mm-dd`. Lists sort and show published `date` only.
 - **Static assets**: place in `src/static/` and reference as `/static/...` in HTML
 - **Content placeholders**: see `CONTENT_TODO.md` for pending fill-ins
 

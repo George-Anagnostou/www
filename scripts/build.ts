@@ -15,6 +15,15 @@ type BlogPost = {
 const INDEX_WRITING_DESCRIPTION_FALLBACK =
   "A note that seemed worth posting.";
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function renderLayout(layout: string, data: Record<string, any>): string {
   let output = layout;
   for (const key in data) {
@@ -77,10 +86,10 @@ function renderCrumbRest(segments: string[]): string {
       const isLast = i === segments.length - 1;
       const prefix = i > 0 ? "/" : "";
       if (isLast) {
-        return `${prefix}<span class="site-crumb__page">${seg}</span>`;
+        return `${prefix}<span class="site-crumb__page">${escapeHtml(seg)}</span>`;
       }
       const url = PAGE_URLS[seg] ?? `/${seg}`;
-      return `${prefix}<a href="${url}" class="site-crumb__link">${seg}</a>`;
+      return `${prefix}<a href="${url}" class="site-crumb__link">${escapeHtml(seg)}</a>`;
     })
     .join("");
 }
@@ -107,8 +116,8 @@ function renderPostDateHtml(
 function renderWritingListItem(post: BlogPost): string {
   return `        <li class="writing-list__item">
           <time class="writing-list__date" datetime="${post.dateISO}">${post.dateISO}</time>
-          <span class="writing-list__desc">${post.description}</span>
-          <a class="writing-list__title" href="${post.url}">${post.title}</a>
+          <span class="writing-list__desc">${escapeHtml(post.description)}</span>
+          <a class="writing-list__title" href="${post.url}">${escapeHtml(post.title)}</a>
         </li>`;
 }
 
@@ -119,7 +128,7 @@ function renderWritingListHtml(
   const { limit, emptyMessage = "No posts yet." } = options;
   const items = limit ? posts.slice(0, limit) : posts;
   if (items.length === 0) {
-    return `<p><em class="text-muted">${emptyMessage}</em></p>`;
+    return `<p><em class="text-muted">${escapeHtml(emptyMessage)}</em></p>`;
   }
   return `<ul class="writing-list">\n${items.map(renderWritingListItem).join("\n")}\n      </ul>`;
 }
@@ -214,7 +223,7 @@ async function processBlogPosts(
     const markdownContent = frontmatterMatch[2] ?? "";
     const htmlContent = marked.parse(markdownContent) as string;
     const renderedPostContent = renderLayout(postLayout, {
-      title: frontmatter.title,
+      title: escapeHtml(frontmatter.title),
       postDateHtml,
       content: htmlContent,
     });
@@ -226,9 +235,9 @@ async function processBlogPosts(
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
     const finalBlogPageHtml = renderLayout(baseLayout, {
-      title: `${frontmatter.title} — George Anagnostou`,
+      title: escapeHtml(`${frontmatter.title} — George Anagnostou`),
       content: renderedPostContent,
-      description: postDescription,
+      description: escapeHtml(postDescription),
       bodyClass: "page--post",
       header: renderHeader(headerTemplate, ["writing", postCrumb || "post"]),
       footer: footerHtml,
@@ -293,9 +302,9 @@ async function main() {
       postListHtml: renderPostListHtml(posts),
     });
     const finalBlogIndexHtml = renderLayout(baseLayout, {
-      title: "Writing — George Anagnostou",
+      title: escapeHtml("Writing — George Anagnostou"),
       content: blogIndexContent,
-      description: "Writing by George Anagnostou.",
+      description: escapeHtml("Writing by George Anagnostou."),
       bodyClass: "page--writing",
       header: renderHeader(headerTemplate, ["writing"]),
       footer: footerHtml,
@@ -344,14 +353,14 @@ async function main() {
         });
       }
 
-      const headerHtml = renderHeader(
-        headerTemplate,
-        pageSlug === "index" ? [] : [pageSlug],
-      );
+      const headerHtml =
+        pageSlug === "index"
+          ? ""
+          : renderHeader(headerTemplate, [pageSlug]);
       const finalPageHtml = renderLayout(baseLayout, {
-        title: pageTitle,
+        title: escapeHtml(pageTitle),
         content: pageContent,
-        description,
+        description: escapeHtml(description),
         bodyClass,
         header: headerHtml,
         footer: footerHtml,

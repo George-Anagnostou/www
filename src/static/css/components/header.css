@@ -57,7 +57,3 @@
 .site-crumb__page {
   color: var(--color-text-secondary);
 }
-
-.page--index .site-header {
-  display: none;
-}
