@@ -12,7 +12,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
@@ -79,6 +79,7 @@ a:focus-visible {
 
 main {
   flex-grow: 1;
+  width: 100%;
 }
 
 .page-hero {
@@ -93,7 +94,7 @@ main {
 .page-hero .lead {
   font-size: 1.15rem;
   color: var(--color-text-secondary);
-  max-width: 600px;
+  max-width: 36rem;
   margin-bottom: 0;
   line-height: 1.6;
 }
@@ -121,4 +122,3 @@ main {
   color: #ffffff;
   text-decoration: none;
 }
-

@@ -8,9 +8,12 @@ const DIST_DIR = path.join(process.cwd(), "dist");
 type BlogPost = {
   title: string;
   dateISO: string;
-  dateString: string;
+  description: string;
   url: string;
 };
+
+const INDEX_WRITING_DESCRIPTION_FALLBACK =
+  "A note that seemed worth posting.";
 
 function renderLayout(layout: string, data: Record<string, any>): string {
   let output = layout;
@@ -57,19 +60,14 @@ function parseFrontmatter(frontmatterYaml: string): {
   };
 }
 
-function parsePostDateISO(frontmatterYaml: string): string | null {
-  const match = frontmatterYaml.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m);
+function parseFrontmatterDateISO(
+  frontmatterYaml: string,
+  field: "date" | "updated",
+): string | null {
+  const match = frontmatterYaml.match(
+    new RegExp(`^${field}:\\s*(\\d{4}-\\d{2}-\\d{2})`, "m"),
+  );
   return match?.[1] ?? null;
-}
-
-function formatPostDate(isoDate: string): string {
-  const [y, m, d] = isoDate.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d)).toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 }
 
 function renderCrumbRest(segments: string[]): string {
@@ -95,17 +93,32 @@ function renderHeader(
   return renderLayout(headerTemplate, { crumbRest });
 }
 
+function renderPostDateHtml(
+  dateISO: string,
+  updatedISO: string | null,
+): string {
+  const published = `<time class="blog-post-date" datetime="${dateISO}">${dateISO}</time>`;
+  if (!updatedISO || updatedISO <= dateISO) {
+    return published;
+  }
+  return `${published}<span class="blog-post-meta__sep" aria-hidden="true">·</span><time class="blog-post-date blog-post-date--updated" datetime="${updatedISO}">Updated ${updatedISO}</time>`;
+}
+
 function renderIndexWritingHtml(posts: BlogPost[], limit = 5): string {
   const recent = posts.slice(0, limit);
   if (recent.length === 0) {
     return '<p><em class="text-muted">No posts yet.</em></p>';
   }
-  return recent
+  return `<ul class="index-writing">\n${recent
     .map(
       (post) =>
-        `<p><a href="${post.url}">${post.title}</a> <span class="index-entry__date">${post.dateString}</span></p>`,
+        `        <li class="index-writing__item">
+          <time class="index-writing__date" datetime="${post.dateISO}">${post.dateISO}</time>
+          <span class="index-writing__desc">${post.description}</span>
+          <a class="index-writing__title" href="${post.url}">${post.title}</a>
+        </li>`,
     )
-    .join("\n      ");
+    .join("\n")}\n      </ul>`;
 }
 
 function renderPostListHtml(posts: BlogPost[]): string {
@@ -114,7 +127,7 @@ function renderPostListHtml(posts: BlogPost[]): string {
       (post) => `
               <li class="post-item">
                 <span class="post-title"><a href="${post.url}">${post.title}</a></span>
-                <span class="post-date">${post.dateString}</span>
+                <time class="post-date" datetime="${post.dateISO}">${post.dateISO}</time>
               </li>
             `,
     )
@@ -185,18 +198,26 @@ async function processBlogPosts(
       console.warn(`- Skipping ${file}: missing title in frontmatter.`);
       continue;
     }
-    const dateISO = parsePostDateISO(frontmatterYaml);
+    const dateISO = parseFrontmatterDateISO(frontmatterYaml, "date");
     if (!dateISO) {
       console.warn(`- Skipping ${file}: missing or invalid date.`);
       continue;
     }
-    const dateString = formatPostDate(dateISO);
+    const updatedISO = parseFrontmatterDateISO(frontmatterYaml, "updated");
+    if (updatedISO && updatedISO < dateISO) {
+      console.warn(
+        `- ${file}: updated (${updatedISO}) is before date (${dateISO}); ignoring updated.`,
+      );
+    }
+    const effectiveUpdatedISO =
+      updatedISO && updatedISO > dateISO ? updatedISO : null;
+    const postDateHtml = renderPostDateHtml(dateISO, effectiveUpdatedISO);
 
     const markdownContent = frontmatterMatch[2] ?? "";
     const htmlContent = marked.parse(markdownContent) as string;
     const renderedPostContent = renderLayout(postLayout, {
       title: frontmatter.title,
-      dateString,
+      postDateHtml,
       content: htmlContent,
     });
 
@@ -223,7 +244,8 @@ async function processBlogPosts(
     posts.push({
       title: frontmatter.title,
       dateISO,
-      dateString,
+      description:
+        frontmatter.description ?? INDEX_WRITING_DESCRIPTION_FALLBACK,
       url: `/content/blog/${destFile}`,
     });
   }

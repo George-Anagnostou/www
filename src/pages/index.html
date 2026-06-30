@@ -30,21 +30,12 @@
 </script>
 
 <div class="container">
-  <header class="index-intro">
-    <figure class="media media--portrait index-intro__photo">
-      <img
-        src="/static/images/headshot.jpeg"
-        alt="George Anagnostou"
-        width="453"
-        height="480"
-        decoding="async"
-      />
-      <figcaption>There's no place like <code>~/</code></figcaption>
-    </figure>
-    <h1>George Anagnostou</h1>
-    <p class="index-intro__lede">
-      Wealth management professional who loves building software. Dreamer by
-      day, triathlete by night, tinkering on something in between.
+  <header class="index-readme">
+    <h1>Hi, I'm George Anagnostou</h1>
+    <p class="index-readme__lede">
+      I'm a wealth management professional who loves building software. Dreamer
+      by day, triathlete by night, hacking on something in between. Born and
+      raised in the SF Bay Area, now living in San Francisco.
     </p>
   </header>
 
@@ -69,7 +60,7 @@
     <article class="index-entry" id="projects">
       <h2><a href="/projects">Projects</a></h2>
       <p>
-        <strong><a href="https://gptees.com">GPTees</a></strong>
+        <strong><a href="https://gptees.io">GPTees</a></strong>
         — handmade ecommerce store selling AI generated clothing. Prompt. Pay.
         Wear.
       </p>
@@ -79,8 +70,8 @@
             >Bookmarks</a
           ></strong
         >
-        — bookmarks server with CLI client. Your own cloud for bookmarks —
-        browser, OS, and device agnostic.
+        — bookmarks management server and API with CLI client. Your own cloud
+        for bookmarks — browser, OS, and device agnostic.
       </p>
       <p>
         <strong
@@ -96,7 +87,7 @@
             >This site</a
           ></strong
         >
-        — custom static site generator in TypeScript and Bun.
+        — this site's custom SSG in TypeScript and Bun, hosted on Vercel.
       </p>
       <p class="index-entry__more">
         <a href="/projects">All projects →</a>
@@ -112,17 +103,15 @@
     </article>
   </div>
 
-  <nav class="index-ls" aria-label="Explore the site">
-    <p class="index-ls__prompt"><span class="index-ls__sigil">$</span> ls</p>
-    <ul class="index-ls__grid">
-      <li><a href="/about">about</a></li>
-      <li><a href="/contact">contact</a></li>
-      <li><a href="/now">now</a></li>
-      <li><a href="/projects">projects</a></li>
-      <li><a href="/uses">uses</a></li>
-      <li><a href="/work">work</a></li>
-      <li><a href="/writing">writing</a></li>
+  <nav class="index-explore" aria-label="Explore the site">
+    <ul class="index-explore__list">
+      <li><a href="/about">More about me →</a></li>
+      <li><a href="/work">What I do for work →</a></li>
+      <li><a href="/projects">Projects I'm working on →</a></li>
+      <li><a href="/writing">Articles and writings →</a></li>
+      <li><a href="/now">What I'm up to now →</a></li>
+      <li><a href="/uses">Tools and gear →</a></li>
+      <li><a href="/contact">Get in touch →</a></li>
     </ul>
   </nav>
 </div>
-

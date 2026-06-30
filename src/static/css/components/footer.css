@@ -1,9 +1,14 @@
 .site-footer {
   margin-top: auto;
   padding: var(--space-12) 0 var(--space-8);
+  background: var(--color-bg);
 }
 
 .site-footer__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
   display: flex;
   justify-content: center;
   align-items: center;
