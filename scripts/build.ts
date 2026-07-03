@@ -41,7 +41,7 @@ function renderLayout(layout: string, data: Record<string, any>): string {
 
 const PAGE_URLS: Record<string, string> = {
   about: "/about",
-  work: "/work",
+  experience: "/experience",
   projects: "/projects",
   writing: "/writing",
   now: "/now",

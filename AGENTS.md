@@ -34,7 +34,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Breadcrumbs are rendered per page in `scripts/build.ts`.
+**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Experience / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/experience`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Breadcrumbs are rendered per page in `scripts/build.ts`.
 
 **Site pages** (all rewrites in `vercel.json`):
 
@@ -42,7 +42,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 |---|---|---|
 | `/` | `src/pages/index.html` | README-shaped homepage; JSON-LD `Person` block |
 | `/about` | `src/pages/about.html` | Personal essay; `#now` links to `/now`; `#contact` footer |
-| `/work` | `src/pages/work.html` | Career timeline + resume PDF |
+| `/experience` | `src/pages/experience.html` | Full timeline (professional, university, education) + resume PDF |
 | `/projects` | `src/pages/projects.html` | Side projects (card grid + featured Countries) |
 | `/writing` | generated `writing.html` | Blog index |
 | `/now` | `src/pages/now.html` | Current focus (nownownow-style) |
@@ -109,7 +109,7 @@ src/static/css/
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
   components/            # reusable UI (header, footer, media, cards, blog)
-  pages/                 # page-specific (home, work, about, now-uses, projects)
+  pages/                 # page-specific (home, experience, about, now-uses, projects)
 ```
 
 When adding a new component, create `components/name.css` and add an `@import` to `style.css`.
@@ -163,7 +163,7 @@ Keep the subject line under 72 characters. Use the imperative mood ("add x", not
 |---|---|---|
 | Site code (CSS, build script, layouts) | `feat/` or `fix/` | Branch → PR → merge |
 | New page | `feat/` | Branch → PR → merge |
-| Content fill-ins (now, about, work) | `content/` | Branch → PR → merge |
+| Content fill-ins (now, about, experience) | `content/` | Branch → PR → merge |
 | New blog post | `post/` | Branch → PR → merge |
 | AGENTS.md / docs | `docs/` | Branch → PR → merge |
 

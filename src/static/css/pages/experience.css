@@ -1,0 +1,135 @@
+/* Experience — org sections with nested roles */
+
+.experience .page-hero {
+  margin-bottom: var(--space-8);
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline__org {
+  display: grid;
+  grid-template-columns: 6.75rem minmax(0, 1fr);
+  column-gap: var(--space-6);
+  align-items: start;
+  margin-bottom: var(--space-16);
+}
+
+.timeline__org:last-child {
+  margin-bottom: 0;
+}
+
+.timeline__years {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  text-align: right;
+  line-height: 1.5;
+  padding-top: 0.2rem;
+}
+
+.timeline__org-head {
+  margin-bottom: var(--space-6);
+}
+
+.timeline__company {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.timeline__location {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.timeline__role + .timeline__role {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.timeline__role-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.timeline__role-years {
+  flex: 0 0 auto;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.timeline__role-title {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.timeline__detail {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline__detail li {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding-left: var(--space-4);
+  position: relative;
+  margin-bottom: var(--space-2);
+}
+
+.timeline__detail li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--color-text-muted);
+}
+
+.timeline__detail li:last-child {
+  margin-bottom: 0;
+}
+
+.timeline__detail em {
+  font-style: italic;
+}
+
+.experience-resume {
+  margin-top: var(--space-12);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.experience-resume a {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .timeline__org {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-2);
+  }
+
+  .timeline__years {
+    text-align: left;
+  }
+}
