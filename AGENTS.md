@@ -64,7 +64,6 @@ There is no `/uses` or `/contact` route — that content lives on `/about` or wa
   ```
   Dates display as `yyyy-mm-dd`. Lists sort and show published `date` only.
 - **Static assets**: place in `src/static/` and reference as `/static/...` in HTML
-- **Content placeholders**: see `CONTENT_TODO.md` for pending fill-ins
 
 ## Images
 
@@ -169,7 +168,7 @@ Keep the subject line under 72 characters. Use the imperative mood ("add x", not
 
 ## Spell Checking
 
-[cspell](https://cspell.org/) is configured in `.cspell.json` and checks `src/**/*.md`, `src/**/*.html`, `AGENTS.md`, and `CONTENT_TODO.md`.
+[cspell](https://cspell.org/) is configured in `.cspell.json` and checks `src/**/*.md`, `src/**/*.html`, and `AGENTS.md`.
 
 ```bash
 bun run spell           # manual run across all configured files

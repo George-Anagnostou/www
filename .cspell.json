@@ -1,7 +1,7 @@
 {
   "version": "0.2",
   "language": "en-US",
-  "files": ["src/**/*.md", "src/**/*.html", "AGENTS.md", "CONTENT_TODO.md"],
+  "files": ["src/**/*.md", "src/**/*.html", "AGENTS.md"],
   "ignorePaths": ["dist/**", "node_modules/**", "*.lock"],
   "words": [
     "Anagnostou",
@@ -26,6 +26,16 @@
     "ecommerce",
     "bookmarkd",
     "Cowtown",
-    "AMTA"
+    "AMTA",
+    "handcoded",
+    "vibecoded",
+    "Vibecoding",
+    "Kernighan",
+    "Mihalis",
+    "Machu",
+    "Picchu",
+    "numeracy",
+    "Queenstown",
+    "offsite"
   ]
 }
