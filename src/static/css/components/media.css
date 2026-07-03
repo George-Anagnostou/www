@@ -30,6 +30,11 @@
   max-width: var(--media-portrait-max);
 }
 
+/* Landscape — wide photos, full column width */
+.media--landscape {
+  max-width: 100%;
+}
+
 /* Screenshot — project demos, full column width */
 .media--screenshot img {
   border-radius: 6px;

@@ -1,6 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import { marked } from "marked";
+import {
+  isOptimizableImage,
+  logOptimizedImages,
+  optimizeImageFile,
+  optimizeImagesInDir,
+} from "./optimize-images";
 
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
@@ -39,8 +45,6 @@ const PAGE_URLS: Record<string, string> = {
   projects: "/projects",
   writing: "/writing",
   now: "/now",
-  uses: "/uses",
-  contact: "/contact",
 };
 
 function parseFrontmatterValue(raw: string): string {
@@ -167,7 +171,28 @@ async function copyStatic() {
   const staticSrc = path.join(SRC_DIR, "static");
   const staticDest = path.join(DIST_DIR, "static");
   console.log("Copying static assets...");
-  await copyStaticRecursive(staticSrc, staticDest);
+
+  const imagesSrc = path.join(staticSrc, "images");
+  try {
+    await fs.access(imagesSrc);
+    const imageResults = await optimizeImagesInDir(imagesSrc, path.join(staticDest, "images"));
+    logOptimizedImages(imageResults);
+  } catch {
+    // No images directory yet.
+  }
+
+  for (const entry of await fs.readdir(staticSrc, { withFileTypes: true })) {
+    if (entry.name === ".DS_Store" || entry.name === "images") continue;
+    const srcPath = path.join(staticSrc, entry.name);
+    const destPath = path.join(staticDest, entry.name);
+    if (entry.isDirectory()) {
+      await copyStaticRecursive(srcPath, destPath);
+    } else if (isOptimizableImage(srcPath)) {
+      await optimizeImageFile(srcPath, destPath);
+    } else {
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
 }
 
 async function processBlogPosts(

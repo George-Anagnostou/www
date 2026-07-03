@@ -8,8 +8,6 @@
 
     { "source": "/projects", "destination": "/pages/projects.html" },
     { "source": "/writing",  "destination": "/pages/writing.html" },
-    { "source": "/now",      "destination": "/pages/now.html" },
-    { "source": "/uses",     "destination": "/pages/uses.html" },
-    { "source": "/contact",  "destination": "/pages/contact.html" }
+    { "source": "/now",      "destination": "/pages/now.html" }
   ]
 }

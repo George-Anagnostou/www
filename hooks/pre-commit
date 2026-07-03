@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
-# Spell-check staged .md and .html files before committing.
+# Spell-check staged .md/.html; optimize staged images before committing.
 # One-time setup: git config core.hooksPath hooks
 
 set -euo pipefail
 
-STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|html)$' || true)
+STAGED_TEXT=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|html)$' || true)
+STAGED_IMAGES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/static/images/.+\.(jpe?g|png|webp)$' || true)
 
-if [ -z "$STAGED" ]; then
-  exit 0
+if [ -n "$STAGED_TEXT" ]; then
+  echo "Running cspell on staged files..."
+  echo "$STAGED_TEXT" | tr '\n' '\0' | xargs -0 bunx cspell --no-progress --no-summary
 fi
 
-echo "Running cspell on staged files..."
-echo "$STAGED" | tr '\n' '\0' | xargs -0 bunx cspell --no-progress --no-summary
+if [ -n "$STAGED_IMAGES" ]; then
+  echo "Optimizing staged images..."
+  bun run scripts/optimize-images.ts -- $(echo "$STAGED_IMAGES" | tr '\n' ' ')
+  echo "$STAGED_IMAGES" | tr '\n' '\0' | xargs -0 git add
+fi

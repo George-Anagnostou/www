@@ -6,6 +6,7 @@
     "dev": "bun run scripts/dev.ts",
     "build": "bun run scripts/build.ts",
     "build:prod": "NODE_ENV=production bun run scripts/build.ts",
+    "images": "bun run scripts/optimize-images.ts",
     "spell": "bunx cspell --no-progress"
   },
   "devDependencies": {
@@ -15,6 +16,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "marked": "^16.4.1"
+    "marked": "^16.4.1",
+    "sharp": "^0.35.3"
   }
 }

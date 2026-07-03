@@ -34,18 +34,8 @@
   max-width: var(--media-portrait-max);
 }
 
-.about-figure--slot {
-  max-width: 100%;
-}
-
 .about-figure--landscape {
   max-width: 100%;
-}
-
-.about-figure--landscape img {
-  max-height: 22rem;
-  object-fit: cover;
-  width: 100%;
 }
 
 .about-essay__section {

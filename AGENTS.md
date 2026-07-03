@@ -10,6 +10,7 @@ All commands use `bun` as the runtime (not npm/node).
 bun run dev            # Dev server at http://localhost:3000 with live reload
 bun run build          # Incremental build (used by dev watcher; doesn't clean dist)
 bun run build:prod     # Production build (cleans dist first) — what Vercel runs
+bun run images         # Optimize all images in src/static/images/ (also runs on commit + build)
 bun run spell          # Spell-check configured content files
 ```
 
@@ -33,7 +34,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Now, Uses, and Skills live under `/about`. Breadcrumbs are rendered per page in `scripts/build.ts`.
+**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Now and contact live on `/about` (`#now`, `#contact`) and `/now`. Breadcrumbs are rendered per page in `scripts/build.ts`.
 
 **Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
 
@@ -55,13 +56,19 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 ## Images
 
-**Storage:** `src/static/images/` — commit web-ready files only (not full-resolution originals).
+**Storage:** `src/static/images/` — drop originals here; the build pipeline resizes them automatically.
 
-**Before committing:** resize for the web. Targets:
-- Portraits: 480px max on the longest edge (JPEG)
-- Screenshots: 720px max width (PNG or JPEG)
+**Optimization** (`scripts/optimize-images.ts`, via [sharp](https://sharp.pixelplumbing.com/)):
+- Runs on every `bun run build` / `bun run build:prod` when copying to `dist/static/images/`
+- Runs on staged images in the pre-commit hook (rewrites `src/` in place, then re-stages)
+- Run manually: `bun run images`
 
-On macOS: `sips -Z 480 src/static/images/photo.jpeg`
+Classification is automatic from aspect ratio and file type:
+- **Portrait** (height ≥ width, JPEG/WebP): 480px max longest edge
+- **Landscape** (width > height, JPEG/WebP): 720px max width
+- **Screenshot** (PNG): 720px max width, stays PNG
+
+After adding or replacing an image, set `width` and `height` on the `<img>` to match the dimensions logged by the optimizer (or read with `sips -g pixelWidth -g pixelHeight` on macOS).
 
 **HTML pattern** — always set `width` and `height` to the file's pixel dimensions (prevents layout shift). Use `decoding="async"`; add `loading="lazy"` below the fold.
 
@@ -74,6 +81,7 @@ On macOS: `sips -Z 480 src/static/images/photo.jpeg`
 
 **Modifiers** (see `src/static/css/components/media.css`):
 - `media--portrait` — headshots, narrow max-width
+- `media--landscape` — wide photos, full column width
 - `media--screenshot` — project demos
 - `media--placeholder` — empty slot until an image exists
 
