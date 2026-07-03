@@ -1,12 +1,3 @@
-.work-looking {
-  margin-bottom: var(--space-8);
-}
-
-.work-looking p {
-  color: var(--color-text-secondary);
-  margin-bottom: 0;
-}
-
 .timeline {
   list-style: none;
   padding: 0;

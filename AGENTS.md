@@ -21,7 +21,7 @@ There are no tests or linting configured.
 This is a custom static site generator written in TypeScript, built and run entirely with Bun. There is no framework.
 
 **Build pipeline** (`scripts/build.ts`):
-1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`)
+1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`). Images under `static/images/` are optimized via `scripts/optimize-images.ts` (sharp) on the way to `dist/`.
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
 3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
 4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, description, title.
@@ -34,9 +34,21 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Now and contact live on `/about` (`#now`, `#contact`) and `/now`. Breadcrumbs are rendered per page in `scripts/build.ts`.
+**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Work / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/work`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Breadcrumbs are rendered per page in `scripts/build.ts`.
 
-**Structured data**: Homepage includes a JSON-LD `Person` block in `index.html` — machine-readable facts for search engines and LLMs that crawl the page.
+**Site pages** (all rewrites in `vercel.json`):
+
+| Route | Source | Role |
+|---|---|---|
+| `/` | `src/pages/index.html` | README-shaped homepage; JSON-LD `Person` block |
+| `/about` | `src/pages/about.html` | Personal essay; `#now` links to `/now`; `#contact` footer |
+| `/work` | `src/pages/work.html` | Career timeline + resume PDF |
+| `/projects` | `src/pages/projects.html` | Side projects (card grid + featured Countries) |
+| `/writing` | generated `writing.html` | Blog index |
+| `/now` | `src/pages/now.html` | Current focus (nownownow-style) |
+| `/content/blog/*.html` | `src/content/blog/*.md` | Individual posts (no clean URL rewrite yet) |
+
+There is no `/uses` or `/contact` route — that content lives on `/about` or was dropped.
 
 ## Adding Content
 
@@ -97,7 +109,7 @@ src/static/css/
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
   components/            # reusable UI (header, footer, media, cards, blog)
-  pages/                 # page-specific (home, work, about, now-uses, contact)
+  pages/                 # page-specific (home, work, about, now-uses, projects)
 ```
 
 When adding a new component, create `components/name.css` and add an `@import` to `style.css`.
@@ -151,7 +163,7 @@ Keep the subject line under 72 characters. Use the imperative mood ("add x", not
 |---|---|---|
 | Site code (CSS, build script, layouts) | `feat/` or `fix/` | Branch → PR → merge |
 | New page | `feat/` | Branch → PR → merge |
-| Content fill-ins (uses, now, about) | `content/` | Branch → PR → merge |
+| Content fill-ins (now, about, work) | `content/` | Branch → PR → merge |
 | New blog post | `post/` | Branch → PR → merge |
 | AGENTS.md / docs | `docs/` | Branch → PR → merge |
 
@@ -164,7 +176,7 @@ bun run spell           # manual run across all configured files
 bun run spell <file>    # check a specific file
 ```
 
-A pre-commit hook in `hooks/pre-commit` runs cspell automatically on staged `.md` and `.html` files.
+A pre-commit hook in `hooks/pre-commit` runs cspell on staged `.md` and `.html` files and optimizes staged images under `src/static/images/`.
 
 **One-time setup** (run once per clone):
 ```bash
