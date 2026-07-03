@@ -108,7 +108,7 @@ src/static/css/
   style.css              # import hub only
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
-  components/            # reusable UI (header, footer, media, cards, blog)
+  components/            # reusable UI (header, footer, media, blog)
   pages/                 # page-specific (home, experience, about, now-uses, projects)
 ```
 

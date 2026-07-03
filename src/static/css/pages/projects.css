@@ -1,31 +1,20 @@
-/* Projects — tiered list with full entries and a simple catalog */
+/* Projects page (body.page--projects) */
 
-.projects .page-hero {
+.page--projects .page-hero {
   margin-bottom: var(--space-10);
 }
 
-.projects-tier {
+.projects-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
   margin-bottom: var(--space-12);
 }
 
-.projects-tier__heading {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-6);
-}
-
-.projects-tier .project-feature + .project-feature {
-  margin-top: var(--space-6);
-}
-
-.project-feature__inner {
+.project-feature {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-8) var(--space-10);
+  gap: var(--space-8) var(--space-12);
   align-items: start;
   padding: var(--space-8);
   background: var(--color-surface);
@@ -33,7 +22,7 @@
   border-radius: 8px;
 }
 
-.project-feature--text .project-feature__inner {
+.project-feature:not(.project-feature--flip) {
   grid-template-columns: 1fr;
 }
 
@@ -41,25 +30,29 @@
   order: -1;
 }
 
-.project-feature__title {
+.project-feature__content h2 {
   font-size: 1.4rem;
   margin: 0 0 var(--space-3);
   line-height: 1.25;
 }
 
-.project-feature__title a {
+.project-feature__content h2 a {
   color: var(--color-text);
 }
 
-.project-feature__title a:hover {
+.project-feature__content h2 a:hover {
   color: var(--color-accent);
+  text-decoration: none;
 }
 
-.project-feature__desc {
+.project-feature__content > p {
   color: var(--color-text-secondary);
-  font-size: 1rem;
   line-height: 1.65;
-  margin: 0 0 var(--space-4);
+}
+
+.project-feature__content > p:last-child {
+  margin-bottom: 0;
+  font-size: 0.95rem;
 }
 
 .project-feature__tags {
@@ -81,9 +74,8 @@
   border: 1px solid var(--color-border);
 }
 
-.project-feature__links {
-  margin: 0;
-  font-size: 0.95rem;
+.project-feature__visual {
+  min-width: 0;
 }
 
 .project-gallery {
@@ -93,62 +85,100 @@
   scroll-snap-type: x mandatory;
   scroll-padding: var(--space-2);
   -webkit-overflow-scrolling: touch;
-  margin: 0;
-  padding-bottom: var(--space-1);
 }
 
 .project-gallery__slide {
   flex: 0 0 100%;
   scroll-snap-align: start;
-  margin: 0;
   min-width: 0;
 }
 
 .project-gallery__slide img {
   border-radius: 6px;
+  border: 1px solid var(--color-border);
 }
 
-.project-list-b {
+.project-terminal__caption {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.project-terminal {
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--color-pre-bg);
+  color: var(--color-pre-text);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.projects-index {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 var(--space-6);
   border-top: 1px solid var(--color-border-subtle);
 }
 
-.project-list-b li {
+.projects-index li {
   padding: var(--space-3) 0;
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
-.project-list-b a {
+.projects-index a {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--color-text);
 }
 
-.project-list-b a:hover {
+.projects-index a:hover {
   color: var(--color-accent);
 }
 
-.projects-github {
-  margin: var(--space-6) 0 0;
-  font-size: 0.9rem;
-}
-
-.projects-aside {
+.projects-footnote {
   margin-top: var(--space-10);
   color: var(--color-text-secondary);
   font-size: 0.95rem;
 }
 
+@media (min-width: 900px) {
+  .project-feature {
+    gap: var(--space-8) var(--space-16);
+  }
+
+  .project-feature--flip .project-feature__content {
+    padding-right: var(--space-4);
+  }
+
+  .project-feature--flip .project-feature__visual {
+    padding-left: var(--space-4);
+  }
+
+  .project-feature--terminal {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
 @media (max-width: 768px) {
-  .project-feature__inner {
+  .project-feature {
     grid-template-columns: 1fr;
     gap: var(--space-6);
     padding: var(--space-6);
   }
 
+  .project-feature--flip .project-feature__content,
   .project-feature--flip .project-feature__visual {
-    order: -1;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .project-terminal {
+    font-size: 0.72rem;
   }
 }
