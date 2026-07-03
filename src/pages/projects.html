@@ -1,209 +1,258 @@
-<!-- description: Projects by George Anagnostou — Go, TypeScript, Rust, and Python. -->
+<!-- description: Projects by George Anagnostou — GPTees, Bookmarks, Countries, and more. Go, TypeScript, Rust, and Python. -->
 
-<div class="container">
+<div class="container projects">
   <div class="page-hero">
     <h1>Projects</h1>
     <p class="lead">
-      Side projects and experiments. Some are live; some are puzzles. Source
-      code is on GitHub.
+      Side projects and experiments. Some are live in production; some are
+      puzzles. All of them got shipped.
     </p>
   </div>
 
-  <article class="featured-project__card">
-    <figure class="featured-project__image media media--screenshot">
-      <img
-        src="/static/images/countries_screenshot.png"
-        alt="Screenshot of the Countries trivia game"
-        loading="lazy"
-        width="720"
-        height="653"
-        decoding="async"
-      />
-    </figure>
-    <div class="featured-project__body">
-      <h3>
-        <a
-          href="https://countries.georgeanagnostou.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Countries</a
-        >
-      </h3>
-      <p class="featured-project__desc">
-        A trivia game for flags, countries, and capitals. Built in Go — server,
-        game logic, the lot — and hosted on a VPS behind Nginx.
-      </p>
-      <ul class="featured-project__tags">
-        <li>Go</li>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>Nginx</li>
-      </ul>
-      <p>
-        <a
-          href="https://countries.georgeanagnostou.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Live</a
-        >
-        ·
-        <a
-          href="https://github.com/George-Anagnostou/countries"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Source</a
-        >
-      </p>
-    </div>
-  </article>
+  <section class="projects-tier" aria-labelledby="projects-tier-a">
+    <h2 id="projects-tier-a" class="projects-tier__heading">Highlights</h2>
 
-  <div class="projects-grid">
-
-    <article class="project-card">
-      <div class="project-card__content">
-        <h3 class="project-card__title">
-          <a
-            href="https://github.com/George-Anagnostou/www"
-            target="_blank"
-            rel="noopener noreferrer"
-            >This site</a
-          >
-        </h3>
-        <p class="project-card__description">
-          A small static site generator in TypeScript, run with Bun. No
-          framework — build script, templates, dev server.
-        </p>
-        <ul class="project-card__tags">
-          <li>TypeScript</li>
-          <li>Bun</li>
-        </ul>
+    <article class="project-feature project-feature--flip">
+      <div class="project-feature__inner">
+        <div class="project-feature__content">
+          <h3 class="project-feature__title">
+            <a
+              href="https://gptees.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GPTees</a
+            >
+          </h3>
+          <p class="project-feature__desc">
+            Handmade ecommerce store selling AI-generated clothing. Prompt. Pay.
+            Wear.
+          </p>
+          <ul class="project-feature__tags">
+            <li>Ecommerce</li>
+            <li>AI</li>
+          </ul>
+          <p class="project-feature__links">
+            <a
+              href="https://gptees.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Live</a
+            >
+          </p>
+        </div>
+        <figure class="project-feature__visual media media--screenshot">
+          <div class="project-gallery">
+            <figure class="project-gallery__slide">
+              <img
+                src="/static/images/gptees_hero.png"
+                alt="Screenshot of the GPTees storefront"
+                width="720"
+                height="405"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="project-gallery__slide">
+              <img
+                src="/static/images/gptees_drops.png"
+                alt="Screenshot of GPTees product drops"
+                width="720"
+                height="405"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </div>
+        </figure>
       </div>
-      <footer class="project-card__links">
-        <a
-          href="https://github.com/George-Anagnostou/www"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Source</a
-        >
-      </footer>
     </article>
 
-    <article class="project-card">
-      <div class="project-card__content">
-        <h3 class="project-card__title">
-          <a
-            href="https://github.com/George-Anagnostou/snake"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Snake</a
-          >
-        </h3>
-        <p class="project-card__description">
-          Terminal Snake in Go.
-        </p>
-        <ul class="project-card__tags">
-          <li>Go</li>
-        </ul>
+    <article class="project-feature project-feature--text">
+      <div class="project-feature__inner">
+        <div class="project-feature__content">
+          <h3 class="project-feature__title">
+            <a
+              href="https://github.com/George-Anagnostou/bookmarks"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Bookmarks</a
+            >
+          </h3>
+          <p class="project-feature__desc">
+            Bookmarks management server and API with a CLI client. Your own cloud
+            for bookmarks — browser, OS, and device agnostic.
+          </p>
+          <ul class="project-feature__tags">
+            <li>Go</li>
+            <li>REST API</li>
+            <li>CLI</li>
+          </ul>
+          <p class="project-feature__links">
+            <a
+              href="https://github.com/George-Anagnostou/bookmarks"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Source</a
+            >
+          </p>
+        </div>
       </div>
-      <footer class="project-card__links">
+    </article>
+
+    <article class="project-feature project-feature--flip">
+      <div class="project-feature__inner">
+        <div class="project-feature__content">
+          <h3 class="project-feature__title">
+            <a
+              href="https://countries.georgeanagnostou.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Countries</a
+            >
+          </h3>
+          <p class="project-feature__desc">
+            A trivia game for flags, countries, and capitals. Built in Go —
+            server, game logic, the lot — and hosted on a VPS behind Nginx.
+          </p>
+          <ul class="project-feature__tags">
+            <li>Go</li>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>Nginx</li>
+          </ul>
+          <p class="project-feature__links">
+            <a
+              href="https://countries.georgeanagnostou.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Live</a
+            >
+            ·
+            <a
+              href="https://github.com/George-Anagnostou/countries"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Source</a
+            >
+          </p>
+        </div>
+        <figure class="project-feature__visual media media--screenshot">
+          <img
+            src="/static/images/countries_screenshot.png"
+            alt="Screenshot of the Countries trivia game"
+            width="720"
+            height="653"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </article>
+
+    <article class="project-feature project-feature--text">
+      <div class="project-feature__inner">
+        <div class="project-feature__content">
+          <h3 class="project-feature__title">
+            <a
+              href="https://github.com/George-Anagnostou/www"
+              target="_blank"
+              rel="noopener noreferrer"
+              >This site</a
+            >
+          </h3>
+          <p class="project-feature__desc">
+            A custom static site generator in TypeScript, run with Bun. No
+            framework — build script, templates, and a dev server with live
+            reload. Hosted on Vercel.
+          </p>
+          <ul class="project-feature__tags">
+            <li>TypeScript</li>
+            <li>Bun</li>
+            <li>HTML</li>
+            <li>CSS</li>
+          </ul>
+          <p class="project-feature__links">
+            <a
+              href="https://github.com/George-Anagnostou/www"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Source</a
+            >
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="projects-tier" aria-labelledby="projects-tier-b">
+    <h2 id="projects-tier-b" class="projects-tier__heading">Also built</h2>
+    <ul class="project-list-b">
+      <li>
         <a
           href="https://github.com/George-Anagnostou/snake"
           target="_blank"
           rel="noopener noreferrer"
-          >Source</a
+          >Snake</a
         >
-      </footer>
-    </article>
-
-    <article class="project-card">
-      <div class="project-card__content">
-        <h3 class="project-card__title">
-          <a
-            href="/static/files/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Resume</a
-          >
-        </h3>
-        <p class="project-card__description">
-          Typeset in Typst. Source on GitHub.
-        </p>
-        <ul class="project-card__tags">
-          <li>Typst</li>
-        </ul>
-      </div>
-      <footer class="project-card__links">
-        <a
-          href="/static/files/resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          >PDF</a
-        >
-        ·
+      </li>
+      <li>
         <a
           href="https://github.com/George-Anagnostou/resume"
           target="_blank"
           rel="noopener noreferrer"
-          >Source</a
+          >Resume</a
         >
-      </footer>
-    </article>
-
-    <article class="project-card">
-      <div class="project-card__content">
-        <h3 class="project-card__title">
-          <a
-            href="https://github.com/George-Anagnostou/AoC2024"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Advent of Code 2024</a
-          >
-        </h3>
-        <p class="project-card__description">
-          2024 puzzles in Go.
-        </p>
-        <ul class="project-card__tags">
-          <li>Go</li>
-        </ul>
-      </div>
-      <footer class="project-card__links">
+      </li>
+      <li>
         <a
           href="https://github.com/George-Anagnostou/AoC2024"
           target="_blank"
           rel="noopener noreferrer"
-          >Source</a
+          >Advent of Code 2024</a
         >
-      </footer>
-    </article>
-
-    <article class="project-card">
-      <div class="project-card__content">
-        <h3 class="project-card__title">
-          <a
-            href="https://github.com/George-Anagnostou/AoC2023"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Advent of Code 2023</a
-          >
-        </h3>
-        <p class="project-card__description">
-          2023 puzzles in Rust.
-        </p>
-        <ul class="project-card__tags">
-          <li>Rust</li>
-        </ul>
-      </div>
-      <footer class="project-card__links">
+      </li>
+      <li>
         <a
           href="https://github.com/George-Anagnostou/AoC2023"
           target="_blank"
           rel="noopener noreferrer"
-          >Source</a
+          >Advent of Code 2023</a
         >
-      </footer>
-    </article>
-
-  </div>
+      </li>
+      <li>
+        <a
+          href="https://github.com/George-Anagnostou/market-maker"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Market Maker</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/George-Anagnostou/cloud-printing"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Cloud Printing</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/George-Anagnostou/birthday-notes"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Birthday Notes</a
+        >
+      </li>
+    </ul>
+    <p class="projects-github">
+      <a
+        href="https://github.com/George-Anagnostou?tab=repositories"
+        target="_blank"
+        rel="noopener noreferrer"
+        >All repos on GitHub →</a
+      >
+    </p>
+  </section>
 
   <p class="projects-aside">
     See also <a href="/now">what I'm doing now</a>.
