@@ -23,7 +23,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 **Build pipeline** (`scripts/build.ts`):
 1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`). Images under `static/images/` are optimized via `scripts/optimize-images.ts` (sharp) on the way to `dist/`.
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
-3. Processes `src/content/blog/*.md` → `dist/content/blog/*.html` by parsing YAML frontmatter (`title`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
+3. Processes `src/content/blog/*.md` → `dist/pages/writing/{slug}.html` by parsing YAML frontmatter (`title`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Post slug is derived from `title` (e.g. `Genesis` → `/writing/genesis`). Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
 4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, description, title.
 
 **Templating** is a simple `{{ variable }}` replacement — no loops, no conditionals in templates. Logic lives in the build script.
@@ -45,8 +45,8 @@ This is a custom static site generator written in TypeScript, built and run enti
 | `/experience` | `src/pages/experience.html` | Full timeline (professional, university, education) + resume PDF |
 | `/projects` | `src/pages/projects.html` | Side projects (card grid + featured Countries) |
 | `/writing` | generated `writing.html` | Blog index |
+| `/writing/{slug}` | `src/content/blog/*.md` | Individual posts (slug from `title`) |
 | `/now` | `src/pages/now.html` | Current focus (nownownow-style) |
-| `/content/blog/*.html` | `src/content/blog/*.md` | Individual posts (no clean URL rewrite yet) |
 
 There is no `/uses` or `/contact` route — that content lives on `/about` or was dropped.
 

@@ -73,6 +73,15 @@ function parseFrontmatter(frontmatterYaml: string): {
   };
 }
 
+function postSlugFromTitle(title: string): string {
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "post"
+  );
+}
+
 function parseFrontmatterDateISO(
   frontmatterYaml: string,
   field: "date" | "updated",
@@ -204,7 +213,7 @@ async function processBlogPosts(
 ): Promise<BlogPost[]> {
   console.log("Processing blog posts from src/content/blog...");
   const blogSrcDir = path.join(SRC_DIR, "content/blog");
-  const blogDestDir = path.join(DIST_DIR, "content/blog");
+  const blogDestDir = path.join(DIST_DIR, "pages/writing");
   await fs.mkdir(blogDestDir, { recursive: true });
   const blogPostFiles = await fs.readdir(blogSrcDir);
   const posts: BlogPost[] = [];
@@ -255,30 +264,27 @@ async function processBlogPosts(
 
     const postDescription =
       frontmatter.description ?? `${frontmatter.title} — by George Anagnostou`;
-    const postCrumb = frontmatter.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
+    const postSlug = postSlugFromTitle(frontmatter.title);
     const finalBlogPageHtml = renderLayout(baseLayout, {
       title: escapeHtml(`${frontmatter.title} — George Anagnostou`),
       content: renderedPostContent,
       description: escapeHtml(postDescription),
       bodyClass: "page--post",
-      header: renderHeader(headerTemplate, ["writing", postCrumb || "post"]),
+      header: renderHeader(headerTemplate, ["writing", postSlug]),
       footer: footerHtml,
       liveReload: process.env.NODE_ENV === "development" ? liveReload : "",
     });
 
-    const destFile = file.replace(".md", ".html");
+    const destFile = `${postSlug}.html`;
     await Bun.write(path.join(blogDestDir, destFile), finalBlogPageHtml);
-    console.log(`- Processed blog post: ${destFile}`);
+    console.log(`- Processed blog post: ${destFile} → /writing/${postSlug}`);
 
     posts.push({
       title: frontmatter.title,
       dateISO,
       description:
         frontmatter.description ?? INDEX_WRITING_DESCRIPTION_FALLBACK,
-      url: `/content/blog/${destFile}`,
+      url: `/writing/${postSlug}`,
     });
   }
 
