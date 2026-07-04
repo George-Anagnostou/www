@@ -17,6 +17,12 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+**/.DS_Store
+
+# Local agent / IDE config (never commit vendor-specific tooling)
+.claude/
+.cursor/
+.codex/
 *.suo
 *.ntvs*
 *.njsproj

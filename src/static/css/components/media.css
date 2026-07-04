@@ -1,0 +1,55 @@
+/* Site-wide image patterns — always set width/height on <img> for stable layout */
+
+.media {
+  margin: 0;
+}
+
+.media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--media-radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.media figcaption {
+  margin-top: var(--space-2);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.media figcaption code {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* Portrait — headshots, floated beside intro text */
+.media--portrait {
+  max-width: var(--media-portrait-max);
+}
+
+/* Landscape — wide photos, full column width */
+.media--landscape {
+  max-width: 100%;
+}
+
+/* Screenshot — project demos, full column width */
+.media--screenshot img {
+  border-radius: 6px;
+}
+
+/* Placeholder until a real image is added */
+.media--placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--media-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}

@@ -1,25 +1,22 @@
 {
   "name": "www",
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
+    "dev": "bun run scripts/dev.ts",
     "build": "bun run scripts/build.ts",
     "build:prod": "NODE_ENV=production bun run scripts/build.ts",
-    "dev-local": "bun run scripts/dev.ts",
+    "images": "bun run scripts/optimize-images.ts",
     "spell": "bunx cspell --no-progress"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/chokidar": "^2.1.7",
     "chokidar": "^4.0.3",
-    "cspell": "^9.7.0"
-  },
-  "peerDependencies": {
+    "cspell": "^9.7.0",
     "typescript": "^5"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0",
-    "marked": "^16.4.1"
+    "marked": "^16.4.1",
+    "sharp": "^0.35.3"
   }
 }

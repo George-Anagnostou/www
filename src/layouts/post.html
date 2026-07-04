@@ -1,4 +1,11 @@
-<h2 class="blog-post-title">{{ title }}</h2>
-<p class="blog-post-date"><em>Published on {{ dateString }}</em></p>
-<hr />
-<article>{{ content }}</article>
+<div class="container">
+  <div class="blog-post-header">
+    <h1 class="blog-post-title">{{ title }}</h1>
+    <div class="blog-post-meta">
+      {{ postDateHtml }}
+    </div>
+  </div>
+  <div class="blog-post-body">
+    <article>{{ content }}</article>
+  </div>
+</div>

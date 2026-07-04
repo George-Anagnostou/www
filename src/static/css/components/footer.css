@@ -1,0 +1,27 @@
+.site-footer {
+  margin-top: auto;
+  padding: var(--space-12) 0 var(--space-8);
+  background: var(--color-bg);
+}
+
+.site-footer__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-footer__shrimp {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+  opacity: 0.5;
+  transition: opacity var(--transition-fast);
+}
+
+.site-footer__shrimp:hover {
+  opacity: 0.85;
+}

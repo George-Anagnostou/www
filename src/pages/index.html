@@ -1,21 +1,116 @@
-<div class="about-section">
-  <figure>
-    <img
-      src="/static/images/headshot.jpeg"
-      alt="Headshot photo of George Anagnostou"
-      class="hero-image"
-    />
-    <figcaption>
-      There's no place like <code style="color: var(--color-accent)">~/</code>
-    </figcaption>
-  </figure>
-  <p>
-    I am a wealth management professional with a passion for software
-    development and small, simple solutions.
-  </p>
-  <p>
-    Checkout my <a href="/content/blog.html">blog</a> page for some of my
-    writings, and my <a href="/pages/portfolio.html">portfolio</a> page for some
-    of my projects.
-  </p>
+<!-- description: George Anagnostou — wealth management professional and software engineer in the San Francisco Bay Area. J.P. Morgan, venture capital, Unix, Go, TypeScript, Python. -->
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "George Anagnostou",
+    "url": "https://georgeanagnostou.com",
+    "email": "anagnostougeorgejohn@gmail.com",
+    "jobTitle": "Senior Client Associate",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "J.P. Morgan"
+    },
+    "knowsAbout": [
+      "Wealth Management",
+      "Venture Capital",
+      "Software Engineering",
+      "Unix",
+      "Go",
+      "TypeScript",
+      "Python"
+    ],
+    "knowsLanguage": ["English", "German", "Greek"],
+    "sameAs": [
+      "https://github.com/George-Anagnostou",
+      "https://www.linkedin.com/in/george-anagnostou-2478ba341/"
+    ]
+  }
+</script>
+
+<div class="container">
+  <header class="index-readme">
+    <h1>Hi, I'm George Anagnostou</h1>
+    <p class="index-readme__lede">
+      I'm a wealth management professional who loves building software. Dreamer
+      by day, triathlete by night, hacking on something in between. Born and
+      raised in the SF Bay Area, living in San Francisco.
+    </p>
+  </header>
+
+  <div class="index-entries">
+    <article class="index-entry" id="experience">
+      <h2><a href="/experience">Experience</a></h2>
+      <p>
+        <strong>J.P. Morgan</strong> — Senior Client Associate since June 2022.
+        Venture capital and institutional equity clients. Client Associate
+        Advisory Council since August 2024.
+      </p>
+      <p>
+        Building internal tools in Python — in-kind distributions automation and
+        a document prefill tool deployed division-wide.
+      </p>
+      <p class="index-entry__more">
+        <a href="/experience">Full timeline →</a>
+        <a href="/static/files/resume.pdf">Resume (PDF) →</a>
+      </p>
+    </article>
+
+    <article class="index-entry" id="projects">
+      <h2><a href="/projects">Projects</a></h2>
+      <p>
+        <strong><a href="https://gptees.io">GPTees</a></strong>
+        — handmade ecommerce store selling AI generated clothing. Prompt. Pay.
+        Wear.
+      </p>
+      <p>
+        <strong
+          ><a href="https://github.com/George-Anagnostou/bookmarks"
+            >Bookmarks</a
+          ></strong
+        >
+        — bookmarks management server and API with CLI client. Your own cloud
+        for bookmarks — browser, OS, and device agnostic.
+      </p>
+      <p>
+        <strong
+          ><a href="https://countries.georgeanagnostou.com"
+            >Countries</a
+          ></strong
+        >
+        — trivia game for flags, countries, and capitals.
+      </p>
+      <p>
+        <strong
+          ><a href="https://github.com/George-Anagnostou/www"
+            >This site</a
+          ></strong
+        >
+        — this site's custom SSG in TypeScript and Bun, hosted on Vercel.
+      </p>
+      <p class="index-entry__more">
+        <a href="/projects">All projects →</a>
+      </p>
+    </article>
+
+    <article class="index-entry" id="writing">
+      <h2><a href="/writing">Writing</a></h2>
+      {{ indexWritingHtml }}
+      <p class="index-entry__more">
+        <a href="/writing">All posts →</a>
+      </p>
+    </article>
+  </div>
+
+  <nav class="index-explore" aria-label="Explore the site">
+    <ul class="index-explore__list">
+      <li><a href="/about">More about me →</a></li>
+      <li><a href="/experience">Experience →</a></li>
+      <li><a href="/projects">Projects I'm working on →</a></li>
+      <li><a href="/writing">Articles and writings →</a></li>
+      <li><a href="/now">What I'm up to now →</a></li>
+      <li><a href="/about#contact">Get in touch →</a></li>
+    </ul>
+  </nav>
 </div>

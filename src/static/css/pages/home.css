@@ -1,0 +1,87 @@
+/* Homepage — README-shaped index */
+
+.index-readme {
+  padding: var(--space-8) 0 var(--space-6);
+}
+
+.index-readme h1 {
+  margin-bottom: var(--space-3);
+}
+
+.index-readme__lede {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  max-width: 36rem;
+  margin-bottom: 0;
+}
+
+.index-entries {
+  padding-bottom: var(--space-8);
+}
+
+.index-entry {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.index-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.index-entry h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-3);
+}
+
+.index-entry h2 a {
+  color: var(--color-text);
+}
+
+.index-entry h2 a:hover {
+  color: var(--color-accent);
+}
+
+.index-entry p {
+  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.index-entry p strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.index-entry__more {
+  font-size: 0.9rem;
+  margin-bottom: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+}
+
+.index-entry__more a {
+  color: var(--color-accent);
+}
+
+.index-explore {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.index-explore__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.index-explore__list a {
+  font-size: 0.95rem;
+  color: var(--color-accent);
+}

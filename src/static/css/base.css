@@ -1,0 +1,124 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+p {
+  margin: 0 0 var(--space-4);
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 var(--space-4);
+  color: var(--color-text);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+h4 { font-size: 1.05rem; }
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:visited {
+  color: var(--color-link);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  width: 100%;
+}
+
+main {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.page-hero {
+  padding: var(--space-8) 0 var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.page-hero h1 {
+  margin-bottom: var(--space-4);
+}
+
+.page-hero .lead {
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
+  max-width: 36rem;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  background: var(--color-accent);
+  color: #ffffff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 0 0 4px 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  z-index: 200;
+  transition: top var(--transition-fast);
+}
+
+.skip-nav:focus {
+  top: 0;
+  color: #ffffff;
+  text-decoration: none;
+}
