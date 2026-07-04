@@ -2,6 +2,7 @@
   "buildCommand": "bun run build:prod",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/favicon.ico", "destination": "/static/favicon.svg" },
     { "source": "/",         "destination": "/pages/index.html" },
     { "source": "/about",    "destination": "/pages/about.html" },
     { "source": "/experience", "destination": "/pages/experience.html" },
@@ -10,5 +11,15 @@
     { "source": "/writing/:slug", "destination": "/pages/writing/:slug.html" },
     { "source": "/writing",  "destination": "/pages/writing.html" },
     { "source": "/now",      "destination": "/pages/now.html" }
+  ],
+  "headers": [
+    {
+      "source": "/static/favicon.svg",
+      "headers": [{ "key": "Content-Type", "value": "image/svg+xml" }]
+    },
+    {
+      "source": "/favicon.ico",
+      "headers": [{ "key": "Content-Type", "value": "image/svg+xml" }]
+    }
   ]
 }

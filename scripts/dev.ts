@@ -5,6 +5,21 @@ import chokidar from "chokidar";
 const SRC_DIR = path.join(process.cwd(), "src");
 const DIST_DIR = path.join(process.cwd(), "dist");
 
+const MIME_TYPES: Record<string, string> = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".gif": "image/gif",
+  ".ico": "image/x-icon",
+  ".pdf": "application/pdf",
+  ".woff2": "font/woff2",
+};
+
 const clients = new Set<any>();
 let buildInProgress = false;
 
@@ -64,6 +79,8 @@ function startServer() {
       let filePath = url.pathname;
       if (filePath === "/") {
         filePath = "/pages/index.html";
+      } else if (filePath === "/favicon.ico") {
+        filePath = "/static/favicon.svg";
       } else if (!filePath.includes(".")) {
         filePath = `/pages${filePath}.html`;
       }
@@ -72,7 +89,11 @@ function startServer() {
       if (!(await file.exists())) {
         return new Response("404 Not Found", { status: 404 });
       }
-      return new Response(file);
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = MIME_TYPES[ext];
+      return contentType
+        ? new Response(file, { headers: { "Content-Type": contentType } })
+        : new Response(file);
     },
     websocket: {
       open(ws) {
