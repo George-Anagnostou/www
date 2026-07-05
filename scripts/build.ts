@@ -204,6 +204,30 @@ async function copyStatic() {
   }
 }
 
+async function buildBrowserScripts() {
+  console.log("Building browser scripts...");
+
+  const result = await Bun.build({
+    entrypoints: [path.join(SRC_DIR, "browser/analytics.ts")],
+    outdir: path.join(DIST_DIR, "static/js"),
+    target: "browser",
+    minify: process.env.NODE_ENV !== "development",
+    sourcemap: process.env.NODE_ENV === "development" ? "linked" : "none",
+    define: {
+      __VERCEL_ANALYTICS_MODE__: JSON.stringify(
+        process.env.NODE_ENV === "development" ? "development" : "production",
+      ),
+    },
+  });
+
+  if (!result.success) {
+    for (const log of result.logs) {
+      console.error(log);
+    }
+    throw new Error("Failed to build browser scripts.");
+  }
+}
+
 async function processBlogPosts(
   baseLayout: string,
   postLayout: string,
@@ -297,6 +321,7 @@ async function main() {
     console.log("Starting build...");
     await cleanDistDir();
     await copyStatic();
+    await buildBrowserScripts();
 
     const layoutsDir = path.join(SRC_DIR, "layouts");
     const baseLayout = await Bun.file(
