@@ -1,6 +1,8 @@
 import fs from "fs/promises";
 import path from "path";
 import { marked } from "marked";
+import { parsePost, renderLayout } from "./content";
+import { readRoutes, validateRoutes } from "./routes";
 import {
   isOptimizableImage,
   logOptimizedImages,
@@ -9,7 +11,8 @@ import {
 } from "./optimize-images";
 
 const SRC_DIR = path.join(process.cwd(), "src");
-const DIST_DIR = path.join(process.cwd(), "dist");
+const OUTPUT_DIR = path.join(process.cwd(), "dist");
+let DIST_DIR: string;
 
 type BlogPost = {
   title: string;
@@ -30,15 +33,6 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function renderLayout(layout: string, data: Record<string, any>): string {
-  let output = layout;
-  for (const key in data) {
-    const regex = new RegExp(`{{ ${key} }}`, "g");
-    output = output.replace(regex, data[key]);
-  }
-  return output;
-}
-
 const PAGE_URLS: Record<string, string> = {
   about: "/about",
   experience: "/experience",
@@ -46,51 +40,6 @@ const PAGE_URLS: Record<string, string> = {
   writing: "/writing",
   now: "/now",
 };
-
-function parseFrontmatterValue(raw: string): string {
-  const value = raw.trim();
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
-  }
-  return value;
-}
-
-function parseFrontmatter(frontmatterYaml: string): {
-  title: string;
-  description?: string;
-} {
-  const titleMatch = frontmatterYaml.match(/^title:\s*(.+)$/m);
-  if (!titleMatch) throw new Error("missing title");
-  const descriptionMatch = frontmatterYaml.match(/^description:\s*(.+)$/m);
-  return {
-    title: parseFrontmatterValue(titleMatch[1]),
-    description: descriptionMatch
-      ? parseFrontmatterValue(descriptionMatch[1])
-      : undefined,
-  };
-}
-
-function postSlugFromTitle(title: string): string {
-  return (
-    title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "") || "post"
-  );
-}
-
-function parseFrontmatterDateISO(
-  frontmatterYaml: string,
-  field: "date" | "updated",
-): string | null {
-  const match = frontmatterYaml.match(
-    new RegExp(`^${field}:\\s*(\\d{4}-\\d{2}-\\d{2})`, "m"),
-  );
-  return match?.[1] ?? null;
-}
 
 function renderCrumbRest(segments: string[]): string {
   if (segments.length === 0) return "";
@@ -154,12 +103,22 @@ function renderPostListHtml(posts: BlogPost[]): string {
   return renderWritingListHtml(posts);
 }
 
-async function cleanDistDir() {
-  if (process.env.NODE_ENV !== "development") {
-    console.log("Cleaning up dist directory...");
-    await fs.rm(DIST_DIR, { recursive: true, force: true });
-    await fs.mkdir(DIST_DIR, { recursive: true });
+async function publishBuild() {
+  const backup = path.join(process.cwd(), `.dist-previous-${crypto.randomUUID()}`);
+  let hasPrevious = false;
+  try {
+    await fs.rename(OUTPUT_DIR, backup);
+    hasPrevious = true;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
+  try {
+    await fs.rename(DIST_DIR, OUTPUT_DIR);
+  } catch (error) {
+    if (hasPrevious) await fs.rename(backup, OUTPUT_DIR);
+    throw error;
+  }
+  if (hasPrevious) await fs.rm(backup, { recursive: true, force: true });
 }
 
 async function copyStaticRecursive(src: string, dest: string) {
@@ -180,21 +139,15 @@ async function copyStatic() {
   const staticSrc = path.join(SRC_DIR, "static");
   const staticDest = path.join(DIST_DIR, "static");
   console.log("Copying static assets...");
-
-  const imagesSrc = path.join(staticSrc, "images");
-  try {
-    await fs.access(imagesSrc);
-    const imageResults = await optimizeImagesInDir(imagesSrc, path.join(staticDest, "images"));
-    logOptimizedImages(imageResults);
-  } catch {
-    // No images directory yet.
-  }
+  await fs.mkdir(staticDest, { recursive: true });
 
   for (const entry of await fs.readdir(staticSrc, { withFileTypes: true })) {
-    if (entry.name === ".DS_Store" || entry.name === "images") continue;
+    if (entry.name === ".DS_Store") continue;
     const srcPath = path.join(staticSrc, entry.name);
     const destPath = path.join(staticDest, entry.name);
-    if (entry.isDirectory()) {
+    if (entry.name === "images" && entry.isDirectory()) {
+      logOptimizedImages(await optimizeImagesInDir(srcPath, destPath));
+    } else if (entry.isDirectory()) {
       await copyStaticRecursive(srcPath, destPath);
     } else if (isOptimizableImage(srcPath)) {
       await optimizeImageFile(srcPath, destPath);
@@ -241,45 +194,20 @@ async function processBlogPosts(
   await fs.mkdir(blogDestDir, { recursive: true });
   const blogPostFiles = await fs.readdir(blogSrcDir);
   const posts: BlogPost[] = [];
+  const slugs = new Map<string, string>();
 
   for (const file of blogPostFiles) {
     if (!file.endsWith(".md")) continue;
 
     const srcPath = path.join(blogSrcDir, file);
     const rawContent = await Bun.file(srcPath).text();
-    const frontmatterMatch = rawContent.match(
-      /^---\n([\s\S]+?)\n---\n([\s\S]*)$/,
-    );
-    if (!frontmatterMatch) {
-      console.warn(`- Skipping ${file}: no frontmatter found.`);
-      continue;
-    }
-
-    const frontmatterYaml = frontmatterMatch[1];
-    let frontmatter: { title: string; description?: string };
-    try {
-      frontmatter = parseFrontmatter(frontmatterYaml);
-    } catch {
-      console.warn(`- Skipping ${file}: missing title in frontmatter.`);
-      continue;
-    }
-    const dateISO = parseFrontmatterDateISO(frontmatterYaml, "date");
-    if (!dateISO) {
-      console.warn(`- Skipping ${file}: missing or invalid date.`);
-      continue;
-    }
-    const updatedISO = parseFrontmatterDateISO(frontmatterYaml, "updated");
-    if (updatedISO && updatedISO < dateISO) {
-      console.warn(
-        `- ${file}: updated (${updatedISO}) is before date (${dateISO}); ignoring updated.`,
-      );
-    }
-    const effectiveUpdatedISO =
-      updatedISO && updatedISO > dateISO ? updatedISO : null;
-    const postDateHtml = renderPostDateHtml(dateISO, effectiveUpdatedISO);
-
-    const markdownContent = frontmatterMatch[2] ?? "";
-    const htmlContent = marked.parse(markdownContent) as string;
+    const frontmatter = parsePost(rawContent, srcPath);
+    const { dateISO, updatedISO, slug: postSlug } = frontmatter;
+    const previous = slugs.get(postSlug);
+    if (previous) throw new Error(`Duplicate slug "${postSlug}" in ${previous} and ${file}`);
+    slugs.set(postSlug, file);
+    const postDateHtml = renderPostDateHtml(dateISO, updatedISO);
+    const htmlContent = marked.parse(frontmatter.markdown) as string;
     const renderedPostContent = renderLayout(postLayout, {
       title: escapeHtml(frontmatter.title),
       postDateHtml,
@@ -288,7 +216,6 @@ async function processBlogPosts(
 
     const postDescription =
       frontmatter.description ?? `${frontmatter.title} — by George Anagnostou`;
-    const postSlug = postSlugFromTitle(frontmatter.title);
     const finalBlogPageHtml = renderLayout(baseLayout, {
       title: escapeHtml(`${frontmatter.title} — George Anagnostou`),
       content: renderedPostContent,
@@ -319,7 +246,10 @@ async function processBlogPosts(
 async function main() {
   try {
     console.log("Starting build...");
-    await cleanDistDir();
+    DIST_DIR = await fs.mkdtemp(path.join(process.cwd(), ".dist-build-"));
+    const sourcePages = (await fs.readdir(path.join(SRC_DIR, "pages"))).filter(file => file.endsWith(".html"));
+    if (sourcePages.includes("writing.html")) throw new Error("src/pages/writing.html conflicts with the generated writing index");
+    validateRoutes(sourcePages, await readRoutes(process.cwd()));
     await copyStatic();
     await buildBrowserScripts();
 
@@ -397,7 +327,7 @@ async function main() {
         /<!--\s*description:\s*(.+?)\s*-->/,
       );
       const description = descriptionMatch
-        ? descriptionMatch[1]
+        ? descriptionMatch[1]!
         : "George Anagnostou — wealth management, software, Bay Area.";
       const pageSlug = path.parse(file).name;
       const bodyClass =
@@ -427,10 +357,13 @@ async function main() {
       console.log(`- Processed page: ${file}`);
     }
 
+    await publishBuild();
     console.log("Build completed successfully!");
   } catch (error) {
     console.error("Build failed:", error);
-    process.exit(1);
+    process.exitCode = 1;
+  } finally {
+    if (DIST_DIR) await fs.rm(DIST_DIR, { recursive: true, force: true });
   }
 }
 

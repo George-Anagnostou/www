@@ -1,12 +1,21 @@
 <script>
-  const ws = new WebSocket(`ws://${location.hostname}:3000`);
-  ws.onmessage = (event) => {
-    if (event.data === "reload") {
-      console.log("Reloading page due to file changes...");
-      location.reload();
-    }
-  };
-  ws.onopen = () => {
-    console.log("Live-reload connection established.");
-  };
+  (() => {
+    const connect = (reconnecting = false) => {
+      const ws = new WebSocket(`${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/__reload`);
+      ws.onopen = () => { if (reconnecting) location.reload(); };
+      ws.onmessage = (event) => {
+        if (event.data === "reload") location.reload();
+        if (event.data === "build-error" && !document.getElementById("dev-build-error")) {
+          const notice = document.createElement("div");
+          notice.id = "dev-build-error";
+          notice.setAttribute("role", "alert");
+          notice.textContent = "Build failed. Showing the last successful version. Check the terminal for details.";
+          notice.style.cssText = "position:fixed;bottom:0;left:0;right:0;padding:1rem;background:#8b1717;color:white;font:16px/1.5 sans-serif;z-index:9999";
+          document.body.append(notice);
+        }
+      };
+      ws.onclose = () => setTimeout(() => connect(true), 1000);
+    };
+    connect();
+  })();
 </script>

@@ -3,7 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run scripts/dev.ts",
+    "dev": "bun --watch scripts/dev.ts",
+    "test": "bun test scripts",
+    "typecheck": "bunx tsc --noEmit",
     "build": "bun run scripts/build.ts",
     "build:prod": "NODE_ENV=production bun run scripts/build.ts",
     "images": "bun run scripts/optimize-images.ts",
