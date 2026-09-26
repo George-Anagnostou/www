@@ -1,87 +1,82 @@
-/* Homepage — README-shaped index */
+/* Homepage — a personal introduction and compact directory. */
 
-.index-readme {
-  padding: var(--space-8) 0 var(--space-6);
+.index-intro {
+  padding: var(--space-12) 0 var(--space-6);
 }
 
-.index-readme h1 {
-  margin-bottom: var(--space-3);
+.index-intro h1 {
+  margin-bottom: var(--space-6);
 }
 
-.index-readme__lede {
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  max-width: 36rem;
+.index-intro p {
+  max-width: 38rem;
+}
+
+.index-intro p:last-child {
   margin-bottom: 0;
 }
 
-.index-entries {
-  padding-bottom: var(--space-8);
+.personal-directory {
+  margin: 0 0 var(--space-12);
 }
 
-.index-entry {
-  margin-bottom: var(--space-8);
-  padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-
-.index-entry:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.index-entry h2 {
-  font-size: 1.25rem;
-  margin-bottom: var(--space-3);
-}
-
-.index-entry h2 a {
-  color: var(--color-text);
-}
-
-.index-entry h2 a:hover {
-  color: var(--color-accent);
-}
-
-.index-entry p {
-  color: var(--color-text-secondary);
-  font-size: 0.98rem;
-  line-height: 1.65;
-}
-
-.index-entry p strong {
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-.index-entry__more {
-  font-size: 0.9rem;
-  margin-bottom: 0 !important;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4) var(--space-6);
-}
-
-.index-entry__more a {
-  color: var(--color-accent);
-}
-
-.index-explore {
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--color-border-subtle);
-}
-
-.index-explore__list {
+.personal-directory ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
 }
 
-.index-explore__list a {
-  font-size: 0.95rem;
-  color: var(--color-accent);
+.personal-directory li {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.personal-directory a {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3) 0;
+  text-decoration: none;
+}
+
+.personal-directory__name {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.personal-directory__description {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.personal-directory a:hover .personal-directory__name,
+.personal-directory a:focus-visible .personal-directory__name {
+  text-decoration-thickness: 0.12em;
+}
+
+.index-writing {
+  margin-bottom: var(--space-10);
+}
+
+.index-writing h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-6);
+}
+
+.index-contact {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.index-resume {
+  display: block;
+  width: fit-content;
+  margin-top: var(--space-3);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 420px) {
+  .index-intro { padding-top: var(--space-8); }
+  .personal-directory a { grid-template-columns: minmax(0, 1fr); }
 }

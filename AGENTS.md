@@ -26,7 +26,7 @@ This is a custom static site generator written in TypeScript, built and run enti
 1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`). Images under `static/images/` are optimized via `scripts/optimize-images.ts` (sharp) on the way to `dist/`.
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
 3. Processes `src/content/blog/*.md` → `dist/pages/writing/{slug}.html` by parsing YAML frontmatter (`title`, `slug`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Post URLs use the required, permanent `slug` field (e.g. `slug: genesis` → `/writing/genesis`). Changing a title does not change its URL. Duplicate slugs and invalid metadata fail the build. Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
-4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, description, title.
+4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, wrapping title, then description.
 
 **Templating** replaces `{{ variable }}` slots in one pass — no loops or conditionals. Inserted content stays literal, including dollar signs and template examples. Unknown slots in templates fail the build.
 
@@ -38,16 +38,16 @@ This is a custom static site generator written in TypeScript, built and run enti
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
-**Navigation**: The homepage (`index.html`) is a README-shaped index — short intro, Experience / Projects / Writing sections, prose explore links (`index-explore`), and five recent posts injected at build time via `{{ indexWritingHtml }}`. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/experience`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Breadcrumbs are rendered per page in `scripts/build.ts`.
+**Navigation**: The homepage (`index.html`) is a compact personal directory — a short introduction followed by About, Now, Writing, Projects, and Experience, plus up to three recent posts injected at build time via `{{ indexWritingHtml }}`. It introduces George as a person before his work. The site header is **not rendered** on the homepage (no breadcrumb bar). Inner pages show filesystem-style breadcrumbs in accent blue: `George Anagnostou ~/experience`, `George Anagnostou ~/writing/genesis` (blog posts nest under `writing/`). Breadcrumbs are rendered per page in `scripts/build.ts`.
 
 **Site pages** (all rewrites in `vercel.json`):
 
 | Route | Source | Role |
 |---|---|---|
-| `/` | `src/pages/index.html` | README-shaped homepage; JSON-LD `Person` block |
+| `/` | `src/pages/index.html` | Personal directory homepage; JSON-LD `Person` block |
 | `/about` | `src/pages/about.html` | Personal essay; `#now` links to `/now`; `#contact` footer |
 | `/experience` | `src/pages/experience.html` | Full timeline (professional, university, education) + resume PDF |
-| `/projects` | `src/pages/projects.html` | Side projects (card grid + featured Countries) |
+| `/projects` | `src/pages/projects.html` | Side projects with full-width screenshots and visible image captions |
 | `/writing` | generated `writing.html` | Blog index |
 | `/writing/{slug}` | `src/content/blog/*.md` | Individual posts (explicit frontmatter slug) |
 | `/now` | `src/pages/now.html` | Current focus (nownownow-style) |
@@ -113,7 +113,7 @@ src/static/css/
   tokens.css             # design tokens (:root variables)
   base.css               # reset, typography, layout utilities
   components/            # reusable UI (header, footer, media, blog)
-  pages/                 # page-specific (home, experience, about, now-uses, projects)
+  pages/                 # page-specific (home, experience, about, now, projects)
 ```
 
 When adding a new component, create `components/name.css` and add an `@import` to `style.css`.

@@ -31,3 +31,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+.impeccable/critique/
+.impeccable/review/
+.impeccable/live/

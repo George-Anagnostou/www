@@ -9,7 +9,7 @@
   /* Colors — text */
   --color-text:           #333333;
   --color-text-secondary: #666666;
-  --color-text-muted:     #999999;
+  --color-text-muted:     #6b6b6b;
 
   /* Colors — accent */
   --color-accent:         #0066cc;
@@ -32,6 +32,7 @@
   --space-4:  1rem;
   --space-6:  1.5rem;
   --space-8:  2rem;
+  --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
 
