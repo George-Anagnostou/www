@@ -144,8 +144,12 @@ export async function optimizeImagesInDir(
       }
 
       if (isOptimizableImage(srcPath)) {
-        const result = await optimizeImageFile(srcPath, destPath);
-        if (result) results.push(result);
+        try {
+          const result = await optimizeImageFile(srcPath, destPath);
+          if (result) results.push(result);
+        } catch (error) {
+          throw new Error(`Image optimization failed for ${srcPath}`, { cause: error });
+        }
       } else {
         await fs.copyFile(srcPath, destPath);
       }

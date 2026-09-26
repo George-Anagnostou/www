@@ -8,13 +8,15 @@ All commands use `bun` as the runtime (not npm/node).
 
 ```bash
 bun run dev            # Dev server at http://localhost:3000 with live reload
-bun run build          # Incremental build (used by dev watcher; doesn't clean dist)
-bun run build:prod     # Production build (cleans dist first) — what Vercel runs
+bun run build          # Full staged build; replaces dist only after success
+bun run build:prod     # Production staged build — what Vercel runs
 bun run images         # Optimize all images in src/static/images/ (also runs on commit + build)
 bun run spell          # Spell-check configured content files
+bun run test           # Regression tests for publishing and rebuilds
+bun run typecheck      # Check TypeScript
 ```
 
-There are no tests or linting configured.
+Regression tests use Bun's test runner. No linter is configured.
 
 ## Architecture
 
@@ -23,14 +25,16 @@ This is a custom static site generator written in TypeScript, built and run enti
 **Build pipeline** (`scripts/build.ts`):
 1. Copies `src/static/` → `dist/static/` (skips `.DS_Store`). Images under `static/images/` are optimized via `scripts/optimize-images.ts` (sharp) on the way to `dist/`.
 2. Processes `src/pages/*.html` → `dist/pages/*.html` by wrapping each in `base.html` layout. Page title is derived from filename (`about.html` → `About — George Anagnostou`); homepage (`index.html`) gets `George Anagnostou`. An optional `<!-- description: ... -->` HTML comment on the first line sets the meta description (stripped from rendered output).
-3. Processes `src/content/blog/*.md` → `dist/pages/writing/{slug}.html` by parsing YAML frontmatter (`title`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Post slug is derived from `title` (e.g. `Genesis` → `/writing/genesis`). Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
+3. Processes `src/content/blog/*.md` → `dist/pages/writing/{slug}.html` by parsing YAML frontmatter (`title`, `slug`, `date`, optional `updated`, optional `description`), converting Markdown to HTML, and wrapping in `post.html` then `base.html`. Post URLs use the required, permanent `slug` field (e.g. `slug: genesis` → `/writing/genesis`). Changing a title does not change its URL. Duplicate slugs and invalid metadata fail the build. Frontmatter strings injected into HTML are escaped in `scripts/build.ts`.
 4. Generates `dist/pages/writing.html` as the blog index, sorted by published `date` (newest first). List rows match the homepage writing teaser: ISO date, description, title.
 
-**Templating** is a simple `{{ variable }}` replacement — no loops, no conditionals in templates. Logic lives in the build script.
+**Templating** replaces `{{ variable }}` slots in one pass — no loops or conditionals. Inserted content stays literal, including dollar signs and template examples. Unknown slots in templates fail the build.
 
-**Dev server** (`scripts/dev.ts`): Bun HTTP server on port 3000. Extension-free paths resolve to `/pages/{path}.html` (mirrors Vercel rewrites). Uses chokidar to watch `src/` and trigger rebuilds; sends live-reload signals via WebSocket (injected only in dev builds via `src/partials/live-reload.html`).
+**Dev server** (`scripts/dev.ts`): Bun HTTP server on port 3000 (override with `PORT`). Routes use `vercel.json`; builds validate that every page has a rewrite. The watcher covers `src/`, `scripts/`, routing and package configuration; edits during a build queue another build. Bun watch mode restarts the server when its own code changes. Successful builds replace `dist/`, removing stale output. Failed builds preserve the last working site, print errors, and show a development-only banner. Live reload reconnects after server restarts.
 
 **Layouts/Partials**: `src/layouts/base.html` is the outer shell. `src/layouts/post.html` and `src/layouts/blog-index.html` are inner layouts composed into `base.html`. Partials: `src/partials/header.html`, `src/partials/footer.html` (minimal shrimp spacer), `src/partials/live-reload.html`.
+
+**Build safety**: Each build writes to a temporary sibling directory, then replaces `dist/` only after all steps succeed. Missing optional image directories are fine; corrupt images and other asset failures stop publishing. Both development and production perform full builds.
 
 **Deployment**: Vercel. `vercel.json` has rewrite rules for all clean URLs (`/about` → `/pages/about.html`, etc.). The `dist/` directory is the deployment artifact.
 
@@ -45,24 +49,25 @@ This is a custom static site generator written in TypeScript, built and run enti
 | `/experience` | `src/pages/experience.html` | Full timeline (professional, university, education) + resume PDF |
 | `/projects` | `src/pages/projects.html` | Side projects (card grid + featured Countries) |
 | `/writing` | generated `writing.html` | Blog index |
-| `/writing/{slug}` | `src/content/blog/*.md` | Individual posts (slug from `title`) |
+| `/writing/{slug}` | `src/content/blog/*.md` | Individual posts (explicit frontmatter slug) |
 | `/now` | `src/pages/now.html` | Current focus (nownownow-style) |
 
 There is no `/uses` or `/contact` route — that content lives on `/about` or was dropped.
 
 ## Adding Content
 
-- **New page**: add an HTML file to `src/pages/` — the filename becomes the page title. Add a corresponding rewrite rule to `vercel.json`; the generic route resolver in `scripts/dev.ts` handles it locally.
+- **New page**: add an HTML file to `src/pages/` — the filename becomes the page title. Add a corresponding rewrite rule to `vercel.json`; the dev server uses the same rewrites and the build checks they exist.
 - **New blog post**: add a `.md` file to `src/content/blog/` with YAML frontmatter:
   ```yaml
   ---
   title: Post Title
+  slug: post-title     # required; keep stable when editing the title
   date: YYYY-MM-DD
   updated: YYYY-MM-DD   # optional; shown on post page only when after date
   description: One-line teaser for lists, SEO, and social sharing.
   ---
   ```
-  Dates display as `yyyy-mm-dd`. Lists sort and show published `date` only.
+  Dates must be real calendar dates in `YYYY-MM-DD` format; `updated` cannot precede `date`. YAML supports quoted values and multiline descriptions. Unknown fields fail the build to catch typos. Slugs use lowercase letters, numbers, and single hyphens. Keep published slugs unchanged; an intentional URL move needs a permanent redirect in `vercel.json`. Lists sort and show published `date` only.
 - **Static assets**: place in `src/static/` and reference as `/static/...` in HTML
 
 ## Images
