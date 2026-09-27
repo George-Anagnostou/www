@@ -24,5 +24,10 @@
   font-family: var(--font-sans);
   font-size: 0.85rem;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-8);
+  margin-top: var(--space-4);
+  margin-bottom: 0;
+}
+.now-colophon {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
 }

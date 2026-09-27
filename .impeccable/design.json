@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-26T21:36:35.159Z",
+  "title": "Design System: George Anagnostou",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Quiet gray canvas"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "White media surface"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Section gray"
+      },
+      "border-subtle": {
+        "role": "neutral",
+        "displayName": "Subtle rule gray"
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Charcoal reading text"
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Secondary gray"
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Metadata gray"
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Link blue"
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Deep link blue"
+      },
+      "accent-dim": {
+        "role": "primary",
+        "displayName": "Faint blue quote wash"
+      },
+      "code-bg": {
+        "role": "neutral",
+        "displayName": "Inline code gray"
+      },
+      "pre-bg": {
+        "role": "neutral",
+        "displayName": "Terminal charcoal"
+      },
+      "pre-text": {
+        "role": "neutral",
+        "displayName": "Terminal light gray"
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page heading",
+        "purpose": "Ordinary page headings; post titles have a responsive override."
+      },
+      "title": {
+        "displayName": "Section heading",
+        "purpose": "Base second-level headings."
+      },
+      "body": {
+        "displayName": "Reading text",
+        "purpose": "Default page prose and navigation."
+      },
+      "article": {
+        "displayName": "Article text",
+        "purpose": "Long-form blog content."
+      },
+      "label": {
+        "displayName": "Metadata",
+        "purpose": "Compact sans-serif dates and labels, with contextual size overrides."
+      },
+      "terminal": {
+        "displayName": "Terminal",
+        "purpose": "Preformatted project examples."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "transition-fast",
+        "value": "0.15s ease",
+        "purpose": "Link color/decoration, skip-link position, and footer opacity. Reduced-motion styles disable link and skip-link transitions."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "directory-stack",
+        "value": "420px"
+      },
+      {
+        "name": "timeline-stack",
+        "value": "480px"
+      },
+      {
+        "name": "writing-stack-and-about-aside",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Text link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Underlined blue text with an offset keyboard outline.",
+      "html": "<p class=\"ds-text\"><a class=\"ds-link\" href=\"/about#contact\">Say hello</a></p>",
+      "css": ".ds-text { font-family: var(--font-serif, \"Vollkorn\", Georgia, \"Times New Roman\", Times, serif); font-size: 1.125rem; line-height: 1.6; } .ds-link { color: var(--color-link, #0066cc); text-decoration: underline; text-underline-offset: .15em; text-decoration-thickness: .06em; transition: color var(--transition-fast, .15s ease), text-decoration-color var(--transition-fast, .15s ease); } .ds-link:hover { color: var(--color-link-hover, #004d99); text-underline-offset: 2px; } .ds-link:visited { color: var(--color-link, #0066cc); } .ds-link:focus-visible { outline: 2px solid var(--color-accent, #0066cc); outline-offset: 3px; border-radius: 2px; } @media (prefers-reduced-motion: reduce) { .ds-link { transition: none; } }"
+    },
+    {
+      "name": "Filesystem breadcrumb",
+      "kind": "nav",
+      "refersTo": "breadcrumb",
+      "description": "Inner-page navigation pairs a serif home link with a monospace path.",
+      "html": "<nav class=\"ds-crumb\" aria-label=\"Breadcrumb\"><a class=\"ds-crumb-home\" href=\"/\">George Anagnostou</a><span class=\"ds-crumb-path\"><code>~/</code><a class=\"ds-crumb-parent\" href=\"/writing\">writing</a><code>/</code><span aria-current=\"page\">genesis</span></span></nav>",
+      "css": ".ds-crumb { padding: var(--space-4, 1rem) var(--space-6, 1.5rem); background: var(--color-bg, #f5f5f5); border-bottom: 1px solid var(--color-border-subtle, #eeeeee); font-size: 1rem; line-height: 1.4; word-break: break-word; } .ds-crumb-home { font-family: var(--font-serif, \"Vollkorn\", Georgia, \"Times New Roman\", Times, serif); font-weight: 600; color: var(--color-accent, #0066cc); text-decoration: none; } .ds-crumb-home:hover { color: var(--color-link-hover, #004d99); text-decoration: underline; } .ds-crumb-path { margin-left: .25em; font-family: var(--font-mono, \"Consolas\", \"Monaco\", \"Courier New\", monospace); font-size: .95em; color: var(--color-text-secondary, #666666); } .ds-crumb-path code { font-family: inherit; color: var(--color-accent, #0066cc); } .ds-crumb-parent { color: var(--color-text-secondary, #666666); text-decoration: none; } .ds-crumb-parent:hover { color: var(--color-accent, #0066cc); text-decoration: underline; } .ds-crumb a { text-underline-offset: .15em; transition: color var(--transition-fast, .15s ease), text-decoration-color var(--transition-fast, .15s ease); } .ds-crumb a:focus-visible { outline: 2px solid var(--color-accent, #0066cc); outline-offset: 3px; border-radius: 2px; } @media (prefers-reduced-motion: reduce) { .ds-crumb a { transition: none; } }"
+    },
+    {
+      "name": "Personal directory row",
+      "kind": "nav",
+      "refersTo": "directory-link",
+      "description": "One link spans a destination name and its supporting description.",
+      "html": "<nav aria-label=\"Explore the site\"><a class=\"ds-directory\" href=\"/about\"><span class=\"ds-directory-name\">About</span><span class=\"ds-directory-description\">The longer introduction.</span></a></nav>",
+      "css": ".ds-directory { color: var(--color-link, #0066cc); text-decoration: underline; text-underline-offset: .15em; text-decoration-thickness: .06em; transition: color var(--transition-fast, .15s ease), text-decoration-color var(--transition-fast, .15s ease); } .ds-directory:hover { color: var(--color-link-hover, #004d99); text-underline-offset: 2px; } .ds-directory:visited { color: var(--color-link, #0066cc); } .ds-directory:focus-visible { outline: 2px solid var(--color-accent, #0066cc); outline-offset: 3px; border-radius: 2px; } @media (prefers-reduced-motion: reduce) { .ds-directory { transition: none; } } .ds-directory { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; gap: var(--space-1, .25rem) var(--space-4, 1rem); padding: var(--space-3, .75rem) 0; border-bottom: 1px solid var(--color-border, #dddddd); font-family: var(--font-serif, \"Vollkorn\", Georgia, \"Times New Roman\", Times, serif); font-size: 1.125rem; line-height: 1.6; text-decoration: none; } .ds-directory:hover { text-decoration: none; } .ds-directory-name { font-weight: 600; text-decoration: underline; text-underline-offset: .15em; } .ds-directory-description { color: var(--color-text-secondary, #666666); font-size: 1rem; } .ds-directory:hover .ds-directory-name, .ds-directory:focus-visible .ds-directory-name { text-decoration-thickness: .12em; } @media (max-width: 420px) { .ds-directory { grid-template-columns: minmax(0, 1fr); } }"
+    },
+    {
+      "name": "Writing row",
+      "kind": "custom",
+      "refersTo": "writing-row",
+      "description": "A date column, wrapping title, and italic description form a shared reading-list pattern.",
+      "html": "<div class=\"ds-writing\"><time class=\"ds-writing-date\" datetime=\"2026-09-26\">2026-09-26</time><a class=\"ds-writing-title\" href=\"/writing\">Post title</a><span class=\"ds-writing-description\">A short description of the post.</span></div>",
+      "css": ".ds-writing-title { color: var(--color-link, #0066cc); text-decoration: underline; text-underline-offset: .15em; text-decoration-thickness: .06em; transition: color var(--transition-fast, .15s ease), text-decoration-color var(--transition-fast, .15s ease); } .ds-writing-title:hover { color: var(--color-link-hover, #004d99); text-underline-offset: 2px; } .ds-writing-title:visited { color: var(--color-link, #0066cc); } .ds-writing-title:focus-visible { outline: 2px solid var(--color-accent, #0066cc); outline-offset: 3px; border-radius: 2px; } @media (prefers-reduced-motion: reduce) { .ds-writing-title { transition: none; } } .ds-writing { display: grid; grid-template-columns: 6rem minmax(0, 1fr); grid-template-areas: \"date title\" \". description\"; align-items: baseline; gap: var(--space-1, .25rem) var(--space-8, 2rem); padding: var(--space-2, .5rem) 0; font-family: var(--font-serif, \"Vollkorn\", Georgia, \"Times New Roman\", Times, serif); font-size: 1.125rem; line-height: 1.6; } .ds-writing-date { grid-area: date; color: var(--color-text-muted, #6b6b6b); font-size: .85rem; font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Arial, sans-serif); font-variant-numeric: tabular-nums; white-space: nowrap; } .ds-writing-title { grid-area: title; color: var(--color-text, #333333); font-weight: 600; min-width: 0; overflow-wrap: anywhere; } .ds-writing-title:hover { color: var(--color-accent, #0066cc); } .ds-writing-description { grid-area: description; color: var(--color-text-secondary, #666666); font-size: .92rem; font-style: italic; min-width: 0; overflow-wrap: anywhere; } @media (max-width: 640px) { .ds-writing { grid-template-columns: minmax(0, 1fr); grid-template-areas: \"date\" \"title\" \"description\"; } }"
+    },
+    {
+      "name": "Project terminal",
+      "kind": "custom",
+      "refersTo": "project-terminal",
+      "description": "A horizontally scrollable, focusable code surface.",
+      "html": "<pre class=\"ds-terminal\" tabindex=\"0\" aria-label=\"Example command\">bun run build</pre>",
+      "css": ".ds-terminal { margin: 0; padding: var(--space-4, 1rem); background: var(--color-pre-bg, #1e1e1e); color: var(--color-pre-text, #e8e8e8); border-radius: var(--media-radius, 4px); font-family: var(--font-mono, \"Consolas\", \"Monaco\", \"Courier New\", monospace); font-size: .8rem; line-height: 1.6; overflow-x: auto; white-space: pre; } .ds-terminal:focus-visible { outline: 2px solid var(--color-accent, #0066cc); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A personal reading space",
+    "overview": "Keep the site light, curious, and approachable. The incumbent identity uses serif reading text, familiar blue links, a quiet gray background, and a narrow column. Personality comes through writing, real photographs, project evidence, and the small shrimp footer.\n\nThis document records the implemented visual system. Page strategy belongs in `PRODUCT.md` and the surface briefs; CSS in `src/static/css/` supplies the implementation.",
+    "keyCharacteristics": [
+      "Serif reading text with restrained sans-serif metadata and monospace technical details.",
+      "Open sections separated by space and fine rules.",
+      "Visible links, keyboard focus, and wrapping content on small screens."
+    ],
+    "rules": [],
+    "dos": [
+      "Do preserve the serif, blue-link, narrow-column identity.",
+      "Do use spacing and fine rules to organize open reading sections.",
+      "Do retain visible link cues, keyboard outlines, and responsive wrapping.",
+      "Do use existing tokens and modular component or page styles."
+    ],
+    "donts": [
+      "Don't replace the reading column with a dashboard or promotional card grid.",
+      "Don't add shadows, decorative gradients, or new accent colors without an intentional visual-system change.",
+      "Don't hide supplied captions or nest interactive controls inside directory links."
+    ]
+  }
+}

@@ -78,8 +78,8 @@ function renderPostDateHtml(
 function renderWritingListItem(post: BlogPost): string {
   return `        <li class="writing-list__item">
           <time class="writing-list__date" datetime="${post.dateISO}">${post.dateISO}</time>
-          <span class="writing-list__desc">${escapeHtml(post.description)}</span>
           <a class="writing-list__title" href="${post.url}">${escapeHtml(post.title)}</a>
+          <span class="writing-list__desc">${escapeHtml(post.description)}</span>
         </li>`;
 }
 
@@ -95,7 +95,7 @@ function renderWritingListHtml(
   return `<ul class="writing-list">\n${items.map(renderWritingListItem).join("\n")}\n      </ul>`;
 }
 
-function renderIndexWritingHtml(posts: BlogPost[], limit = 5): string {
+function renderIndexWritingHtml(posts: BlogPost[], limit = 3): string {
   return renderWritingListHtml(posts, { limit });
 }
 

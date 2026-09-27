@@ -1,8 +1,16 @@
 {
   "version": "0.2",
   "language": "en-US",
-  "files": ["src/**/*.md", "src/**/*.html", "AGENTS.md"],
-  "ignorePaths": ["dist/**", "node_modules/**", "*.lock"],
+  "files": [
+    "src/**/*.md",
+    "src/**/*.html",
+    "AGENTS.md"
+  ],
+  "ignorePaths": [
+    "dist/**",
+    "node_modules/**",
+    "*.lock"
+  ],
   "words": [
     "Anagnostou",
     "anagnostou",
@@ -36,6 +44,15 @@
     "Picchu",
     "numeracy",
     "Queenstown",
-    "offsite"
+    "offsite",
+    "rgba",
+    "Vollkorn",
+    "Segoe",
+    "Consolas",
+    "blockquotes",
+    "lobste",
+    "roundtables",
+    "Printful",
+    "SICP"
   ]
 }

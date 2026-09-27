@@ -50,7 +50,9 @@ h4 { font-size: 1.05rem; }
 
 a {
   color: var(--color-link);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 0.06em;
   transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
 }
 
@@ -121,4 +123,9 @@ main {
   top: 0;
   color: #ffffff;
   text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  a, .skip-nav { transition: none; }
 }

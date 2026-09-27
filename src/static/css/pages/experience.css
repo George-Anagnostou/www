@@ -83,6 +83,14 @@
   line-height: 1.5;
 }
 
+.timeline__stack {
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
 .timeline__detail {
   list-style: none;
   padding: 0;
@@ -114,9 +122,7 @@
 }
 
 .experience-resume {
-  margin-top: var(--space-12);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--color-border-subtle);
+  margin: var(--space-4) 0 0;
 }
 
 .experience-resume a {
